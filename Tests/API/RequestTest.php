@@ -23,6 +23,9 @@ class DefaultControllerTest extends \PHPUnit_Framework_TestCase
             Request::LOCALE_JP);
     }
 
+    /**
+     * get AWS Access key ID in the case of default
+     */
     public function testGetAwsAccessKeyIdInTheCaseOfDefault()
     {
         $this->assertSame(
@@ -30,6 +33,9 @@ class DefaultControllerTest extends \PHPUnit_Framework_TestCase
         	"AWS access key ID wasn't same.");
     }
 
+    /**
+     * get Secret Access key in the case of default
+     */
     public function testGetSecretAccessKeyInTheCaseOfDefault()
     {
         $this->assertSame(
@@ -37,10 +43,23 @@ class DefaultControllerTest extends \PHPUnit_Framework_TestCase
         	"Secret access key wasn't same.");
     }
 
+    /**
+     * get Associate tag in the case of default
+     */
     public function testGetAssociateTagInTheCaseOfDefault()
     {
         $this->assertSame(
             self::DUMMY_ASSOCIATE_TAG, $this->request->getAssociateTag(),
         	"Associate tag wasn't same.");
+    }
+
+    /**
+     * get Locale in the case of default
+     */
+    public function testGetLocaleInTheCaseOfDefault()
+    {
+        $this->assertSame(
+            Request::LOCALE_JP, $this->request->getLocale(),
+        	"Locale wasn't same.");
     }
 }

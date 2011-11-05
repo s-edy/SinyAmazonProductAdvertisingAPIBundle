@@ -73,7 +73,7 @@ class Request
     );
 
     /**
-	 * set the base parameters such as "AssociateTag" for the request.
+     * set the base parameters such as "AssociateTag" for the request.
      * default parameters are used if you don't specify the parameters.
      *
      * @param array $parameters "key-value" style parameters
@@ -83,43 +83,78 @@ class Request
         $this->setAwsAccessKeyId($awsAccessKeyId);
         $this->setSecretAccessKey($secretAccessKey);
         $this->setAssociateTag($associateTag);
-        /*
-        $this->setAccessKeyId($access_key_id);
-        $this->setSecretAccessKey($secret_access_key);
-        $this->setAssociateTag($associate_tag);
-        $this->setLocale(self::LOCALE_JAPAN);
-        $this->setDomain($this->getDomainByLocale($this->getLocale()));
-        $this->setPath(self::REQUEST_PATH);
-        */
+        $this->setLocale($locale);
     }
 
+    /**
+     * set AWS access key ID
+     * @param string $awsAccessKeyId
+     */
     public function setAwsAccessKeyId($awsAccessKeyId)
     {
         $this->awsAccessKeyId = $awsAccessKeyId;
     }
 
-    public function getAwsAccessKeyId()
-    {
-        return $this->awsAccessKeyId;
-    }
-
+    /**
+     * set Secret access key
+     * @param string $secretAccessKey
+     */
     public function setSecretAccessKey($secretAccessKey)
     {
         $this->secretAccessKey = $secretAccessKey;
     }
 
-    public function getSecretAccessKey()
-    {
-        return $this->secretAccessKey;
-    }
-
+    /**
+     * set Associate tag
+     * @param string $associateTag
+     */
     public function setAssociateTag($associateTag)
     {
         $this->associateTag = $associateTag;
     }
 
+    /**
+     * set Locale
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+    }
+
+    /**
+     * get AWS Access key ID
+     * @return string
+     */
+    public function getAwsAccessKeyId()
+    {
+        return $this->awsAccessKeyId;
+    }
+
+    /**
+     * get Secret access key
+     * @return string
+     */
+    public function getSecretAccessKey()
+    {
+        return $this->secretAccessKey;
+    }
+
+    /**
+     * get Associate tag
+     * @return string
+     */
     public function getAssociateTag()
     {
         return $this->associateTag;
+    }
+
+    /**
+     * get locale
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
     }
 }
