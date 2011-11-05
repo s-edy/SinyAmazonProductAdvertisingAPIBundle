@@ -51,13 +51,12 @@ class Request
 
     /**
      * set the base parameters such as "AssociateTag" for the request.
-     * default parameters are used if you don't specify the parameters.
      *
      * @param string $awsAccessKeyId  AWS Access Key ID
      * @param string $secretAccessKey Secret access key
      * @param string $associateTag    Associate tag
      * @param string $locale          specify the locale to request to Amazon
-     * 		 						  from the locale constants (ex: Request::LOCALE_JP)
+     *                                from the locale constants (ex: Request::LOCALE_JP)
      */
     public function __construct(
         $awsAccessKeyId, $secretAccessKey, $associateTag, $locale)
