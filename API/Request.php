@@ -2,20 +2,21 @@
 /**
  * This file is a part of SinyAmazonProductAdvertisingAPIBundle package.
  *
- * @author Shinichiro YUKI <sinycourage@gmail.com>
+ * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception;
 
 /**
  * This is a class to send HTTP request to Amazon
  * through the Amazon Product Advertising API.
  *
- * @author Shinichiro YUKI <sinycourage@gmail.com>
+ * @package SinyAmazonProductAdvertisingAPI
+ * @subpackage API
+ * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
 class Request
 {
@@ -36,9 +37,6 @@ class Request
     // Path
     const REQUEST_PATH = '/onca/xml';
 
-    // Queue prefix
-    const QUEUE_PREFIX = 'AmazonRequest';
-
     // Access Key ID
     protected $awsAccessKeyId;
 
@@ -51,34 +49,18 @@ class Request
     // Locale
     protected $locale;
 
-    // URL
-    protected $url;
-
-    // End-Point
-    protected $endPoints = array(
-        self::LOCALE_CA => 'ecs.amazonaws.ca',
-        self::LOCALE_DE => 'ecs.amazonaws.de',
-        self::LOCALE_FR => 'ecs.amazonaws.fr',
-        self::LOCALE_JP => 'ecs.amazonaws.jp',
-        self::LOCALE_UK => 'ecs.amazonaws.co.uk',
-        self::LOCALE_US => 'ecs.amazonaws.com',
-    );
-    protected $secureEndPoints = array(
-        self::LOCALE_CA => 'aws.amazonaws.ca',
-        self::LOCALE_DE => 'aws.amazonaws.de',
-        self::LOCALE_FR => 'aws.amazonaws.fr',
-        self::LOCALE_JP => 'aws.amazonaws.jp',
-        self::LOCALE_UK => 'aws.amazonaws.co.uk',
-        self::LOCALE_US => 'aws.amazonaws.com',
-    );
-
     /**
      * set the base parameters such as "AssociateTag" for the request.
      * default parameters are used if you don't specify the parameters.
      *
-     * @param array $parameters "key-value" style parameters
+     * @param string $awsAccessKeyId  AWS Access Key ID
+     * @param string $secretAccessKey Secret access key
+     * @param string $associateTag    Associate tag
+     * @param string $locale          specify the locale to request to Amazon
+     * 		 						  from the locale constants (ex: Request::LOCALE_JP)
      */
-    public function __construct($awsAccessKeyId, $secretAccessKey, $associateTag, $locale)
+    public function __construct(
+        $awsAccessKeyId, $secretAccessKey, $associateTag, $locale)
     {
         $this->setAwsAccessKeyId($awsAccessKeyId);
         $this->setSecretAccessKey($secretAccessKey);
