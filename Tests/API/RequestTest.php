@@ -2,11 +2,9 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder,
-    Siny\Amazon\ProductAdvertisingAPIBundle\DependencyInjection\SinyAmazonProductAdvertisingAPIExtension,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
-class DefaultControllerTest extends \PHPUnit_Framework_TestCase
+class RequestTest extends \PHPUnit_Framework_TestCase
 {
     const DUMMY_AWS_ACCESS_KEY_ID = 'dummy_aws_access_key_id';
     const DUMMY_SECRET_ACCESS_KEY = 'dummy_secret_access_key';

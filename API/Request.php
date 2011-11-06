@@ -7,9 +7,6 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception;
-
 /**
  * This is a class to send HTTP request to Amazon
  * through the Amazon Product Advertising API.
