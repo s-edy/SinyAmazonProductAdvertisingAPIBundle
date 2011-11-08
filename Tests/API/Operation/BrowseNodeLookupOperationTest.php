@@ -1,4 +1,9 @@
 <?php
+/**
+* This test file is a part of SinyAmazonProductAdvertisingAPIBundle package.
+*
+* @author Shinichiro Yuki <sinycourage@gmail.com>
+*/
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API\Operation;
 
@@ -15,6 +20,9 @@ class BrowseNodeLookupOperationTest extends \PHPUnit_Framework_TestCase
         $this->operation = new BrowseNodeLookupOperation(self::DUMMY_BROWSE_NODE_ID);
     }
 
+    /**
+     * get operation in the case of default
+     */
     public function testGetOperationInTheCaseOfDefault()
     {
         $this->assertSame(
@@ -23,6 +31,9 @@ class BrowseNodeLookupOperationTest extends \PHPUnit_Framework_TestCase
             "Operation wasn't same.");
     }
 
+    /**
+     * get Browse node ID in the case of default
+     */
     public function testGetBrowseNodeIdInTheCaseOfDefault()
     {
         $this->assertSame(
@@ -31,6 +42,9 @@ class BrowseNodeLookupOperationTest extends \PHPUnit_Framework_TestCase
             "Browse node ID wasn't saem.");
     }
 
+    /**
+     * set Browse node ID
+     */
     public function testSetBrowseNodeId()
     {
         $newBrowseNodeId = 987654321;

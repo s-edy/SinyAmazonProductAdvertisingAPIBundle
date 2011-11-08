@@ -1,4 +1,9 @@
 <?php
+/**
+* This test file is a part of SinyAmazonProductAdvertisingAPIBundle package.
+*
+* @author Shinichiro Yuki <sinycourage@gmail.com>
+*/
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API;
 

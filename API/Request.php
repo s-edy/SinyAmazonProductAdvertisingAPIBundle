@@ -7,6 +7,11 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\AbstractRequest,
+    Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation,
+    Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException,
+    Siny\Amazon\ProductAdvertisingAPIBundle\API\Response;
+
 /**
  * This is a class to send HTTP request to Amazon
  * through the Amazon Product Advertising API.
@@ -15,124 +20,45 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-class Request
+class Request extends AbstractRequest
 {
-    // API version
-    const API_VERSION = '2010-09-01';
-
-    // Timestamp format
-    const DATE_FORMAT_ISO8601 = 'Y-m-d\TH:i:s\Z';
-
-    // Countries
-    const LOCALE_CA = 'CA'; // canada
-    const LOCALE_DE = 'DE'; // germany
-    const LOCALE_FR = 'FR'; // france
-    const LOCALE_JP = 'JP'; // japan
-    const LOCALE_UK = 'UK'; // united kingdom
-    const LOCALE_US = 'US'; // united states of america
-
-    // Path
-    const REQUEST_PATH = '/onca/xml';
-
-    // Access Key ID
-    protected $awsAccessKeyId;
-
-    // Secret Access Key ID
-    protected $secretAccessKey;
-
-    // Associate Tag
-    protected $associateTag;
-
-    // Locale
-    protected $locale;
-
     /**
-     * set the base parameters such as "AssociateTag" for the request.
+     * An Operation class instance that you want to send request
      *
-     * @param string $awsAccessKeyId  AWS Access Key ID
-     * @param string $secretAccessKey Secret access key
-     * @param string $associateTag    Associate tag
-     * @param string $locale          specify the locale to request to Amazon
-     *                                from the locale constants (ex: Request::LOCALE_JP)
+     * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
      */
-    public function __construct(
-        $awsAccessKeyId, $secretAccessKey, $associateTag, $locale)
+    private $operation;
+
+    /**
+     * set Operation class that you want to send request
+     *
+	 * @param Operation $operation An operation class instance
+     */
+    public function setOperation(Operation $operation)
     {
-        $this->setAwsAccessKeyId($awsAccessKeyId);
-        $this->setSecretAccessKey($secretAccessKey);
-        $this->setAssociateTag($associateTag);
-        $this->setLocale($locale);
+        $this->operation = $operation;
     }
 
     /**
-     * set AWS access key ID
-     * @param string $awsAccessKeyId
+     * get Operation class instance that you want to send request
+     *
+     * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
      */
-    public function setAwsAccessKeyId($awsAccessKeyId)
+    public function getOperation()
     {
-        $this->awsAccessKeyId = $awsAccessKeyId;
+        return $this->operation;
     }
 
     /**
-     * set Secret access key
-     * @param string $secretAccessKey
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\AbstractRequest::send()
      */
-    public function setSecretAccessKey($secretAccessKey)
+    public function send()
     {
-        $this->secretAccessKey = $secretAccessKey;
-    }
-
-    /**
-     * set Associate tag
-     * @param string $associateTag
-     */
-    public function setAssociateTag($associateTag)
-    {
-        $this->associateTag = $associateTag;
-    }
-
-    /**
-     * set Locale
-     * @param string $locale
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-    }
-
-    /**
-     * get AWS Access key ID
-     * @return string
-     */
-    public function getAwsAccessKeyId()
-    {
-        return $this->awsAccessKeyId;
-    }
-
-    /**
-     * get Secret access key
-     * @return string
-     */
-    public function getSecretAccessKey()
-    {
-        return $this->secretAccessKey;
-    }
-
-    /**
-     * get Associate tag
-     * @return string
-     */
-    public function getAssociateTag()
-    {
-        return $this->associateTag;
-    }
-
-    /**
-     * get locale
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
+        if (is_null($this->getOperation())) {
+            throw new RequestException("Operation class instance was not found.");
+        }
+        return new Response();
     }
 }

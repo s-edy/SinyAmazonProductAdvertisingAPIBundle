@@ -19,8 +19,14 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\Exception\OperationExc
  */
 abstract class Operation
 {
+    /**
+     * @var string operation parameter
+     */
     private $operation;
 
+    /**
+     * @var array request parameters
+     */
     private $parameters = array();
 
     /**
@@ -44,7 +50,7 @@ abstract class Operation
      */
     protected function setOperation($operation)
     {
-        $this->operation  = $operation;
+        $this->operation = $operation;
     }
 
     /**
