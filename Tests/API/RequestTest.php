@@ -63,6 +63,15 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * has Operation
+     */
+    public function testHasOperation()
+    {
+        $this->assertTrue($this->request->hasOperation(), "Has not operation.");
+        $this->assertFalse($this->getRequest()->hasOperation(), "Has operation.");
+    }
+
+    /**
      * send, then return response object instance
      */
     public function testSendThenReturnsResponseObjectInstance()

@@ -116,10 +116,20 @@ abstract class Operation
      */
     public function getParameter($key)
     {
-        if (isset($this->parameters[$key]) === false) {
-            throw new OperationException(sprintf(
-            	"'%s' parameter was not found", $key));
+        if ($this->hasParameter($key) === false) {
+            throw new OperationException(sprintf("'%s' parameter was not found", $key));
         }
         return $this->parameters[$key];
+    }
+
+    /**
+     * has the parameter of specified key.
+     *
+     * @param string $key a parameter key name that you want to get.
+     * @return boolean - Whether the parameter of specified key has or not
+     */
+    public function hasParameter($key)
+    {
+        return (isset($this->parameters[$key]));
     }
 }

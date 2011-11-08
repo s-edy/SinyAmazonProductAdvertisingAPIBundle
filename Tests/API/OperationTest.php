@@ -101,6 +101,19 @@ class OperationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * has parameter
+     */
+    public function testHasParameter()
+    {
+        $this->assertTrue(
+            $this->operation->hasParameter(self::DUMMY_PARAMETER_KEY),
+            "Had not a parameter of specified key.");
+        $this->assertFalse(
+            $this->operation->hasParameter('haveNotKey'),
+            "Had the a parameter of specified key.");
+    }
+
+    /**
      * Exception occur if the parameter that tried to get doesn't exist.
      *
      * @expectedException Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\Exception\OperationException
