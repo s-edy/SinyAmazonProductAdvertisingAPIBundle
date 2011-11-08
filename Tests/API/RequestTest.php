@@ -28,11 +28,18 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->request->setOperation($operation);
     }
 
+    /**
+     * get operation in the case of default
+     */
     public function testGetOperationInTheCaseOfDefault()
     {
         $this->assertNull($this->getRequest()->getOperation(), "Returned wasn't a null.");
     }
 
+    /**
+     * returns class instance that extend an abstract operation class instance
+     * when get operation
+     */
     public function testReturnsClassExtendAnAbstractOperationWhenGetOperation()
     {
         $this->assertInstanceOf(
@@ -41,6 +48,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         	"A returned class wasn't class instance that extend an abstract operation class.");
     }
 
+    /**
+     * returns operation class instance that you set when you get operation
+     */
     public function testReturnsOperationClassInstanceThatYouSetWhenYouGetOperation()
     {
         $request = $this->getRequest();
@@ -52,6 +62,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
             "A returned class wasn't same class instance.");
     }
 
+    /**
+     * send, then return response object instance
+     */
     public function testSendThenReturnsResponseObjectInstance()
     {
         $this->assertInstanceOf(
@@ -69,6 +82,11 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $this->getRequest()->send();
     }
 
+    /**
+     * get request class instance
+     *
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request
+     */
     private function getRequest()
     {
         return new Request(
