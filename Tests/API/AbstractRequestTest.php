@@ -37,7 +37,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             self::DUMMY_AWS_ACCESS_KEY_ID, $this->request->getAwsAccessKeyId(),
-        	"AWS access key ID wasn't same.");
+            "AWS access key ID wasn't same.");
     }
 
     /**
@@ -47,7 +47,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             self::DUMMY_SECRET_ACCESS_KEY, $this->request->getSecretAccessKey(),
-        	"Secret access key wasn't same.");
+            "Secret access key wasn't same.");
     }
 
     /**
@@ -57,7 +57,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             self::DUMMY_ASSOCIATE_TAG, $this->request->getAssociateTag(),
-        	"Associate tag wasn't same.");
+            "Associate tag wasn't same.");
     }
 
     /**
@@ -67,6 +67,6 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             AbstractRequest::LOCALE_JP, $this->request->getLocale(),
-        	"Locale wasn't same.");
+            "Locale wasn't same.");
     }
 }
