@@ -15,6 +15,8 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
+use Doctrine\ORM\Query\Expr\Func;
+
 use Symfony\Tests\Component\Routing\Fixtures\AnnotatedClasses\AbstractClass;
 
 abstract class AbstractRequest
@@ -167,5 +169,22 @@ abstract class AbstractRequest
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * generate Canonical query string from parameters
+     *
+     * @param array $parameters - some query parameters array
+     * @return string - canonical query string
+     */
+    public function generateCanonicalQueryString(array $parameters)
+    {
+        ksort($parameters);
+
+        $canonicals = array();
+        foreach ($parameters as $key => $value) {
+            $canonicals[] = rawurlencode($key) . '=' . rawurlencode($value);
+        }
+        return implode('&', $canonicals);
     }
 }

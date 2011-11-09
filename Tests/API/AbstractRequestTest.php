@@ -69,4 +69,24 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
             AbstractRequest::LOCALE_JP, $this->request->getLocale(),
             "Locale wasn't same.");
     }
+
+    /**
+     * test generate canonical query string
+     */
+    public function testGenerateCanonicalQueryString()
+    {
+        $parameters = array(
+            'foo' => 'bar',
+            'fizz' => 'buzz',
+            'k[=@`!`+' => '*LP``>`L=@:][',
+        );
+        ksort($parameters);
+        foreach ($parameters as $key => $value) {
+            $canonicals[] = rawurlencode($key) . '=' . rawurlencode($value);
+        }
+        $canonicalString = implode('&', $canonicals);
+        $this->assertSame(
+            $canonicalString, $this->request->generateCanonicalQueryString($parameters),
+            "Did not generate canonical string correctly.");
+    }
 }
