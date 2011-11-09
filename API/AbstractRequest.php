@@ -15,8 +15,6 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-use Doctrine\ORM\Query\Expr\Func;
-
 use Symfony\Tests\Component\Routing\Fixtures\AnnotatedClasses\AbstractClass;
 
 abstract class AbstractRequest
