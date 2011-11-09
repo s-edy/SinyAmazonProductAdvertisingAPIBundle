@@ -96,14 +96,11 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
 
     /**
      * test generate canonical query string
+     *
+     * @dataProvider provideParameters
      */
-    public function testGenerateCanonicalQueryString()
+    public function testGenerateCanonicalQueryString($parameters)
     {
-        $parameters = array(
-            'foo' => 'bar',
-            'fizz' => 'buzz',
-            'k[=@`!`+' => '*LP``>`L=@:][',
-        );
         ksort($parameters);
         foreach ($parameters as $key => $value) {
             $canonicals[] = rawurlencode($key) . '=' . rawurlencode($value);
@@ -112,5 +109,13 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             $canonicalString, $this->request->generateCanonicalQueryString($parameters),
             "Did not generate canonical string correctly.");
+    }
+
+    public function provideParameters()
+    {
+        return array(array(array(
+            'foo'  => 'bar',
+            'fizz' => 'buzz',
+        )));
     }
 }
