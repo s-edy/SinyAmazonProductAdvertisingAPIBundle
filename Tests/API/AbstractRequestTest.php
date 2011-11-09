@@ -71,6 +71,30 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * get DateTime in the case of default
+     */
+    public function testGetDateTimeInTheCaseOfDefault()
+    {
+        $this->assertInstanceOf(
+    		'\DateTime', $this->request->getDateTime(),
+    		"A date time class wan't get");
+    }
+
+    /**
+     * set/get DateTime
+     */
+    public function testSetGetDateTime()
+    {
+        $dateTime = new \DateTime();
+        $this->request->setDateTime($dateTime);
+        $dateTime->setTimezone(new \DateTimeZone('UTC'));
+        $this->assertSame(
+            $dateTime->format(\DateTime::ISO8601),
+            $this->request->getDateTime()->format(\DateTime::ISO8601),
+            "A date time class wasn't same.");
+    }
+
+    /**
      * test generate canonical query string
      */
     public function testGenerateCanonicalQueryString()

@@ -71,6 +71,12 @@ abstract class AbstractRequest
     protected $locale;
 
     /**
+     * date time class instance for sending request
+     * @var \DateTime
+     */
+    private $dateTime;
+
+    /**
      * send HTTP request to the Amazon
      *
      * @abstract
@@ -95,6 +101,7 @@ abstract class AbstractRequest
         $this->setSecretAccessKey($secretAccessKey);
         $this->setAssociateTag($associateTag);
         $this->setLocale($locale);
+        $this->setDateTime(new \DateTime());
     }
 
     /**
@@ -134,6 +141,18 @@ abstract class AbstractRequest
     }
 
     /**
+     * set DateTime for sending request
+     *
+     * @param \DateTime $dateTime
+     */
+    public function setDateTime(\DateTime $dateTime)
+    {
+        $newDateTime = clone $dateTime;
+        $newDateTime->setTimezone(new \DateTimeZone('UTC'));
+        $this->dateTime = $newDateTime;
+    }
+
+    /**
      * get AWS Access key ID
      * @return string
      */
@@ -167,6 +186,16 @@ abstract class AbstractRequest
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * get DateTime
+     *
+     * @return \DateTime
+     */
+    public function getDateTime()
+    {
+        return $this->dateTime;
     }
 
     /**
