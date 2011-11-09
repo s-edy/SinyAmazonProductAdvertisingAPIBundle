@@ -34,7 +34,7 @@ abstract class AbstractRequest
     const LOCALE_US = 'US'; // united states of america
 
     // Path
-    const REQUEST_PATH = '/onca/xml';
+    const REQUEST_URI = '/onca/xml';
 
     /**
      * Access Key ID
@@ -213,5 +213,25 @@ abstract class AbstractRequest
             $canonicals[] = rawurlencode($key) . '=' . rawurlencode($value);
         }
         return implode('&', $canonicals);
+    }
+
+    /**
+     * generate signature
+     *
+     * @param string $requestMethod
+     * @param string $endPoint
+     * @param string $canonicalQueryString
+     * @return string
+     */
+    public function generateSignature($requestMethod, $endPoint, $canonicalQueryString)
+    {
+        $data = implode("\n", array(
+            $requestMethod,
+            $endPoint,
+            self::REQUEST_URI,
+            $canonicalQueryString,
+        ));
+        $hash = hash_hmac('sha256', $data, $this->getSecretAccessKey(), true);
+        return rawurlencode(base64_encode($hash));
     }
 }

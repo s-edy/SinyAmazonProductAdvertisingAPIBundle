@@ -118,4 +118,37 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
             'fizz' => 'buzz',
         )));
     }
+
+    /**
+     * generate signature
+     *
+     * @dataProvider provideParameterForSignature
+     * @param string $requestMethod
+     * @param string $endPoint
+     * @param string $canonicalQueryString
+     */
+    public function testGenerateSignature(
+        $requestMethod, $endPoint, $canonicalQueryString)
+    {
+        $parameters = array(
+            $requestMethod,
+            $endPoint,
+            AbstractRequest::REQUEST_URI,
+            $canonicalQueryString,
+        );
+        $data = implode("\n", $parameters);
+        $key  = $this->request->getSecretAccessKey();
+
+        $this->assertSame(
+            rawurlencode(base64_encode(hash_hmac('sha256', $data, $key, true))),
+            $this->request->generateSignature($requestMethod, $endPoint, $canonicalQueryString),
+            "The generated signature wasn't same.");
+    }
+
+    public function provideParameterForSignature()
+    {
+        return array(
+            array('GET', 'dummy.end.point.com', 'dummyCanonicalQueryString'),
+        );
+    }
 }
