@@ -159,7 +159,7 @@ abstract class AbstractRequest
     /**
      * set secure request.
      *
-     * a request will be sent with securely if you invoke this method.
+     * A request send securely if you invoke this method.
      * - using SSL
      * - using more secure endpoint
      */
@@ -171,7 +171,7 @@ abstract class AbstractRequest
     /**
      * reset secure request.
      *
-     * a request returns normaly if you invoke this method.
+     * A request sending returns normal if you invoke this method.
      * - Won't use SSL
      * - using normal endpoint
      */
