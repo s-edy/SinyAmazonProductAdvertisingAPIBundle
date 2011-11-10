@@ -94,6 +94,35 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * is secure request in the case of default
+     */
+    public function testIsSecureRequestInTheCaseOfDefault()
+    {
+        $this->assertFalse(
+            $this->request->isSecureRequest(), "The default value isn't secure.");
+    }
+
+    /**
+     * set secure request
+     */
+    public function testSetSecureRequest()
+    {
+        $this->request->setSecureRequest();
+        $this->assertTrue(
+            $this->request->isSecureRequest(), "Did not secure request.");
+    }
+
+    /**
+     * reset secure request
+     */
+    public function testResetSecureRequest()
+    {
+        $this->request->resetSecureRequest();
+        $this->assertFalse(
+            $this->request->isSecureRequest(), "This is secure request.");
+    }
+
+    /**
      * test generate canonical query string
      *
      * @dataProvider provideParameters

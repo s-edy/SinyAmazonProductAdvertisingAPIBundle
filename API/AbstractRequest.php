@@ -75,6 +75,13 @@ abstract class AbstractRequest
     private $dateTime;
 
     /**
+     * whether a request send securely
+     *
+     * @var boolean
+     */
+    private $isSecureRequest = false;
+
+    /**
      * send HTTP request to the Amazon
      *
      * @abstract
@@ -150,6 +157,30 @@ abstract class AbstractRequest
     }
 
     /**
+     * set secure request.
+     *
+     * a request will be sent with securely if you invoke this method.
+     * - using SSL
+     * - using more secure endpoint
+     */
+    public function setSecureRequest()
+    {
+        $this->isSecureRequest = true;
+    }
+
+    /**
+     * reset secure request.
+     *
+     * a request returns normaly if you invoke this method.
+     * - Won't use SSL
+     * - using normal endpoint
+     */
+    public function resetSecureRequest()
+    {
+        $this->isSecureRequest = false;
+    }
+
+    /**
      * get AWS Access key ID
      * @return string
      */
@@ -193,6 +224,18 @@ abstract class AbstractRequest
     public function getDateTime()
     {
         return $this->dateTime;
+    }
+
+    /**
+     * is secure request
+     *
+     * whethere a request send securely
+     *
+     * @return boolean
+     */
+    public function isSecureRequest()
+    {
+        return $this->isSecureRequest;
     }
 
     /**
