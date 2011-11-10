@@ -99,24 +99,25 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideParameters
      */
-    public function testGenerateCanonicalQueryString($parameters)
+    public function testGenerateCanonicalQueryString($parameters, $expect)
     {
-        ksort($parameters);
-        foreach ($parameters as $key => $value) {
-            $canonicals[] = rawurlencode($key) . '=' . rawurlencode($value);
-        }
-        $canonicalString = implode('&', $canonicals);
         $this->assertSame(
-            $canonicalString, $this->request->generateCanonicalQueryString($parameters),
+            $expect, $this->request->generateCanonicalQueryString($parameters),
             "Did not generate canonical string correctly.");
     }
 
     public function provideParameters()
     {
-        return array(array(array(
-            'foo'  => 'bar',
-            'fizz' => 'buzz',
-        )));
+        return array(
+            array(
+                array(
+                    'foo'  => 'bar',
+                    'fizz' => 'buzz',
+                    '@*?&' => '$#^/',
+                ),
+                '%40%2A%3F%26=%24%23%5E%2F&fizz=buzz&foo=bar',
+            ),
+        );
     }
 
     /**
@@ -128,27 +129,24 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      * @param string $canonicalQueryString
      */
     public function testGenerateSignature(
-        $requestMethod, $endPoint, $canonicalQueryString)
+        $requestMethod, $endPoint, $canonicalQueryString, $expect)
     {
-        $parameters = array(
-            $requestMethod,
-            $endPoint,
-            AbstractRequest::REQUEST_URI,
-            $canonicalQueryString,
-        );
-        $data = implode("\n", $parameters);
-        $key  = $this->request->getSecretAccessKey();
-
         $this->assertSame(
-            rawurlencode(base64_encode(hash_hmac('sha256', $data, $key, true))),
-            $this->request->generateSignature($requestMethod, $endPoint, $canonicalQueryString),
+            $expect,
+            $this->request->generateSignature(
+                $requestMethod, $endPoint, $canonicalQueryString),
             "The generated signature wasn't same.");
     }
 
     public function provideParameterForSignature()
     {
         return array(
-            array('GET', 'dummy.end.point.com', 'dummyCanonicalQueryString'),
+            array(
+                'GET',
+                'dummy.end.point.com',
+                'dummyCanonicalQueryString',
+                'jXgbOqARlG%2F0veVGlVSACAVMqmcxrwL6ejFRmvT%2BGKE%3D',
+            ),
         );
     }
 }
