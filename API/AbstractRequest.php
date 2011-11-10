@@ -146,7 +146,6 @@ abstract class AbstractRequest
     public function setDateTime(\DateTime $dateTime)
     {
         $newDateTime = clone $dateTime;
-        $newDateTime->setTimezone(new \DateTimeZone('UTC'));
         $this->dateTime = $newDateTime;
     }
 

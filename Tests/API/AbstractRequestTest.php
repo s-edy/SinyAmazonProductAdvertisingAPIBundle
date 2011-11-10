@@ -87,7 +87,6 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     {
         $dateTime = new \DateTime();
         $this->request->setDateTime($dateTime);
-        $dateTime->setTimezone(new \DateTimeZone('UTC'));
         $this->assertSame(
             $dateTime->format(\DateTime::ISO8601),
             $this->request->getDateTime()->format(\DateTime::ISO8601),
