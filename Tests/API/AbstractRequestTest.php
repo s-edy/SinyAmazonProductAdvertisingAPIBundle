@@ -110,16 +110,20 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
         $this->request->setSecureRequest();
         $this->assertTrue(
             $this->request->isSecureRequest(), "Did not secure request.");
+
+        return $this->request;
     }
 
     /**
      * reset secure request
+     *
+     * @depends testSetSecureRequest
      */
-    public function testResetSecureRequest()
+    public function testResetSecureRequest(AbstractRequest $request)
     {
-        $this->request->resetSecureRequest();
+        $request->resetSecureRequest();
         $this->assertFalse(
-            $this->request->isSecureRequest(), "This is secure request.");
+            $request->isSecureRequest(), "This is secure request.");
     }
 
     /**
