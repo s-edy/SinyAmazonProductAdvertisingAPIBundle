@@ -50,6 +50,10 @@ abstract class AbstractRequest
     // Path
     const REQUEST_URI = '/onca/xml';
 
+    // Requests
+    const METHOD_GET  = 'GET';
+    const METHOD_POST = 'POST';
+
     /**
      * Access Key ID
      *
@@ -133,6 +137,13 @@ abstract class AbstractRequest
      * @var boolean
      */
     private $isSecureRequest = false;
+
+    /**
+     * A request method
+     *
+     * @var string
+     */
+    private $method = self::METHOD_GET;
 
     /**
      * send HTTP request to the Amazon
@@ -240,6 +251,22 @@ abstract class AbstractRequest
     }
 
     /**
+     * set GET request method.
+     */
+    public function setGETRequestMethod()
+    {
+        $this->method = self::METHOD_GET;
+    }
+
+    /**
+     * set POST request method
+     */
+    public function setPOSTRequestMethod()
+    {
+        $this->method = self::METHOD_POST;
+    }
+
+    /**
      * get AWS Access key ID
      * @return string
      */
@@ -295,6 +322,16 @@ abstract class AbstractRequest
     public function isSecureRequest()
     {
         return $this->isSecureRequest;
+    }
+
+    /**
+     * get request method
+     *
+     * @return string
+     */
+    public function getRequestMethod()
+    {
+        return $this->method;
     }
 
     /**

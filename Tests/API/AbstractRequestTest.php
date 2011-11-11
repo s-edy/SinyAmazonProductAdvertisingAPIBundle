@@ -168,6 +168,44 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * get request method in the case of default.
+     */
+    public function testGetRequestMethodInTheCaseOfDefault()
+    {
+        $this->assertSame(
+            AbstractRequest::METHOD_GET, $this->request->getRequestMethod(),
+            "A request method wasn't GET in the case of default.");
+    }
+
+    /**
+     * set POST request method
+     */
+    public function testSetPOSTRequestMethod()
+    {
+        $this->request->setPOSTRequestMethod();
+        $this->assertSame(
+            AbstractRequest::METHOD_POST, $this->request->getRequestMethod(),
+            "A request method wasn't set POST.");
+
+        return $this->request;
+    }
+
+    /**
+     * set GET request method
+     *
+     * @depends testSetPOSTRequestMethod
+     *
+     * @param AbstractMethod $request
+     */
+    public function testSetGETRequestMethod(AbstractRequest $request)
+    {
+        $request->setGETRequestMethod();
+        $this->assertSame(
+            AbstractRequest::METHOD_GET, $request->getRequestMethod(),
+                    "A request method wasn't set GET.");
+    }
+
+    /**
      * test generate canonical query string
      *
      * @dataProvider provideParameters
