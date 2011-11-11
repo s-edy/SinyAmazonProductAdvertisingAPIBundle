@@ -25,8 +25,11 @@ abstract class AbstractRequest
 
     // Countries
     const LOCALE_CA = 'CA'; // canada
+    const LOCALE_CN = 'CN'; // china
     const LOCALE_DE = 'DE'; // germany
+    const LOCALE_ES = 'ES'; // spain
     const LOCALE_FR = 'FR'; // france
+    const LOCALE_IT = 'IT'; // italy
     const LOCALE_JP = 'JP'; // japan
     const LOCALE_UK = 'UK'; // united kingdom
     const LOCALE_US = 'US'; // united states of america
@@ -59,8 +62,11 @@ abstract class AbstractRequest
      * Locale
      *
      * @see AbstractClass::LOCALE_CA
+     * @see AbstractClass::LOCALE_CN
      * @see AbstractClass::LOCALE_DE
+     * @see AbstractClass::LOCALE_ES
      * @see AbstractClass::LOCALE_FR
+     * @see AbstractClass::LOCALE_IT
      * @see AbstractClass::LOCALE_JP
      * @see AbstractClass::LOCALE_UK
      * @see AbstractClass::LOCALE_US
