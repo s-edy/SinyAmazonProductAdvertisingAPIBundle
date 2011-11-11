@@ -71,6 +71,47 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * set locale
+     *
+     * @dataProvider provideLocales
+     *
+     * @param string $locale
+     */
+    public function testSetLocale($locale)
+    {
+        $this->request->setLocale($locale);
+        $this->assertSame(
+            $locale, $this->request->getLocale(),
+            "a specified locale wasn't same.");
+    }
+
+    public function provideLocales()
+    {
+        return array(
+            array(AbstractRequest::LOCALE_CA),
+            array(AbstractRequest::LOCALE_CN),
+            array(AbstractRequest::LOCALE_DE),
+            array(AbstractRequest::LOCALE_ES),
+            array(AbstractRequest::LOCALE_FR),
+            array(AbstractRequest::LOCALE_IT),
+            array(AbstractRequest::LOCALE_JP),
+            array(AbstractRequest::LOCALE_UK),
+            array(AbstractRequest::LOCALE_US),
+        );
+    }
+
+    /**
+     * exception occur if the wrong locale is set
+     *
+     * @expectedException Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException
+     * @expectedExceptionMessage A specified locale was wrong. locale=[wrong]
+     */
+    public function testExceptionOccurIfTheWrongLocaleIsSet()
+    {
+        $this->request->setLocale('wrong');
+    }
+
+    /**
      * get DateTime in the case of default
      */
     public function testGetDateTimeInTheCaseOfDefault()

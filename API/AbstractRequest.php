@@ -7,6 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException;
+
 /**
  * This is an abstract class to send HTTP request to Amazon
  * through the Amazon Product Advertising API.
@@ -73,6 +75,23 @@ abstract class AbstractRequest
      * @var string locale string
      */
     protected $locale;
+
+    /**
+     * locale white list
+     *
+     * @var array
+     */
+    private $locales = array(
+        self::LOCALE_CA,
+        self::LOCALE_CN,
+        self::LOCALE_DE,
+        self::LOCALE_ES,
+        self::LOCALE_FR,
+        self::LOCALE_IT,
+        self::LOCALE_JP,
+        self::LOCALE_UK,
+        self::LOCALE_US,
+    );
 
     /**
      * date time class instance for sending request
@@ -144,10 +163,16 @@ abstract class AbstractRequest
 
     /**
      * set Locale
+     *
      * @param string $locale
+     * @throws RequestException
      */
     public function setLocale($locale)
     {
+        if (in_array($locale, $this->locales) === false) {
+            throw new RequestException(sprintf(
+            	"A specified locale was wrong. locale=[%s]", $locale));
+        }
         $this->locale = $locale;
     }
 
