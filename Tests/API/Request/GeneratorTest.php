@@ -5,27 +5,27 @@
 * @author Shinichiro Yuki <sinycourage@gmail.com>
 */
 
-namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API;
+namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\AbstractRequest;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator;
 
-class AbstractRequestTest extends \PHPUnit_Framework_TestCase
+class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
     const DUMMY_AWS_ACCESS_KEY_ID = 'dummy_aws_access_key_id';
     const DUMMY_SECRET_ACCESS_KEY = 'dummy_secret_access_key';
     const DUMMY_ASSOCIATE_TAG     = 'dummy_associate_tag';
 
-    private $request;
+    private $generator;
 
     public function setUp()
     {
-        $this->request = $this->getMockForAbstractClass(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\AbstractRequest',
+        $this->generator = $this->getMockForAbstractClass(
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator',
             array(
                 self::DUMMY_AWS_ACCESS_KEY_ID,
                 self::DUMMY_SECRET_ACCESS_KEY,
                 self::DUMMY_ASSOCIATE_TAG,
-                AbstractRequest::LOCALE_JP,
+                Generator::LOCALE_JP,
             )
         );
     }
@@ -36,7 +36,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testGetAwsAccessKeyIdInTheCaseOfDefault()
     {
         $this->assertSame(
-            self::DUMMY_AWS_ACCESS_KEY_ID, $this->request->getAwsAccessKeyId(),
+            self::DUMMY_AWS_ACCESS_KEY_ID, $this->generator->getAwsAccessKeyId(),
             "AWS access key ID wasn't same.");
     }
 
@@ -46,7 +46,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testGetSecretAccessKeyInTheCaseOfDefault()
     {
         $this->assertSame(
-            self::DUMMY_SECRET_ACCESS_KEY, $this->request->getSecretAccessKey(),
+            self::DUMMY_SECRET_ACCESS_KEY, $this->generator->getSecretAccessKey(),
             "Secret access key wasn't same.");
     }
 
@@ -56,7 +56,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testGetAssociateTagInTheCaseOfDefault()
     {
         $this->assertSame(
-            self::DUMMY_ASSOCIATE_TAG, $this->request->getAssociateTag(),
+            self::DUMMY_ASSOCIATE_TAG, $this->generator->getAssociateTag(),
             "Associate tag wasn't same.");
     }
 
@@ -66,7 +66,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testGetLocaleInTheCaseOfDefault()
     {
         $this->assertSame(
-            AbstractRequest::LOCALE_JP, $this->request->getLocale(),
+            Generator::LOCALE_JP, $this->generator->getLocale(),
             "Locale wasn't same.");
     }
 
@@ -79,24 +79,24 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetLocale($locale)
     {
-        $this->request->setLocale($locale);
+        $this->generator->setLocale($locale);
         $this->assertSame(
-            $locale, $this->request->getLocale(),
+            $locale, $this->generator->getLocale(),
             "a specified locale wasn't same.");
     }
 
     public function provideLocales()
     {
         return array(
-            array(AbstractRequest::LOCALE_CA),
-            array(AbstractRequest::LOCALE_CN),
-            array(AbstractRequest::LOCALE_DE),
-            array(AbstractRequest::LOCALE_ES),
-            array(AbstractRequest::LOCALE_FR),
-            array(AbstractRequest::LOCALE_IT),
-            array(AbstractRequest::LOCALE_JP),
-            array(AbstractRequest::LOCALE_UK),
-            array(AbstractRequest::LOCALE_US),
+            array(Generator::LOCALE_CA),
+            array(Generator::LOCALE_CN),
+            array(Generator::LOCALE_DE),
+            array(Generator::LOCALE_ES),
+            array(Generator::LOCALE_FR),
+            array(Generator::LOCALE_IT),
+            array(Generator::LOCALE_JP),
+            array(Generator::LOCALE_UK),
+            array(Generator::LOCALE_US),
         );
     }
 
@@ -108,7 +108,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionOccurIfTheWrongLocaleIsSet()
     {
-        $this->request->setLocale('wrong');
+        $this->generator->setLocale('wrong');
     }
 
     /**
@@ -117,7 +117,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testGetDateTimeInTheCaseOfDefault()
     {
         $this->assertInstanceOf(
-    		'\DateTime', $this->request->getDateTime(),
+    		'\DateTime', $this->generator->getDateTime(),
     		"A date time class wan't get");
     }
 
@@ -127,10 +127,10 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testSetGetDateTime()
     {
         $dateTime = new \DateTime();
-        $this->request->setDateTime($dateTime);
+        $this->generator->setDateTime($dateTime);
         $this->assertSame(
             $dateTime->format(\DateTime::ISO8601),
-            $this->request->getDateTime()->format(\DateTime::ISO8601),
+            $this->generator->getDateTime()->format(\DateTime::ISO8601),
             "A date time class wasn't same.");
     }
 
@@ -140,7 +140,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testIsSecureRequestInTheCaseOfDefault()
     {
         $this->assertFalse(
-            $this->request->isSecureRequest(), "The default value isn't secure.");
+            $this->generator->isSecureRequest(), "The default value isn't secure.");
     }
 
     /**
@@ -148,11 +148,11 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetSecureRequest()
     {
-        $this->request->setSecureRequest();
+        $this->generator->setSecureRequest();
         $this->assertTrue(
-            $this->request->isSecureRequest(), "Did not secure request.");
+            $this->generator->isSecureRequest(), "Did not secure request.");
 
-        return $this->request;
+        return $this->generator;
     }
 
     /**
@@ -160,11 +160,11 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      *
      * @depends testSetSecureRequest
      */
-    public function testResetSecureRequest(AbstractRequest $request)
+    public function testResetSecureRequest(Generator $generator)
     {
-        $request->resetSecureRequest();
+        $generator->resetSecureRequest();
         $this->assertFalse(
-            $request->isSecureRequest(), "This is secure request.");
+            $generator->isSecureRequest(), "This is secure request.");
     }
 
     /**
@@ -173,7 +173,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testGetRequestMethodInTheCaseOfDefault()
     {
         $this->assertSame(
-            AbstractRequest::METHOD_GET, $this->request->getRequestMethod(),
+            Generator::METHOD_GET, $this->generator->getRequestMethod(),
             "A request method wasn't GET in the case of default.");
     }
 
@@ -182,12 +182,12 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetPOSTRequestMethod()
     {
-        $this->request->setPOSTRequestMethod();
+        $this->generator->setPOSTRequestMethod();
         $this->assertSame(
-            AbstractRequest::METHOD_POST, $this->request->getRequestMethod(),
+            Generator::METHOD_POST, $this->generator->getRequestMethod(),
             "A request method wasn't set POST.");
 
-        return $this->request;
+        return $this->generator;
     }
 
     /**
@@ -195,13 +195,13 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      *
      * @depends testSetPOSTRequestMethod
      *
-     * @param AbstractMethod $request
+     * @param AbstractMethod $generator
      */
-    public function testSetGETRequestMethod(AbstractRequest $request)
+    public function testSetGETRequestMethod(Generator $generator)
     {
-        $request->setGETRequestMethod();
+        $generator->setGETRequestMethod();
         $this->assertSame(
-            AbstractRequest::METHOD_GET, $request->getRequestMethod(),
+            Generator::METHOD_GET, $generator->getRequestMethod(),
                     "A request method wasn't set GET.");
     }
 
@@ -213,7 +213,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     public function testGenerateCanonicalQueryString($parameters, $expect)
     {
         $this->assertSame(
-            $expect, $this->request->generateCanonicalQueryString($parameters),
+            $expect, $this->generator->generateCanonicalQueryString($parameters),
             "Did not generate canonical string correctly.");
     }
 
@@ -244,7 +244,7 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             $expect,
-            $this->request->generateSignature(
+            $this->generator->generateSignature(
                 $requestMethod, $endPoint, $canonicalQueryString),
             "The generated signature wasn't same.");
     }
@@ -271,23 +271,23 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetEndPoint($locale, $expectEndPoint)
     {
-        $this->request->setLocale($locale);
+        $this->generator->setLocale($locale);
         $this->assertSame(
-            $expectEndPoint, $this->request->getEndPoint(), "The end point wasn't same.");
+            $expectEndPoint, $this->generator->getEndPoint(), "The end point wasn't same.");
     }
 
     public function provideEndPoints()
     {
         return array(
-            array(AbstractRequest::LOCALE_CA, AbstractRequest::ENDPOINT_CA),
-            array(AbstractRequest::LOCALE_CN, AbstractRequest::ENDPOINT_CN),
-            array(AbstractRequest::LOCALE_DE, AbstractRequest::ENDPOINT_DE),
-            array(AbstractRequest::LOCALE_ES, AbstractRequest::ENDPOINT_ES),
-            array(AbstractRequest::LOCALE_FR, AbstractRequest::ENDPOINT_FR),
-            array(AbstractRequest::LOCALE_IT, AbstractRequest::ENDPOINT_IT),
-            array(AbstractRequest::LOCALE_JP, AbstractRequest::ENDPOINT_JP),
-            array(AbstractRequest::LOCALE_UK, AbstractRequest::ENDPOINT_UK),
-            array(AbstractRequest::LOCALE_US, AbstractRequest::ENDPOINT_US),
+            array(Generator::LOCALE_CA, Generator::ENDPOINT_CA),
+            array(Generator::LOCALE_CN, Generator::ENDPOINT_CN),
+            array(Generator::LOCALE_DE, Generator::ENDPOINT_DE),
+            array(Generator::LOCALE_ES, Generator::ENDPOINT_ES),
+            array(Generator::LOCALE_FR, Generator::ENDPOINT_FR),
+            array(Generator::LOCALE_IT, Generator::ENDPOINT_IT),
+            array(Generator::LOCALE_JP, Generator::ENDPOINT_JP),
+            array(Generator::LOCALE_UK, Generator::ENDPOINT_UK),
+            array(Generator::LOCALE_US, Generator::ENDPOINT_US),
         );
     }
 }

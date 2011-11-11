@@ -5,19 +5,19 @@
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
 
-namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
+namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException;
 
 /**
- * This is an abstract class to send HTTP request to Amazon
+ * This is a class that generate URL and parameters to send HTTP request to Amazon
  * through the Amazon Product Advertising API.
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-abstract class AbstractRequest
+class Generator
 {
     // API version
     const API_VERSION = '2010-09-01';
@@ -78,15 +78,15 @@ abstract class AbstractRequest
     /**
      * Locale
      *
-     * @see AbstractClass::LOCALE_CA
-     * @see AbstractClass::LOCALE_CN
-     * @see AbstractClass::LOCALE_DE
-     * @see AbstractClass::LOCALE_ES
-     * @see AbstractClass::LOCALE_FR
-     * @see AbstractClass::LOCALE_IT
-     * @see AbstractClass::LOCALE_JP
-     * @see AbstractClass::LOCALE_UK
-     * @see AbstractClass::LOCALE_US
+     * @see Generator::LOCALE_CA
+     * @see Generator::LOCALE_CN
+     * @see Generator::LOCALE_DE
+     * @see Generator::LOCALE_ES
+     * @see Generator::LOCALE_FR
+     * @see Generator::LOCALE_IT
+     * @see Generator::LOCALE_JP
+     * @see Generator::LOCALE_UK
+     * @see Generator::LOCALE_US
      * @var string locale string
      */
     protected $locale;
@@ -144,15 +144,6 @@ abstract class AbstractRequest
      * @var string
      */
     private $method = self::METHOD_GET;
-
-    /**
-     * send HTTP request to the Amazon
-     *
-     * @abstract
-     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Response
-     * @throws Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException
-     */
-    abstract public function send();
 
     /**
      * set the base parameters such as "AssociateTag" for the request.

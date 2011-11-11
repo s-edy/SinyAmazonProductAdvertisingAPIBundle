@@ -7,8 +7,7 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\AbstractRequest,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation,
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation,
     Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException,
     Siny\Amazon\ProductAdvertisingAPIBundle\API\Response;
 
@@ -20,7 +19,7 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\AbstractRequest,
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-class Request extends AbstractRequest
+class Request
 {
     /**
      * An Operation class instance that you want to send request
