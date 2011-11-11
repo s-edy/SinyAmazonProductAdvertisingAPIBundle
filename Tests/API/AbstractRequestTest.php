@@ -222,4 +222,34 @@ class AbstractRequestTest extends \PHPUnit_Framework_TestCase
             ),
         );
     }
+
+    /**
+     * get end point
+     *
+     * @dataProvider provideEndPoints
+     *
+     * @param string $locale
+     * @param string $expectEndPoint
+     */
+    public function testGetEndPoint($locale, $expectEndPoint)
+    {
+        $this->request->setLocale($locale);
+        $this->assertSame(
+            $expectEndPoint, $this->request->getEndPoint(), "The end point wasn't same.");
+    }
+
+    public function provideEndPoints()
+    {
+        return array(
+            array(AbstractRequest::LOCALE_CA, AbstractRequest::ENDPOINT_CA),
+            array(AbstractRequest::LOCALE_CN, AbstractRequest::ENDPOINT_CN),
+            array(AbstractRequest::LOCALE_DE, AbstractRequest::ENDPOINT_DE),
+            array(AbstractRequest::LOCALE_ES, AbstractRequest::ENDPOINT_ES),
+            array(AbstractRequest::LOCALE_FR, AbstractRequest::ENDPOINT_FR),
+            array(AbstractRequest::LOCALE_IT, AbstractRequest::ENDPOINT_IT),
+            array(AbstractRequest::LOCALE_JP, AbstractRequest::ENDPOINT_JP),
+            array(AbstractRequest::LOCALE_UK, AbstractRequest::ENDPOINT_UK),
+            array(AbstractRequest::LOCALE_US, AbstractRequest::ENDPOINT_US),
+        );
+    }
 }

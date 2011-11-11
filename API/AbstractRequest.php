@@ -36,6 +36,17 @@ abstract class AbstractRequest
     const LOCALE_UK = 'UK'; // united kingdom
     const LOCALE_US = 'US'; // united states of america
 
+    // End points
+    const ENDPOINT_CA = 'ecs.amazonaws.ca';
+    const ENDPOINT_CN = 'webservices.amazon.cn';
+    const ENDPOINT_DE = 'ecs.amazonaws.de';
+    const ENDPOINT_ES = 'webservices.amazon.es';
+    const ENDPOINT_FR = 'ecs.amazonaws.fr';
+    const ENDPOINT_IT = 'webservices.amazon.it';
+    const ENDPOINT_JP = 'ecs.amazonaws.jp';
+    const ENDPOINT_UK = 'ecs.amazonaws.co.uk';
+    const ENDPOINT_US = 'webservices.amazon.com';
+
     // Path
     const REQUEST_URI = '/onca/xml';
 
@@ -91,6 +102,23 @@ abstract class AbstractRequest
         self::LOCALE_JP,
         self::LOCALE_UK,
         self::LOCALE_US,
+    );
+
+    /**
+     * End points
+     *
+     * @var array
+     */
+    private $endPoints = array(
+        self::LOCALE_CA => self::ENDPOINT_CA,
+        self::LOCALE_CN => self::ENDPOINT_CN,
+        self::LOCALE_DE => self::ENDPOINT_DE,
+        self::LOCALE_ES => self::ENDPOINT_ES,
+        self::LOCALE_FR => self::ENDPOINT_FR,
+        self::LOCALE_IT => self::ENDPOINT_IT,
+        self::LOCALE_JP => self::ENDPOINT_JP,
+        self::LOCALE_UK => self::ENDPOINT_UK,
+        self::LOCALE_US => self::ENDPOINT_US,
     );
 
     /**
@@ -304,5 +332,15 @@ abstract class AbstractRequest
         ));
         $hash = hash_hmac('sha256', $data, $this->getSecretAccessKey(), true);
         return rawurlencode(base64_encode($hash));
+    }
+
+    /**
+     * get end point
+     *
+     * @return string
+     */
+    public function getEndPoint()
+    {
+        return $this->endPoints[$this->getLocale()];
     }
 }
