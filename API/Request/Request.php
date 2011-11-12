@@ -5,7 +5,7 @@
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
 
-namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
+namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation,
     Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException,

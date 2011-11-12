@@ -5,9 +5,9 @@
 * @author Shinichiro Yuki <sinycourage@gmail.com>
 */
 
-namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API;
+namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request,
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Request,
     Siny\Amazon\ProductAdvertisingAPIBundle\API\Response,
     Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\BrowseNodeLookupOperation;
 
@@ -22,7 +22,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->request = $this->getRequest();
+        $this->request = $this->createNewRequest();
 
         $operation = new BrowseNodeLookupOperation(self::DUMMY_BROWSE_NODE_ID);
         $this->request->setOperation($operation);
@@ -33,7 +33,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOperationInTheCaseOfDefault()
     {
-        $this->assertNull($this->getRequest()->getOperation(), "Returned wasn't a null.");
+        $this->assertNull($this->createNewRequest()->getOperation(), "Returned wasn't a null.");
     }
 
     /**
@@ -53,7 +53,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testReturnsOperationClassInstanceThatYouSetWhenYouGetOperation()
     {
-        $request = $this->getRequest();
+        $request = $this->createNewRequest();
         $operation = new BrowseNodeLookupOperation(self::DUMMY_BROWSE_NODE_ID);
         $request->setOperation($operation);
 
@@ -68,7 +68,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function testHasOperation()
     {
         $this->assertTrue($this->request->hasOperation(), "Has not operation.");
-        $this->assertFalse($this->getRequest()->hasOperation(), "Has operation.");
+        $this->assertFalse($this->createNewRequest()->hasOperation(), "Has operation.");
     }
 
     /**
@@ -88,15 +88,15 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionOccurIfYouSendBeforeSetOperationClassInstance()
     {
-        $this->getRequest()->send();
+        $this->createNewRequest()->send();
     }
 
     /**
      * get request class instance
      *
-     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Request
      */
-    private function getRequest()
+    private function createNewRequest()
     {
         return new Request(
             self::DUMMY_AWS_ACCESS_KEY_ID,
