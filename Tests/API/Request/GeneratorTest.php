@@ -103,7 +103,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     /**
      * exception occur if the wrong locale is set
      *
-     * @expectedException Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException
+     * @expectedException Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestException
      * @expectedExceptionMessage A specified locale was wrong. locale=[wrong]
      */
     public function testExceptionOccurIfTheWrongLocaleIsSet()

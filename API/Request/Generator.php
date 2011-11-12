@@ -7,7 +7,7 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestException;
 
 /**
  * This is a class that generate URL and parameters to send HTTP request to Amazon
