@@ -7,9 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Response;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable,
+    Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
 
 /**
  * This is a class to send HTTP request to Amazon
@@ -19,19 +18,25 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation,
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-class Request
+class Request implements Requestable
 {
     /**
-     * An Operation class instance that you want to send request
+     * An Operation class instance which you want to send request
      *
      * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
      */
     private $operation;
 
     /**
-     * set Operation class that you want to send request
-     *
-	 * @param Operation $operation An operation class instance
+     * {@inheritdoc}
+     */
+    public function __construct(Operation $operation)
+    {
+        $this->setOperation($operation);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setOperation(Operation $operation)
     {
@@ -39,35 +44,10 @@ class Request
     }
 
     /**
-     * get Operation class instance that you want to send request
-     *
-     * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
+     * {@inheritdoc}
      */
     public function getOperation()
     {
         return $this->operation;
-    }
-
-    /**
-     * has Operation class instance
-     *
-     * @return boolean - Whether the operation class has or not.
-     */
-    public function hasOperation()
-    {
-        return (is_null($this->operation) === false);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\AbstractRequest::send()
-     */
-    public function send()
-    {
-        if ($this->hasOperation() === false) {
-            throw new RequestException("Operation class instance was not found.");
-        }
-        return new Response();
     }
 }

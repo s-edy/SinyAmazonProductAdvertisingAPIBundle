@@ -23,9 +23,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->request = $this->createNewRequest();
-
-        $operation = new BrowseNodeLookupOperation(self::DUMMY_BROWSE_NODE_ID);
-        $this->request->setOperation($operation);
     }
 
     /**
@@ -33,7 +30,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOperationInTheCaseOfDefault()
     {
-        $this->assertNull($this->createNewRequest()->getOperation(), "Returned wasn't a null.");
+        $this->assertInstanceOf(
+        	'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
+            $this->createNewRequest()->getOperation(),
+        	"Operation was null in the case of default.");
     }
 
     /**
@@ -63,35 +63,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * has Operation
-     */
-    public function testHasOperation()
-    {
-        $this->assertTrue($this->request->hasOperation(), "Has not operation.");
-        $this->assertFalse($this->createNewRequest()->hasOperation(), "Has operation.");
-    }
-
-    /**
-     * send, then return response object instance
-     */
-    public function testSendThenReturnsResponseObjectInstance()
-    {
-        $this->assertInstanceOf(
-        	'Siny\Amazon\ProductAdvertisingAPIBundle\API\Response',
-        	$this->request->send(),
-            "Did not return a 'Response' class instance.");
-    }
-
-    /**
-     * @expectedException Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\RequestException
-     * @expectedExceptionMessage Operation class instance was not found
-     */
-    public function testExceptionOccurIfYouSendBeforeSetOperationClassInstance()
-    {
-        $this->createNewRequest()->send();
-    }
-
-    /**
      * get request class instance
      *
      * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Request
@@ -99,10 +70,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     private function createNewRequest()
     {
         return new Request(
-            self::DUMMY_AWS_ACCESS_KEY_ID,
-            self::DUMMY_SECRET_ACCESS_KEY,
-            self::DUMMY_ASSOCIATE_TAG,
-            Request::LOCALE_JP
-        );
+            new BrowseNodeLookupOperation(self::DUMMY_BROWSE_NODE_ID));
     }
 }
