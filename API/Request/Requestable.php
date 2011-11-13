@@ -18,6 +18,9 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
  */
 interface Requestable
 {
+    const METHOD_GET  = 'GET';
+    const METHOD_POST = 'POST';
+
     /**
      * set an Operation class when the instance construct
      *
@@ -33,9 +36,23 @@ interface Requestable
     public function setOperation(Operation $operation);
 
     /**
+     * set which method use
+     * @param string $method
+     * @throws Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestException
+     */
+    public function setMethod($method);
+
+    /**
      * get an Operation class instance which you want to send request
      *
      * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
      */
     public function getOperation();
+
+    /**
+     * get which method use
+     *
+     * @return string
+     */
+    public function getMethod();
 }

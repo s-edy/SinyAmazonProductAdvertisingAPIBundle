@@ -63,6 +63,16 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * get a Request method in the case of default
+     */
+    public function testGetMethodInTheCaseOfDefault()
+    {
+        $this->assertSame(
+            Request::METHOD_GET, $this->request->getMethod(),
+            "A request method as a default parameter wasn't returned.");
+    }
+
+    /**
      * get request class instance
      *
      * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Request

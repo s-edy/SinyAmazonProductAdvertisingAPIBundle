@@ -28,6 +28,14 @@ class Request implements Requestable
     private $operation;
 
     /**
+     * This is a method which will use when request send.
+     * default value is "GET".
+	 *
+     * @var string
+     */
+    private $method = self::METHOD_GET;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(Operation $operation)
@@ -46,8 +54,24 @@ class Request implements Requestable
     /**
      * {@inheritdoc}
      */
+    public function setMethod($method)
+    {
+        $this->method = $method;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getOperation()
     {
         return $this->operation;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMethod()
+    {
+        return $this->method;
     }
 }
