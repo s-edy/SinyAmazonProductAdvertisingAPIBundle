@@ -7,7 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable,
+    Siny\Amazon\ProductAdvertisingAPIBundle\API\Response;
 
 /**
  * This is a class to send HTTP request for the Amazon.
@@ -56,5 +57,15 @@ class Sender
     public function getRequest()
     {
         return $this->request;
+    }
+
+    /**
+     * send a HTTP request
+     *
+     * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Response
+     */
+    public function send()
+    {
+        return new Response();
     }
 }

@@ -18,7 +18,7 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $operation = $this->getMockForAbstractClass(
-        	'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
             array('OperationName', array('ParameterName' => 'ParameterValue')));
         $this->request = new Request($operation);
 
@@ -31,9 +31,9 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     public function testGetRequestInTheCaseOfDefault()
     {
         $this->assertInstanceOf(
-        	'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable',
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable',
             $this->sender->getRequest(),
-        	"Gotten class instance wasn't Requestable.");
+            "Gotten class instance wasn't Requestable.");
     }
 
     /**
@@ -52,8 +52,21 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     public function testGetRequest()
     {
         $this->assertInstanceOf(
-        	'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable',
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable',
             $this->sender->getRequest(),
-        	"Gotten class instance wasn't Requestable.");
+            "Gotten class instance wasn't Requestable.");
+    }
+
+    /**
+     * Did not return a response class instance when sending a request.
+     */
+    public function testReturnsAResponseClassInstanceWhenSendingARequest()
+    {
+        $response = $this->sender->send();
+
+        $this->assertInstanceOf(
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Response',
+            $response,
+            "Did not return a Response class instance when sending a request.");
     }
 }
