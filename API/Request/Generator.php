@@ -50,10 +50,6 @@ class Generator
     // Path
     const REQUEST_URI = '/onca/xml';
 
-    // Requests
-    const METHOD_GET  = 'GET';
-    const METHOD_POST = 'POST';
-
     /**
      * Access Key ID
      *
@@ -137,13 +133,6 @@ class Generator
      * @var boolean
      */
     private $isSecureRequest = false;
-
-    /**
-     * A request method
-     *
-     * @var string
-     */
-    private $method = self::METHOD_GET;
 
     /**
      * set the base parameters such as "AssociateTag" for the request.
@@ -239,22 +228,6 @@ class Generator
     public function resetSecureRequest()
     {
         $this->isSecureRequest = false;
-    }
-
-    /**
-     * set GET request method.
-     */
-    public function setGETRequestMethod()
-    {
-        $this->method = self::METHOD_GET;
-    }
-
-    /**
-     * set POST request method
-     */
-    public function setPOSTRequestMethod()
-    {
-        $this->method = self::METHOD_POST;
     }
 
     /**

@@ -168,44 +168,6 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * get request method in the case of default.
-     */
-    public function testGetRequestMethodInTheCaseOfDefault()
-    {
-        $this->assertSame(
-            Generator::METHOD_GET, $this->generator->getRequestMethod(),
-            "A request method wasn't GET in the case of default.");
-    }
-
-    /**
-     * set POST request method
-     */
-    public function testSetPOSTRequestMethod()
-    {
-        $this->generator->setPOSTRequestMethod();
-        $this->assertSame(
-            Generator::METHOD_POST, $this->generator->getRequestMethod(),
-            "A request method wasn't set POST.");
-
-        return $this->generator;
-    }
-
-    /**
-     * set GET request method
-     *
-     * @depends testSetPOSTRequestMethod
-     *
-     * @param AbstractMethod $generator
-     */
-    public function testSetGETRequestMethod(Generator $generator)
-    {
-        $generator->setGETRequestMethod();
-        $this->assertSame(
-            Generator::METHOD_GET, $generator->getRequestMethod(),
-                    "A request method wasn't set GET.");
-    }
-
-    /**
      * test generate canonical query string
      *
      * @dataProvider provideParameters
