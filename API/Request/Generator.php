@@ -306,13 +306,12 @@ class Generator
      */
     public function generateCanonicalQueryString(array $parameters)
     {
+        $query = new \HttpQueryString(false);
         ksort($parameters);
-
-        $canonicals = array();
         foreach ($parameters as $key => $value) {
-            $canonicals[] = rawurlencode($key) . '=' . rawurlencode($value);
+            $query->set(array($key => $value));
         }
-        return implode('&', $canonicals);
+        return $query->toString();
     }
 
     /**
