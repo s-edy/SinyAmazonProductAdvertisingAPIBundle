@@ -58,6 +58,46 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * check whether the HttpRequest class exists.
+     */
+    public function testCheckHttpRequest()
+    {
+        $this->assertTrue(class_exists('HttpRequest'), "There is not HttpRequest class.");
+    }
+
+    /**
+     * whether HttpRequest class instance returns.
+     */
+    public function testBuildHttpRequest()
+    {
+        $this->assertInstanceOf(
+            'HttpRequest', $this->sender->buildHttpRequest(),
+            "Did not return HttpRequest class instance.");
+    }
+
+    /**
+     * build HttpRequest in the case of setting GET method
+     */
+    public function testBuildHttpRequestInTheCaseOfSettingGETMethod()
+    {
+        $this->sender->getRequest()->setGETMethod();
+        $this->assertSame(
+            HTTP_METH_GET, $this->sender->buildHttpRequest()->getMethod(),
+            "Did not return GET method constant.");
+    }
+
+    /**
+     * build HttpRequest in the case of setting POST method
+     */
+    public function testBuildHttpRequestInTheCaseOfSettingPOSTMethod()
+    {
+        $this->sender->getRequest()->setPOSTMethod();
+        $this->assertSame(
+            HTTP_METH_POST, $this->sender->buildHttpRequest()->getMethod(),
+            "Did not return POST method constant.");
+    }
+
+    /**
      * Did not return a response class instance when sending a request.
      */
     public function testReturnsAResponseClassInstanceWhenSendingARequest()
