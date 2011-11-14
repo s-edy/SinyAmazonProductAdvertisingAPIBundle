@@ -30,7 +30,7 @@ class Request implements Requestable
     /**
      * This is a method which will use when request send.
      * default value is "GET".
-	 *
+     *
      * @var string
      */
     private $method = self::METHOD_GET;
@@ -54,9 +54,17 @@ class Request implements Requestable
     /**
      * {@inheritdoc}
      */
-    public function setMethod($method)
+    public function setGETMethod()
     {
-        $this->method = $method;
+        $this->method = self::METHOD_GET;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setPOSTMethod()
+    {
+        $this->method = self::METHOD_POST;
     }
 
     /**
@@ -70,8 +78,16 @@ class Request implements Requestable
     /**
      * {@inheritdoc}
      */
-    public function getMethod()
+    public function isGETMethod()
     {
-        return $this->method;
+        return $this->method === self::METHOD_GET;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isPOSTMethod()
+    {
+        return $this->method === self::METHOD_POST;
     }
 }

@@ -63,13 +63,36 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * get a Request method in the case of default
+     * is GET method in the case of default
      */
-    public function testGetMethodInTheCaseOfDefault()
+    public function testIsGETMethodInTheCaseOfDefault()
     {
-        $this->assertSame(
-            Request::METHOD_GET, $this->request->getMethod(),
-            "A request method as a default parameter wasn't returned.");
+        $this->assertTrue($this->request->isGETMethod(), "A request method wasn't GET.");
+        $this->assertFalse($this->request->isPOSTMethod(), "A request method was POST");
+    }
+
+    /**
+     * set POST method
+     */
+    public function testSetPOSTMethod()
+    {
+        $this->request->setPOSTMethod();
+        $this->assertTrue($this->request->isPOSTMethod(), "A request method wasn't POST.");
+        $this->assertFalse($this->request->isGETMethod(), "A request method was GET");
+
+        return $this->request;
+    }
+
+    /**
+     * set GET method
+     *
+     * @depends testSetPOSTMethod
+     */
+    public function testSetGETMethod(Request $request)
+    {
+        $request->setGETMethod();
+        $this->assertTrue($request->isGETMethod(), "A request method wasn't GET.");
+        $this->assertFalse($request->isPOSTMethod(), "A request method was POST");
     }
 
     /**

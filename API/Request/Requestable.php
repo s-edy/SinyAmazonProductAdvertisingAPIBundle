@@ -36,11 +36,14 @@ interface Requestable
     public function setOperation(Operation $operation);
 
     /**
-     * set which method use
-     * @param string $method
-     * @throws Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestException
+     * set using GET method
      */
-    public function setMethod($method);
+    public function setGETMethod();
+
+    /**
+     * set using POST method
+     */
+    public function setPOSTMethod();
 
     /**
      * get an Operation class instance which you want to send request
@@ -50,9 +53,16 @@ interface Requestable
     public function getOperation();
 
     /**
-     * get which method use
+     * is GET method
      *
-     * @return string
+     * @return boolean whether using GET method
      */
-    public function getMethod();
+    public function isGETMethod();
+
+    /**
+     * is POST method
+     *
+     * @return boolean whether using POST method
+     */
+    public function isPOSTMethod();
 }
