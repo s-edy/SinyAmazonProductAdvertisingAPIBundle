@@ -10,14 +10,13 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestException;
 
 /**
- * This is a class that generate URL and parameters to send HTTP request to Amazon
- * through the Amazon Product Advertising API.
+ * This is a class that build a HttpRequest by the Request.
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-class Generator
+class Builder
 {
     // API version
     const API_VERSION = '2010-09-01';

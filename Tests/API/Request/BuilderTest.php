@@ -7,25 +7,25 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Builder;
 
-class GeneratorTest extends \PHPUnit_Framework_TestCase
+class BuilderTest extends \PHPUnit_Framework_TestCase
 {
     const DUMMY_AWS_ACCESS_KEY_ID = 'dummy_aws_access_key_id';
     const DUMMY_SECRET_ACCESS_KEY = 'dummy_secret_access_key';
     const DUMMY_ASSOCIATE_TAG     = 'dummy_associate_tag';
 
-    private $generator;
+    private $builder;
 
     public function setUp()
     {
-        $this->generator = $this->getMockForAbstractClass(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator',
+        $this->builder = $this->getMockForAbstractClass(
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Builder',
             array(
                 self::DUMMY_AWS_ACCESS_KEY_ID,
                 self::DUMMY_SECRET_ACCESS_KEY,
                 self::DUMMY_ASSOCIATE_TAG,
-                Generator::LOCALE_JP,
+                Builder::LOCALE_JP,
             )
         );
     }
@@ -36,7 +36,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGetAwsAccessKeyIdInTheCaseOfDefault()
     {
         $this->assertSame(
-            self::DUMMY_AWS_ACCESS_KEY_ID, $this->generator->getAwsAccessKeyId(),
+            self::DUMMY_AWS_ACCESS_KEY_ID, $this->builder->getAwsAccessKeyId(),
             "AWS access key ID wasn't same.");
     }
 
@@ -46,7 +46,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGetSecretAccessKeyInTheCaseOfDefault()
     {
         $this->assertSame(
-            self::DUMMY_SECRET_ACCESS_KEY, $this->generator->getSecretAccessKey(),
+            self::DUMMY_SECRET_ACCESS_KEY, $this->builder->getSecretAccessKey(),
             "Secret access key wasn't same.");
     }
 
@@ -56,7 +56,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGetAssociateTagInTheCaseOfDefault()
     {
         $this->assertSame(
-            self::DUMMY_ASSOCIATE_TAG, $this->generator->getAssociateTag(),
+            self::DUMMY_ASSOCIATE_TAG, $this->builder->getAssociateTag(),
             "Associate tag wasn't same.");
     }
 
@@ -66,7 +66,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGetLocaleInTheCaseOfDefault()
     {
         $this->assertSame(
-            Generator::LOCALE_JP, $this->generator->getLocale(),
+            Builder::LOCALE_JP, $this->builder->getLocale(),
             "Locale wasn't same.");
     }
 
@@ -79,24 +79,24 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetLocale($locale)
     {
-        $this->generator->setLocale($locale);
+        $this->builder->setLocale($locale);
         $this->assertSame(
-            $locale, $this->generator->getLocale(),
+            $locale, $this->builder->getLocale(),
             "a specified locale wasn't same.");
     }
 
     public function provideLocales()
     {
         return array(
-            array(Generator::LOCALE_CA),
-            array(Generator::LOCALE_CN),
-            array(Generator::LOCALE_DE),
-            array(Generator::LOCALE_ES),
-            array(Generator::LOCALE_FR),
-            array(Generator::LOCALE_IT),
-            array(Generator::LOCALE_JP),
-            array(Generator::LOCALE_UK),
-            array(Generator::LOCALE_US),
+            array(Builder::LOCALE_CA),
+            array(Builder::LOCALE_CN),
+            array(Builder::LOCALE_DE),
+            array(Builder::LOCALE_ES),
+            array(Builder::LOCALE_FR),
+            array(Builder::LOCALE_IT),
+            array(Builder::LOCALE_JP),
+            array(Builder::LOCALE_UK),
+            array(Builder::LOCALE_US),
         );
     }
 
@@ -108,7 +108,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionOccurIfTheWrongLocaleIsSet()
     {
-        $this->generator->setLocale('wrong');
+        $this->builder->setLocale('wrong');
     }
 
     /**
@@ -117,7 +117,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGetDateTimeInTheCaseOfDefault()
     {
         $this->assertInstanceOf(
-    		'\DateTime', $this->generator->getDateTime(),
+    		'\DateTime', $this->builder->getDateTime(),
     		"A date time class wan't get");
     }
 
@@ -127,10 +127,10 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testSetGetDateTime()
     {
         $dateTime = new \DateTime();
-        $this->generator->setDateTime($dateTime);
+        $this->builder->setDateTime($dateTime);
         $this->assertSame(
             $dateTime->format(\DateTime::ISO8601),
-            $this->generator->getDateTime()->format(\DateTime::ISO8601),
+            $this->builder->getDateTime()->format(\DateTime::ISO8601),
             "A date time class wasn't same.");
     }
 
@@ -140,7 +140,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testIsSecureRequestInTheCaseOfDefault()
     {
         $this->assertFalse(
-            $this->generator->isSecureRequest(), "The default value isn't secure.");
+            $this->builder->isSecureRequest(), "The default value isn't secure.");
     }
 
     /**
@@ -148,11 +148,11 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetSecureRequest()
     {
-        $this->generator->setSecureRequest();
+        $this->builder->setSecureRequest();
         $this->assertTrue(
-            $this->generator->isSecureRequest(), "Did not secure request.");
+            $this->builder->isSecureRequest(), "Did not secure request.");
 
-        return $this->generator;
+        return $this->builder;
     }
 
     /**
@@ -160,11 +160,11 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      *
      * @depends testSetSecureRequest
      */
-    public function testResetSecureRequest(Generator $generator)
+    public function testResetSecureRequest(Builder $builder)
     {
-        $generator->resetSecureRequest();
+        $builder->resetSecureRequest();
         $this->assertFalse(
-            $generator->isSecureRequest(), "This is secure request.");
+            $builder->isSecureRequest(), "This is secure request.");
     }
 
     /**
@@ -175,7 +175,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     public function testGenerateCanonicalQueryString($parameters, $expect)
     {
         $this->assertSame(
-            $expect, $this->generator->generateCanonicalQueryString($parameters),
+            $expect, $this->builder->generateCanonicalQueryString($parameters),
             "Did not generate canonical string correctly.");
     }
 
@@ -206,7 +206,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             $expect,
-            $this->generator->generateSignature(
+            $this->builder->generateSignature(
                 $requestMethod, $endPoint, $canonicalQueryString),
             "The generated signature wasn't same.");
     }
@@ -233,23 +233,23 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetEndPoint($locale, $expectEndPoint)
     {
-        $this->generator->setLocale($locale);
+        $this->builder->setLocale($locale);
         $this->assertSame(
-            $expectEndPoint, $this->generator->getEndPoint(), "The end point wasn't same.");
+            $expectEndPoint, $this->builder->getEndPoint(), "The end point wasn't same.");
     }
 
     public function provideEndPoints()
     {
         return array(
-            array(Generator::LOCALE_CA, Generator::ENDPOINT_CA),
-            array(Generator::LOCALE_CN, Generator::ENDPOINT_CN),
-            array(Generator::LOCALE_DE, Generator::ENDPOINT_DE),
-            array(Generator::LOCALE_ES, Generator::ENDPOINT_ES),
-            array(Generator::LOCALE_FR, Generator::ENDPOINT_FR),
-            array(Generator::LOCALE_IT, Generator::ENDPOINT_IT),
-            array(Generator::LOCALE_JP, Generator::ENDPOINT_JP),
-            array(Generator::LOCALE_UK, Generator::ENDPOINT_UK),
-            array(Generator::LOCALE_US, Generator::ENDPOINT_US),
+            array(Builder::LOCALE_CA, Builder::ENDPOINT_CA),
+            array(Builder::LOCALE_CN, Builder::ENDPOINT_CN),
+            array(Builder::LOCALE_DE, Builder::ENDPOINT_DE),
+            array(Builder::LOCALE_ES, Builder::ENDPOINT_ES),
+            array(Builder::LOCALE_FR, Builder::ENDPOINT_FR),
+            array(Builder::LOCALE_IT, Builder::ENDPOINT_IT),
+            array(Builder::LOCALE_JP, Builder::ENDPOINT_JP),
+            array(Builder::LOCALE_UK, Builder::ENDPOINT_UK),
+            array(Builder::LOCALE_US, Builder::ENDPOINT_US),
         );
     }
 }
