@@ -67,9 +67,9 @@ class Sender
     public function buildHttpRequest()
     {
         $httpRequest = new \HttpRequest();
-        if ($this->request->isGETMethod()) {
+        if ($this->getRequest()->isGETMethod()) {
             $httpRequest->setMethod(HTTP_METH_GET);
-        } elseif ($this->request->isPOSTMethod()) {
+        } elseif ($this->getRequest()->isPOSTMethod()) {
             $httpRequest->setMethod(HTTP_METH_POST);
         }
         return $httpRequest;
