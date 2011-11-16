@@ -7,7 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestException;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable,
+    Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestException;
 
 /**
  * This is a class that build a HttpRequest by the Request.
@@ -16,39 +17,8 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestExcepti
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-class Builder
+class Builder implements Buildable
 {
-    // API version
-    const API_VERSION = '2010-09-01';
-
-    // Timestamp format
-    const DATE_FORMAT_ISO8601 = 'Y-m-d\TH:i:s\Z';
-
-    // Countries
-    const LOCALE_CA = 'CA'; // canada
-    const LOCALE_CN = 'CN'; // china
-    const LOCALE_DE = 'DE'; // germany
-    const LOCALE_ES = 'ES'; // spain
-    const LOCALE_FR = 'FR'; // france
-    const LOCALE_IT = 'IT'; // italy
-    const LOCALE_JP = 'JP'; // japan
-    const LOCALE_UK = 'UK'; // united kingdom
-    const LOCALE_US = 'US'; // united states of america
-
-    // End points
-    const ENDPOINT_CA = 'ecs.amazonaws.ca';
-    const ENDPOINT_CN = 'webservices.amazon.cn';
-    const ENDPOINT_DE = 'ecs.amazonaws.de';
-    const ENDPOINT_ES = 'webservices.amazon.es';
-    const ENDPOINT_FR = 'ecs.amazonaws.fr';
-    const ENDPOINT_IT = 'webservices.amazon.it';
-    const ENDPOINT_JP = 'ecs.amazonaws.jp';
-    const ENDPOINT_UK = 'ecs.amazonaws.co.uk';
-    const ENDPOINT_US = 'webservices.amazon.com';
-
-    // Path
-    const REQUEST_URI = '/onca/xml';
-
     /**
      * Access Key ID
      *
@@ -134,16 +104,9 @@ class Builder
     private $isSecureRequest = false;
 
     /**
-     * set the base parameters such as "AssociateTag" for the request.
-     *
-     * @param string $awsAccessKeyId  AWS Access Key ID
-     * @param string $secretAccessKey Secret access key
-     * @param string $associateTag    Associate tag
-     * @param string $locale          specify the locale to request to Amazon
-     *                                from the locale constants (ex: Request::LOCALE_JP)
+     * {@inheritdoc}
      */
-    public function __construct(
-        $awsAccessKeyId, $secretAccessKey, $associateTag, $locale)
+    public function __construct($awsAccessKeyId, $secretAccessKey, $associateTag, $locale)
     {
         $this->setAwsAccessKeyId($awsAccessKeyId);
         $this->setSecretAccessKey($secretAccessKey);
@@ -153,8 +116,7 @@ class Builder
     }
 
     /**
-     * set AWS access key ID
-     * @param string $awsAccessKeyId
+     * {@inheritdoc}
      */
     public function setAwsAccessKeyId($awsAccessKeyId)
     {
@@ -162,8 +124,7 @@ class Builder
     }
 
     /**
-     * set Secret access key
-     * @param string $secretAccessKey
+     * {@inheritdoc}
      */
     public function setSecretAccessKey($secretAccessKey)
     {
@@ -171,8 +132,7 @@ class Builder
     }
 
     /**
-     * set Associate tag
-     * @param string $associateTag
+     * {@inheritdoc}
      */
     public function setAssociateTag($associateTag)
     {
@@ -180,10 +140,7 @@ class Builder
     }
 
     /**
-     * set Locale
-     *
-     * @param string $locale
-     * @throws RequestException
+     * {@inheritdoc}
      */
     public function setLocale($locale)
     {
@@ -195,9 +152,7 @@ class Builder
     }
 
     /**
-     * set DateTime for sending request
-     *
-     * @param \DateTime $dateTime
+     * {@inheritdoc}
      */
     public function setDateTime(\DateTime $dateTime)
     {
@@ -206,11 +161,7 @@ class Builder
     }
 
     /**
-     * set secure request.
-     *
-     * A request send securely if you invoke this method.
-     * - using SSL
-     * - using more secure endpoint
+     * {@inheritdoc}
      */
     public function setSecureRequest()
     {
@@ -218,11 +169,7 @@ class Builder
     }
 
     /**
-     * reset secure request.
-     *
-     * A request sending returns normal if you invoke this method.
-     * - Won't use SSL
-     * - using normal endpoint
+     * {@inheritdoc}
      */
     public function resetSecureRequest()
     {
@@ -230,8 +177,7 @@ class Builder
     }
 
     /**
-     * get AWS Access key ID
-     * @return string
+     * {@inheritdoc}
      */
     public function getAwsAccessKeyId()
     {
@@ -239,8 +185,7 @@ class Builder
     }
 
     /**
-     * get Secret access key
-     * @return string
+     * {@inheritdoc}
      */
     public function getSecretAccessKey()
     {
@@ -248,8 +193,7 @@ class Builder
     }
 
     /**
-     * get Associate tag
-     * @return string
+     * {@inheritdoc}
      */
     public function getAssociateTag()
     {
@@ -257,8 +201,7 @@ class Builder
     }
 
     /**
-     * get locale
-     * @return string
+     * {@inheritdoc}
      */
     public function getLocale()
     {
@@ -266,9 +209,7 @@ class Builder
     }
 
     /**
-     * get DateTime
-     *
-     * @return \DateTime
+     * {@inheritdoc}
      */
     public function getDateTime()
     {
@@ -276,11 +217,7 @@ class Builder
     }
 
     /**
-     * is secure request
-     *
-     * whethere a request send securely
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isSecureRequest()
     {
@@ -288,9 +225,7 @@ class Builder
     }
 
     /**
-     * get request method
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getRequestMethod()
     {
@@ -298,10 +233,7 @@ class Builder
     }
 
     /**
-     * generate Canonical query string from parameters
-     *
-     * @param array $parameters - some query parameters array
-     * @return string - canonical query string
+     * {@inheritdoc}
      */
     public function generateCanonicalQueryString(array $parameters)
     {
@@ -314,12 +246,7 @@ class Builder
     }
 
     /**
-     * generate signature
-     *
-     * @param string $requestMethod
-     * @param string $endPoint
-     * @param string $canonicalQueryString
-     * @return string
+     * {@inheritdoc}
      */
     public function generateSignature($requestMethod, $endPoint, $canonicalQueryString)
     {
@@ -334,9 +261,7 @@ class Builder
     }
 
     /**
-     * get end point
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getEndPoint()
     {
