@@ -60,22 +60,6 @@ class Sender
     }
 
     /**
-     * build HttpRequest class instance from request.
-     *
-     * @return HttpRequest
-     */
-    public function buildHttpRequest()
-    {
-        $httpRequest = new \HttpRequest();
-        if ($this->getRequest()->isGETMethod()) {
-            $httpRequest->setMethod(HTTP_METH_GET);
-        } elseif ($this->getRequest()->isPOSTMethod()) {
-            $httpRequest->setMethod(HTTP_METH_POST);
-        }
-        return $httpRequest;
-    }
-
-    /**
      * send a HTTP request
      *
      * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Response
