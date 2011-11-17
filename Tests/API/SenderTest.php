@@ -84,6 +84,31 @@ class SenderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Sending exception occur when sending a request
+     *
+     * @dataProvider provideSendError
+     * @expectedException Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\SenderException
+     * @expectedExceptionMessage Sending exception occurred.
+     */
+    public function testExceptionOccurWhenSendingARequest(Buildable $builder)
+    {
+        $sender = new Sender($builder);
+        $sender->send($this->createMockOfRequest());
+    }
+
+    public function provideSendError()
+    {
+        $builder = $this->createMockOfBuilder();
+        $builder->expects($this->any())
+            ->method('build')
+            ->will($this->throwException(new \Exception('dummy')));
+
+        return array(
+            array($builder),
+        );
+    }
+
     private function createMockOfBuilder()
     {
         return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable');

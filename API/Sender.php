@@ -7,9 +7,10 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Response;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Response;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\SenderException;
 
 /**
  * This is a class to send HTTP request for the Amazon.
@@ -68,6 +69,10 @@ class Sender
      */
     public function send(Requestable $request)
     {
-        return $this->getBuilder()->build($request)->send();
+        try {
+            return $this->getBuilder()->build($request)->send();
+        } catch (\Exception $e) {
+            throw new SenderException("Sending exception occurred.", 0, $e);
+        }
     }
 }
