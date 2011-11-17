@@ -68,6 +68,6 @@ class Sender
      */
     public function send(Requestable $request)
     {
-        return new Response();
+        return $this->getBuilder()->build($request)->send();
     }
 }

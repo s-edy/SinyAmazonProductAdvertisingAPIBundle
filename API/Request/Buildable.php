@@ -7,6 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
+
 /**
  * This is a interface of Buildable object.
  *
@@ -16,4 +18,12 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
  */
 interface Buildable
 {
+    /**
+     * build a HttpRequest class instance from Requestable object.
+     *
+     * @param Requestable $request
+     * @return HttpRequest
+     * @throws Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\BuildException
+     */
+    public function build(Requestable $request);
 }

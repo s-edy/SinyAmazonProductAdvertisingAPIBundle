@@ -7,7 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender,
+    Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable;
 
 class SenderTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,15 +53,35 @@ class SenderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Did not return a response class instance when sending a request.
+     *
+     * @dataProvider provideSend
      */
-    public function testReturnsAResponseClassInstanceWhenSendingARequest()
+    public function testReturnsAResponseClassInstanceWhenSendingARequest(Buildable $builder)
     {
-        $response = $this->sender->send($this->createMockOfRequest());
-
+        $sender = new Sender($builder);
         $this->assertInstanceOf(
             'Siny\Amazon\ProductAdvertisingAPIBundle\API\Response',
-            $response,
+            $sender->send($this->createMockOfRequest()),
             "Did not return a Response class instance when sending a request.");
+    }
+
+    public function provideSend()
+    {
+        $response = $this->createMockOfResponse();
+
+        $httpRequest = $this->getMock('HttpRequest');
+        $httpRequest->expects($this->any())
+            ->method('send')
+            ->will($this->returnValue($response));
+
+        $builder = $this->createMockOfBuilder();
+        $builder->expects($this->any())
+            ->method('build')
+            ->will($this->returnValue($httpRequest));
+
+        return array(
+            array($builder),
+        );
     }
 
     private function createMockOfBuilder()
@@ -71,5 +92,10 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     private function createMockOfRequest()
     {
         return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable');
+    }
+
+    private function createMockOfResponse()
+    {
+        return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Response');
     }
 }
