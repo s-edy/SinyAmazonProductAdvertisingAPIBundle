@@ -7,54 +7,47 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Request;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender;
 
 class SenderTest extends \PHPUnit_Framework_TestCase
 {
-    private $request;
     private $sender;
 
     public function setUp()
     {
-        $operation = $this->getMockForAbstractClass(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
-            array('OperationName', array('ParameterName' => 'ParameterValue')));
-        $this->request = new Request($operation);
-
-        $this->sender = new Sender($this->request);
+        $this->sender = new Sender($this->createMockOfBuilder());
     }
 
     /**
-     * get request in the case of default.
+     * get builder in the case of default.
      */
-    public function testGetRequestInTheCaseOfDefault()
+    public function testGetBuilderInTheCaseOfDefault()
     {
         $this->assertInstanceOf(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable',
-            $this->sender->getRequest(),
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable',
+            $this->sender->getBuilder(),
             "Gotten class instance wasn't Requestable.");
     }
 
     /**
-     * set request
+     * set builder
      */
-    public function testSetRequest()
+    public function testSetBuilder()
     {
         $this->assertSame(
-            $this->sender, $this->sender->setRequest($this->request),
+            $this->sender, $this->sender->setBuilder($this->createMockOfBuilder()),
             "Gotten class instance wasn't itself.");
     }
 
     /**
      * get request
      */
-    public function testGetRequest()
+    public function testGetBuilder()
     {
         $this->assertInstanceOf(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable',
-            $this->sender->getRequest(),
-            "Gotten class instance wasn't Requestable.");
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable',
+            $this->sender->getBuilder(),
+            "Gotten class instance wasn't Buildable.");
     }
 
     /**
@@ -62,11 +55,21 @@ class SenderTest extends \PHPUnit_Framework_TestCase
      */
     public function testReturnsAResponseClassInstanceWhenSendingARequest()
     {
-        $response = $this->sender->send();
+        $response = $this->sender->send($this->createMockOfRequest());
 
         $this->assertInstanceOf(
             'Siny\Amazon\ProductAdvertisingAPIBundle\API\Response',
             $response,
             "Did not return a Response class instance when sending a request.");
+    }
+
+    private function createMockOfBuilder()
+    {
+        return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable');
+    }
+
+    private function createMockOfRequest()
+    {
+        return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable');
     }
 }

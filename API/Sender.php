@@ -7,7 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable,
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable,
+    Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable,
     Siny\Amazon\ProductAdvertisingAPIBundle\API\Response;
 
 /**
@@ -20,51 +21,52 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable,
 class Sender
 {
     /**
-     * a sending requestable class instance
+     * a building request class instance
      *
-     * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable
+     * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable
      */
-    private $request;
+    private $builder;
 
     /**
-     * set a Requestable class instance when this is constructed.
+     * set a Buildable class instance when this is constructed.
      *
-     * @param Requestable $request
+     * @param Buildable $buildable
      */
-    public function __construct(Requestable $request)
+    public function __construct(Buildable $builder)
     {
-        $this->setRequest($request);
+        $this->setBuilder($builder);
     }
 
     /**
-     * set a class instance which implement a Requestable insterface.
+     * set a class instance which implement a Buildable insterface.
      *
-     * @param Requestable $request
+     * @param Buildable $buildable
      * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender
      */
-    public function setRequest(Requestable $request)
+    public function setBuilder(Buildable $builder)
     {
-        $this->request = $request;
+        $this->builder = $builder;
 
         return $this;
     }
 
     /**
-     * get a class instance which implement a Requestable interface.
+     * get a class instance which implement a Buildable interface.
      *
-     * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable
+     * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable
      */
-    public function getRequest()
+    public function getBuilder()
     {
-        return $this->request;
+        return $this->builder;
     }
 
     /**
      * send a HTTP request
      *
+     * @param \Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable
      * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Response
      */
-    public function send()
+    public function send(Requestable $request)
     {
         return new Response();
     }
