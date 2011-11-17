@@ -246,7 +246,6 @@ class Builder implements Buildable
         return $this->secretAccessKey;
     }
 
-
     /**
      * get Associate tag
      * @return string
@@ -255,7 +254,6 @@ class Builder implements Buildable
     {
         return $this->associateTag;
     }
-
 
     /**
      * get locale
@@ -266,7 +264,6 @@ class Builder implements Buildable
         return $this->locale;
     }
 
-
     /**
      * get DateTime
      *
@@ -276,7 +273,6 @@ class Builder implements Buildable
     {
         return $this->dateTime;
     }
-
 
     /**
      * is secure request
@@ -344,5 +340,14 @@ class Builder implements Buildable
     public function getEndPoint()
     {
         return $this->endPoints[$this->getLocale()];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Buildable::build()
+     */
+    public function build(Requestable $request)
+    {
     }
 }
