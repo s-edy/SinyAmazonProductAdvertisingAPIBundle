@@ -19,6 +19,37 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable,
  */
 class Builder implements Buildable
 {
+    // API version
+    const API_VERSION = '2010-09-01';
+
+    // Timestamp format
+    const DATE_FORMAT_ISO8601 = 'Y-m-d\TH:i:s\Z';
+
+    // Countries
+    const LOCALE_CA = 'CA'; // canada
+    const LOCALE_CN = 'CN'; // china
+    const LOCALE_DE = 'DE'; // germany
+    const LOCALE_ES = 'ES'; // spain
+    const LOCALE_FR = 'FR'; // france
+    const LOCALE_IT = 'IT'; // italy
+    const LOCALE_JP = 'JP'; // japan
+    const LOCALE_UK = 'UK'; // united kingdom
+    const LOCALE_US = 'US'; // united states of america
+
+    // End points
+    const ENDPOINT_CA = 'ecs.amazonaws.ca';
+    const ENDPOINT_CN = 'webservices.amazon.cn';
+    const ENDPOINT_DE = 'ecs.amazonaws.de';
+    const ENDPOINT_ES = 'webservices.amazon.es';
+    const ENDPOINT_FR = 'ecs.amazonaws.fr';
+    const ENDPOINT_IT = 'webservices.amazon.it';
+    const ENDPOINT_JP = 'ecs.amazonaws.jp';
+    const ENDPOINT_UK = 'ecs.amazonaws.co.uk';
+    const ENDPOINT_US = 'webservices.amazon.com';
+
+    // Path
+    const REQUEST_URI = '/onca/xml';
+
     /**
      * Access Key ID
      *
@@ -104,7 +135,13 @@ class Builder implements Buildable
     private $isSecureRequest = false;
 
     /**
-     * {@inheritdoc}
+     * set the base parameters such as "AssociateTag" for the request.
+     *
+     * @param string $awsAccessKeyId  AWS Access Key ID
+     * @param string $secretAccessKey Secret access key
+     * @param string $associateTag    Associate tag
+     * @param string $locale          specify the locale to request to Amazon
+     *                                from the locale constants (ex: Request::LOCALE_JP)
      */
     public function __construct($awsAccessKeyId, $secretAccessKey, $associateTag, $locale)
     {
@@ -116,7 +153,8 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * set AWS access key ID
+     * @param string $awsAccessKeyId
      */
     public function setAwsAccessKeyId($awsAccessKeyId)
     {
@@ -124,7 +162,8 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * set Secret access key
+     * @param string $secretAccessKey
      */
     public function setSecretAccessKey($secretAccessKey)
     {
@@ -132,7 +171,8 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * set Associate tag
+     * @param string $associateTag
      */
     public function setAssociateTag($associateTag)
     {
@@ -140,19 +180,23 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * set Locale
+     *
+     * @param string $locale
+     * @throws RequestException
      */
     public function setLocale($locale)
     {
         if (in_array($locale, $this->locales) === false) {
-            throw new RequestException(sprintf(
-            	"A specified locale was wrong. locale=[%s]", $locale));
+            throw new RequestException(sprintf("A specified locale was wrong. locale=[%s]", $locale));
         }
         $this->locale = $locale;
     }
 
     /**
-     * {@inheritdoc}
+     * set DateTime for sending request
+     *
+     * @param \DateTime $dateTime
      */
     public function setDateTime(\DateTime $dateTime)
     {
@@ -161,7 +205,11 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * set secure request.
+     *
+     * A request send securely if you invoke this method.
+     * - using SSL
+     * - using more secure endpoint
      */
     public function setSecureRequest()
     {
@@ -169,7 +217,11 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * reset secure request.
+     *
+     * A request sending returns normal if you invoke this method.
+     * - Won't use SSL
+     * - using normal endpoint
      */
     public function resetSecureRequest()
     {
@@ -177,7 +229,8 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * get AWS Access key ID
+     * @return string
      */
     public function getAwsAccessKeyId()
     {
@@ -185,39 +238,52 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * get Secret access key
+     * @return string
      */
     public function getSecretAccessKey()
     {
         return $this->secretAccessKey;
     }
 
+
     /**
-     * {@inheritdoc}
+     * get Associate tag
+     * @return string
      */
     public function getAssociateTag()
     {
         return $this->associateTag;
     }
 
+
     /**
-     * {@inheritdoc}
+     * get locale
+     * @return string
      */
     public function getLocale()
     {
         return $this->locale;
     }
 
+
     /**
-     * {@inheritdoc}
+     * get DateTime
+     *
+     * @return \DateTime
      */
     public function getDateTime()
     {
         return $this->dateTime;
     }
 
+
     /**
-     * {@inheritdoc}
+     * is secure request
+     *
+     * whethere a request send securely
+     *
+     * @return boolean
      */
     public function isSecureRequest()
     {
@@ -225,7 +291,9 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * get request method
+     *
+     * @return string
      */
     public function getRequestMethod()
     {
@@ -233,7 +301,10 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * generate Canonical query string from parameters
+     *
+     * @param array $parameters - some query parameters array
+     * @return string - canonical query string
      */
     public function generateCanonicalQueryString(array $parameters)
     {
@@ -246,7 +317,12 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * generate signature
+     *
+     * @param string $requestMethod
+     * @param string $endPoint
+     * @param string $canonicalQueryString
+     * @return string
      */
     public function generateSignature($requestMethod, $endPoint, $canonicalQueryString)
     {
@@ -261,7 +337,9 @@ class Builder implements Buildable
     }
 
     /**
-     * {@inheritdoc}
+     * get end point
+     *
+     * @return string
      */
     public function getEndPoint()
     {
