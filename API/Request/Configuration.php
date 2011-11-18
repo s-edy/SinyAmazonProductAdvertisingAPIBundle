@@ -17,7 +17,7 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-class Configure implements Configurable
+class Configuration implements Configurable
 {
     const KEY_NAME_SERVICE           = 'Service';
     const KEY_NAME_AWS_ACCESS_KEY_ID = 'AWSAccessKeyId';
@@ -56,7 +56,153 @@ class Configure implements Configurable
     // Path
     const REQUEST_URI = '/onca/xml';
 
+    /**
+     * The parameters array for configuration.
+     *
+     * @var array
+     */
     private $parameters = array();
+
+    /**
+     * Access Key ID
+     *
+     * @var string An access key ID
+     */
+    protected $awsAccessKeyId;
+
+    /**
+     * Secret Access Key ID
+     *
+     * @var string secret access key ID
+     */
+    protected $secretAccessKey;
+
+    /**
+     * Associate Tag
+     *
+     * @var string associate tag
+     */
+    protected $associateTag;
+
+    /**
+     * Locale
+     *
+     * @see Generator::LOCALE_CA
+     * @see Generator::LOCALE_CN
+     * @see Generator::LOCALE_DE
+     * @see Generator::LOCALE_ES
+     * @see Generator::LOCALE_FR
+     * @see Generator::LOCALE_IT
+     * @see Generator::LOCALE_JP
+     * @see Generator::LOCALE_UK
+     * @see Generator::LOCALE_US
+     * @var string locale string
+     */
+    protected $locale;
+
+    /**
+     * locale white list
+     *
+     * @var array
+     */
+    private $locales = array(
+    self::LOCALE_CA,
+    self::LOCALE_CN,
+    self::LOCALE_DE,
+    self::LOCALE_ES,
+    self::LOCALE_FR,
+    self::LOCALE_IT,
+    self::LOCALE_JP,
+    self::LOCALE_UK,
+    self::LOCALE_US,
+    );
+
+    /**
+     * End points
+     *
+     * @var array
+     */
+    private $endPoints = array(
+    self::LOCALE_CA => self::ENDPOINT_CA,
+    self::LOCALE_CN => self::ENDPOINT_CN,
+    self::LOCALE_DE => self::ENDPOINT_DE,
+    self::LOCALE_ES => self::ENDPOINT_ES,
+    self::LOCALE_FR => self::ENDPOINT_FR,
+    self::LOCALE_IT => self::ENDPOINT_IT,
+    self::LOCALE_JP => self::ENDPOINT_JP,
+    self::LOCALE_UK => self::ENDPOINT_UK,
+    self::LOCALE_US => self::ENDPOINT_US,
+    );
+
+    /**
+     * date time class instance for sending request
+     * @var \DateTime
+     */
+    private $dateTime;
+
+    /**
+     * whether a request send securely
+     *
+     * @var boolean
+     */
+    private $isSecureRequest = false;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::set()
+     */
+    public function set($key, $value)
+    {
+        $this->parameters[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::get()
+     */
+    public function get($key)
+    {
+        if ($this->has($key) === false) {
+            throw new \InvalidArgumentException(sprintf("The value of speficied key index was not found. key=[%s]", $key));
+        }
+        return $this->parameters[$key];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::has()
+     */
+    public function has($key)
+    {
+        return isset($this->parameters[$key]);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::clear()
+     */
+    public function clear()
+    {
+        $this->parameters = array();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::getAll()
+     */
+    public function getAll()
+    {
+        return $this->parameters;
+    }
 
     /**
      * set the base parameters such as "AssociateTag" for the request.
@@ -69,6 +215,7 @@ class Configure implements Configurable
      */
     public function __construct($awsAccessKeyId, $secretAccessKey, $associateTag, $locale)
     {
+        $this->reset();
         $this->setAwsAccessKeyId($awsAccessKeyId);
         $this->setSecretAccessKey($secretAccessKey);
         $this->setAssociateTag($associateTag);
@@ -77,30 +224,42 @@ class Configure implements Configurable
     }
 
     /**
-     * set AWS access key ID
+     * Set AWS access key ID
+     *
      * @param string $awsAccessKeyId
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configuration
      */
     public function setAwsAccessKeyId($awsAccessKeyId)
     {
-        $this->awsAccessKeyId = $awsAccessKeyId;
+        $this->set(self::KEY_NAME_AWS_ACCESS_KEY_ID, $awsAccessKeyId);
+
+        return $this;
     }
 
     /**
-     * set Secret access key
+     * Set Secret access key
+     *
      * @param string $secretAccessKey
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configuration
      */
     public function setSecretAccessKey($secretAccessKey)
     {
         $this->secretAccessKey = $secretAccessKey;
+
+        return $this;
     }
 
     /**
-     * set Associate tag
+     * Set Associate tag
+     *
      * @param string $associateTag
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configuration
      */
     public function setAssociateTag($associateTag)
     {
-        $this->associateTag = $associateTag;
+        $this->set(self::KEY_NAME_ASSOCIATE_TAG, $associateTag);
+
+        return $this;
     }
 
     /**
@@ -112,7 +271,7 @@ class Configure implements Configurable
     public function setLocale($locale)
     {
         if (in_array($locale, $this->locales) === false) {
-            throw new RequestException(sprintf("A specified locale was wrong. locale=[%s]", $locale));
+            throw new \InvalidArgumentException(sprintf("A specified locale was wrong. locale=[%s]", $locale));
         }
         $this->locale = $locale;
     }
@@ -153,12 +312,26 @@ class Configure implements Configurable
     }
 
     /**
+     * The parameters will be set that should set as a default
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::getAll()
+     */
+    public function reset()
+    {
+        $this->clear();
+        $this->set(self::KEY_NAME_SERVICE, self::SERVICE_NAME);
+        $this->set(self::KEY_NAME_VERSION, self::API_VERSION);
+
+        return $this;
+    }
+
+    /**
      * get AWS Access key ID
      * @return string
      */
     public function getAwsAccessKeyId()
     {
-        return $this->awsAccessKeyId;
+        return $this->get(self::KEY_NAME_AWS_ACCESS_KEY_ID);
     }
 
     /**
@@ -176,7 +349,7 @@ class Configure implements Configurable
      */
     public function getAssociateTag()
     {
-        return $this->associateTag;
+        return $this->get(self::KEY_NAME_ASSOCIATE_TAG);
     }
 
     /**
@@ -228,14 +401,5 @@ class Configure implements Configurable
     public function getEndPoint()
     {
         return $this->endPoints[$this->getLocale()];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Buildable::build()
-     */
-    public function build(Requestable $request)
-    {
     }
 }
