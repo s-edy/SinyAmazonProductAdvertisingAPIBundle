@@ -59,6 +59,76 @@ class Generator implements Generatable
     /**
      * {@inheritdoc}
      *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::setEndPoint()
+     */
+    public function setEndPoint($endPoint)
+    {
+        $this->endPoint = $endPoint;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::setRequestURI()
+     */
+    public function setRequestURI($uri)
+    {
+        $this->uri = $uri;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::setParameters()
+     */
+    public function setParameters(array $parameters)
+    {
+        $this->parameters = $parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::getRequestMethod()
+     */
+    public function getRequestMethod()
+    {
+        return $this->method;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::getEndPoint()
+     */
+    public function getEndPoint()
+    {
+        return $this->endPoint;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::getRequestURI()
+     */
+    public function getRequestURI()
+    {
+        return $this->uri;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::getParameters()
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::generateCanonicalQueryString()
      */
     public function generateCanonicalQueryString()

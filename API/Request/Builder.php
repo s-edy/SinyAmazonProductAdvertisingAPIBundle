@@ -297,42 +297,6 @@ class Builder implements Buildable
     }
 
     /**
-     * generate Canonical query string from parameters
-     *
-     * @param array $parameters - some query parameters array
-     * @return string - canonical query string
-     */
-    public function generateCanonicalQueryString(array $parameters)
-    {
-        $query = new \HttpQueryString(false);
-        ksort($parameters);
-        foreach ($parameters as $key => $value) {
-            $query->set(array($key => $value));
-        }
-        return $query->toString();
-    }
-
-    /**
-     * generate signature
-     *
-     * @param string $requestMethod
-     * @param string $endPoint
-     * @param string $canonicalQueryString
-     * @return string
-     */
-    public function generateSignature($requestMethod, $endPoint, $canonicalQueryString)
-    {
-        $data = implode("\n", array(
-            $requestMethod,
-            $endPoint,
-            self::REQUEST_URI,
-            $canonicalQueryString,
-        ));
-        $hash = hash_hmac('sha256', $data, $this->getSecretAccessKey(), true);
-        return rawurlencode(base64_encode($hash));
-    }
-
-    /**
      * get end point
      *
      * @return string

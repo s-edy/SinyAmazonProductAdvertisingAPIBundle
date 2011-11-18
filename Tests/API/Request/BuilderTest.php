@@ -168,62 +168,6 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * test generate canonical query string
-     *
-     * @dataProvider provideParameters
-     */
-    public function testGenerateCanonicalQueryString($parameters, $expect)
-    {
-        $this->assertSame(
-            $expect, $this->builder->generateCanonicalQueryString($parameters),
-            "Did not generate canonical string correctly.");
-    }
-
-    public function provideParameters()
-    {
-        return array(
-            array(
-                array(
-                    'foo'  => 'bar',
-                    'fizz' => 'buzz',
-                    '@*?&' => '$#^/',
-                ),
-                '%40%2A%3F%26=%24%23%5E%2F&fizz=buzz&foo=bar',
-            ),
-        );
-    }
-
-    /**
-     * generate signature
-     *
-     * @dataProvider provideParameterForSignature
-     * @param string $requestMethod
-     * @param string $endPoint
-     * @param string $canonicalQueryString
-     */
-    public function testGenerateSignature(
-        $requestMethod, $endPoint, $canonicalQueryString, $expect)
-    {
-        $this->assertSame(
-            $expect,
-            $this->builder->generateSignature(
-                $requestMethod, $endPoint, $canonicalQueryString),
-            "The generated signature wasn't same.");
-    }
-
-    public function provideParameterForSignature()
-    {
-        return array(
-            array(
-                'GET',
-                'dummy.end.point.com',
-                'dummyCanonicalQueryString',
-                'jXgbOqARlG%2F0veVGlVSACAVMqmcxrwL6ejFRmvT%2BGKE%3D',
-            ),
-        );
-    }
-
-    /**
      * get end point
      *
      * @dataProvider provideEndPoints
