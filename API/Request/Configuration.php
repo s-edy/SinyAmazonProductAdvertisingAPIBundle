@@ -7,7 +7,7 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Configurable;
 
 /**
  * This is a class to configure the basic parameters

@@ -5,7 +5,7 @@
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
 
-namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
+namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
 /**
  * This is a interface of Configurable object.
