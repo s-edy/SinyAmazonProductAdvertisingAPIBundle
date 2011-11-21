@@ -7,7 +7,7 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Configurable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration;
 
 /**
  * This is a class to configure the basic parameters
@@ -17,7 +17,7 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Configurable;
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-class Configuration implements Configurable
+class RequestConfiguration extends Configuration
 {
     // Amazon require the following
     const KEY_NAME_SERVICE           = 'Service';
