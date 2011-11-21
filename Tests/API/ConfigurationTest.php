@@ -13,9 +13,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     const DUMMY_KEY   = 'dummyKey';
     const DUMMY_VALUE = 'dummyValue';
-    const DUMMY_AWS_ACCESS_KEY_ID = 'dummy_aws_access_key_id';
-    const DUMMY_SECRET_ACCESS_KEY = 'dummy_secret_access_key';
-    const DUMMY_ASSOCIATE_TAG     = 'dummy_associate_tag';
 
     private $configuration;
     private $dateTime;
@@ -33,13 +30,24 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertType('array', $this->configuration->toArray(), "The returns wasn't array.");
     }
 
-
     /**
      * Returns empty array when invoking toArray() in the case of default
      */
     public function testReturnsEmptyArrayWhenInvokingToArrayInTheCaseOfDefault()
     {
         $this->assertEmpty($this->configuration->toArray(), "There weren't parameters.");
+    }
+
+    /**
+     * Returns array when invoking toArray after setting parameters from construction.
+     */
+    public function testReturnsArrayWhenInvokingToArrayAfterSettingParametersFromConstruction()
+    {
+        $parameters = array(self::DUMMY_KEY => self::DUMMY_VALUE);
+        $configuration = $this->getMockForAbstractClass(
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration',
+            array($parameters));
+        $this->assertSame($parameters, $configuration->toArray(), "Returned parameters waren't same.");
     }
 
     /**

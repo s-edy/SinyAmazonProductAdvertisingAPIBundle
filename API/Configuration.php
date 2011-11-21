@@ -23,6 +23,16 @@ abstract class Configuration
     private $parameters = array();
 
     /**
+     * Construct from optional parameters
+     *
+     * @param array $parameters
+     */
+    public function __construct(array $parameters = array())
+    {
+        $this->parameters = $parameters;
+    }
+
+    /**
      * Get all parameters
      *
      * @return array
