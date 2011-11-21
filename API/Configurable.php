@@ -17,42 +17,24 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 interface Configurable
 {
     /**
-     * Set a parameter key-value pair
+     * Set parameters from array
      *
-     * @param string $key  - Parameter key
-     * @param mixed $value - Value
-     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable
+     * @param array $parameters
      */
-    public function set($key, $value);
+    public function fromArray(array $parameters);
 
-    /**
-     * Get a parameter from key
-     *
-     * @param string $key
-     * @return mixed
-     * @throws InvalidArgumentException - If the parameter of the specified key does not exist
-     */
-    public function get($key);
-
-    /**
-     * Has a parameter value of key
-     *
-     * @param string $key
-     * @return boolean - Whether the parameter of the specified key is exist
-     */
-    public function has($key);
-
-    /**
-     * Clear all parameters
-     *
-     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable
-     */
-    public function clear();
 
     /**
      * Get all parameters
      *
      * @return array
      */
-    public function getAll();
+    public function toArray();
+
+    /**
+     * Clear all parameters
+     *
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Configurable
+     */
+    public function clear();
 }

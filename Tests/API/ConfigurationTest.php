@@ -16,10 +16,23 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     private $configuration;
     private $dateTime;
+    private $parameters = array(self::DUMMY_KEY => self::DUMMY_VALUE);
 
     public function setUp()
     {
         $this->configuration = $this->getMockForAbstractClass('Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration');
+    }
+
+    /**
+     * Self object will be returned when invoking from array
+     */
+    public function testSelfObjectWillBeReturnedWhenInvokingFromArray()
+    {
+        $this->assertInstanceOf(
+        	'Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration',
+            $this->configuration->fromArray($this->parameters),
+        	"A self object wasn't returned when invoking fromArray().");
+        return $this->configuration;
     }
 
     /**
@@ -40,14 +53,12 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Returns array when invoking toArray after setting parameters from construction.
+     *
+     * @depends testSelfObjectWillBeReturnedWhenInvokingFromArray
      */
-    public function testReturnsArrayWhenInvokingToArrayAfterSettingParametersFromConstruction()
+    public function testReturnsArrayWhenInvokingToArrayAfterInvokingFromArray(Configuration $configuration)
     {
-        $parameters = array(self::DUMMY_KEY => self::DUMMY_VALUE);
-        $configuration = $this->getMockForAbstractClass(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration',
-            array($parameters));
-        $this->assertSame($parameters, $configuration->toArray(), "Returned parameters waren't same.");
+        $this->assertSame($this->parameters, $configuration->toArray(), "Returned parameters waren't same.");
     }
 
     /**

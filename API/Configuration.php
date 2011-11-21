@@ -7,6 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Configurable;
+
 /**
  * This is a abstract class that configure the Amazon API
  *
@@ -14,7 +16,7 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
  * @subpackage API
  * @author Shinichiro Yuki <sinycourage@gmail.com>
  */
-abstract class Configuration
+abstract class Configuration implements Configurable
 {
     /**
      * Configuration parameters
@@ -23,13 +25,16 @@ abstract class Configuration
     private $parameters = array();
 
     /**
-     * Construct from optional parameters
+     * Set parameters from array
      *
      * @param array $parameters
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration
      */
-    public function __construct(array $parameters = array())
+    public function fromArray(array $parameters)
     {
         $this->parameters = $parameters;
+
+        return $this;
     }
 
     /**
