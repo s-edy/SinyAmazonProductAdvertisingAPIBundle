@@ -25,38 +25,22 @@ abstract class Configuration implements Configurable
     private $parameters = array();
 
     /**
-     * Set parameters from array
-     *
-     * @param array $parameters
-     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration
+     * {@inheritdoc}
      */
     public function fromArray(array $parameters)
     {
-        $this->parameters = $parameters;
-
+        foreach ($parameters as $key => $value) {
+            $this->set($key, $value);
+        }
         return $this;
     }
 
     /**
-     * Get all parameters
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function toArray()
     {
         return $this->parameters;
-    }
-
-    /**
-     * Clear all parameters
-     *
-     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration
-     */
-    public function clear()
-    {
-        $this->parameters = array();
-
-        return $this;
     }
 
     /**

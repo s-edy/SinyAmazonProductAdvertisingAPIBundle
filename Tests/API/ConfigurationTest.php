@@ -40,7 +40,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
      */
     public function testReturnsArrayTypeWhenInvokingToArray()
     {
-        $this->assertType('array', $this->configuration->toArray(), "The returns wasn't array.");
+        $this->assertInternalType('array', $this->configuration->toArray(), "The returns wasn't array.");
     }
 
     /**
@@ -52,7 +52,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns array when invoking toArray after setting parameters from construction.
+     * Returns array when invoking toArray after invoking fromArray().
      *
      * @depends testSelfObjectWillBeReturnedWhenInvokingFromArray
      */
@@ -62,7 +62,20 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * A configuration object will be returned after you set something
+     * Returns merged array when invoking toArray after invoking fromArray().
+     *
+     * @depends testSelfObjectWillBeReturnedWhenInvokingFromArray
+     */
+    public function testReturnsMergedArrayWhenInvokingToArrayAfterInvokingFromArray(Configuration $configuration)
+    {
+        $addition = array('foo' => 'bar');
+        $before   = $configuration->toArray();
+        $expected = array_merge($before, $addition);
+        $this->assertSame($expected, $configuration->fromArray($addition)->toArray(), "Did not returned merged array");
+    }
+
+    /**
+     * A configuration object will be returned when invoking set()
      */
     public function testSelfObjectWillBeReturnedWhenInvokingSet()
     {
@@ -130,41 +143,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Clear all parameters
+     * Has not the parameter which is specified a wrong key
      *
-     * @depends testGet
      * @param Configuration $configuration
      */
-    public function testSelfObjectWillBeReturnedWhenInvokingClear()
-    {
-        $this->assertInstanceOf(
-    		'Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration',
-            $this->configuration->clear(),
-    		"A self object wasn't returned when invoking clear().");
-        return $this->configuration;
-    }
-
-    /**
-     * An empty array will be returned after invoking clear
-     *
-     * @depends testSelfObjectWillBeReturnedWhenInvokingClear
-     * @param Configuration $configuration
-     */
-    public function testAnEmptyArrayWillBeReturnedAfterInvokingClear(Configuration $configuration)
-    {
-        $this->assertEmpty($this->configuration->toArray(), "Empty array was returned.");
-    }
-
-    /**
-     * Has the parameter which is specified key
-     *
-     * @depends testSelfObjectWillBeReturnedWhenInvokingClear
-     * @param Configuration $configuration
-     */
-    public function testHasNotTheParameterWhichIsSpecifiedKey(Configuration $configuration)
+    public function testHasNotTheParameterWhichIsSpecifiedAWrongKey()
     {
         $method = new \ReflectionMethod('Siny\Amazon\ProductAdvertisingAPIBundle\API\Configuration', 'has');
         $method->setAccessible(true);
-        $this->assertFalse($method->invoke($configuration, self::DUMMY_KEY), "The parameter has.");
+        $this->assertFalse($method->invoke($this->configuration, 'wrong'), "The parameter has.");
     }
 }

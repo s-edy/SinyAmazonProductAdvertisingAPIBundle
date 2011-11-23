@@ -23,18 +23,10 @@ interface Configurable
      */
     public function fromArray(array $parameters);
 
-
     /**
      * Get all parameters
      *
      * @return array
      */
     public function toArray();
-
-    /**
-     * Clear all parameters
-     *
-     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Configurable
-     */
-    public function clear();
 }
