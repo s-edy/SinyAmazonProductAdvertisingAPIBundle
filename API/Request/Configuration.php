@@ -68,6 +68,9 @@ class Configuration extends BasicConfiguration implements BasicConfigurable
         ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setOption($key, $value)
     {
         return $this->set($key, $value);
