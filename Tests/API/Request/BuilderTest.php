@@ -8,6 +8,8 @@
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API\Request;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Builder;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
+use \HttpRequest;
 
 class BuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,6 +50,30 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             "HttpRequest",
             $this->builder->build($this->getMockOfRequest()),
             "HttpRequest object will be returned when invoking build().");
+    }
+
+    /**
+     * A http request object which is set any method will be retuened
+     *
+     * @dataProvider provideSomeMethods
+     */
+    public function testAHttpRequestObjectWhichIsSetAnyMethodWillBeReturned($method, $expects)
+    {
+        $configuration = $this->getMockOfConfiguration();
+        $configuration
+            ->expects($this->once())
+            ->method('toArray')
+            ->will($this->returnValue(array(Configurable::KEY_METHOD => $method)));
+        $this->builder->setConfiguration($configuration);
+        $httpRequest = $this->builder->build($this->getMockOfRequest());
+        $this->assertSame($expects, $httpRequest->getMethod(), sprintf("Returned HttpRequest object won't use %s method.", $method));
+    }
+    public function provideSomeMethods()
+    {
+        return array(
+            array(Configurable::METHOD_GET,  HttpRequest::METH_GET),
+            array(Configurable::METHOD_POST, HttpRequest::METH_POST),
+        );
     }
 
     private function getMockOfConfiguration()

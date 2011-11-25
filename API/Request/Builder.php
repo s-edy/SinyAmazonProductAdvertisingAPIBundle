@@ -10,6 +10,7 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
+use \HttpRequest;
 
 /**
  * This is a class that build a HttpRequest by the Request.
@@ -67,6 +68,12 @@ class Builder implements Buildable
      */
     public function build(Requestable $request)
     {
-        return new \HttpRequest();
+        $configurations = $this->getConfiguration()->toArray();
+
+        $httpRequest = new HttpRequest();
+        if ($configurations[Configurable::KEY_METHOD] === Configurable::METHOD_POST) {
+            $httpRequest->setMethod(HttpRequest::METH_POST);
+        }
+        return $httpRequest;
     }
 }
