@@ -74,6 +74,12 @@ class Builder implements Buildable
         if ($configurations[Configurable::KEY_METHOD] === Configurable::METHOD_POST) {
             $httpRequest->setMethod(HttpRequest::METH_POST);
         }
+        $httpRequest->addQueryData(array(
+            Configurable::KEY_SERVICE           => $configurations[Configurable::KEY_SERVICE],
+            Configurable::KEY_VERSION           => $configurations[Configurable::KEY_VERSION],
+            Configurable::KEY_AWS_ACCESS_KEY_ID => $configurations[Configurable::KEY_AWS_ACCESS_KEY_ID],
+            Configurable::KEY_ASSOCIATE_TAG     => $configurations[Configurable::KEY_ASSOCIATE_TAG],
+        ));
         return $httpRequest;
     }
 }
