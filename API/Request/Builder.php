@@ -71,6 +71,12 @@ class Builder implements Buildable
         $configurations = $this->getConfiguration()->toArray();
 
         $httpRequest = new HttpRequest();
+        $httpRequest->setUrl(sprintf(
+        	'%s://%s%s',
+            $configurations[Configurable::KEY_IS_SECURE] ? 'https' : 'http',
+            $configurations[Configurable::KEY_ENDPOINT],
+            $configurations[Configurable::KEY_REQUEST_URI]
+        ));
         if ($configurations[Configurable::KEY_METHOD] === Configurable::METHOD_POST) {
             $httpRequest->setMethod(HttpRequest::METH_POST);
         }

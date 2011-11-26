@@ -24,6 +24,17 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         'IsSecure'        => false,
         'Method'          => 'GET',
     );
+    private $endpoints = array(
+        'ecs.amazonaws.ca',
+        'webservices.amazon.cn',
+        'ecs.amazonaws.de',
+        'webservices.amazon.es',
+        'ecs.amazonaws.fr',
+        'webservices.amazon.it',
+        'ecs.amazonaws.jp',
+        'ecs.amazonaws.co.uk',
+        'webservices.amazon.com',
+    );
 
     private $builder;
 
@@ -127,6 +138,33 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testContainsAnAssociateTagParameterInTheQueryString($httpRequest)
     {
         $this->assertContains('AssociateTag=DummyAssociateTag', $httpRequest->getQueryData(), "The AssociateTag parameter wasn't set");
+    }
+
+    /**
+     * A HTTP request object to which An URL was set will be returned.
+     *
+     * @dataProvider provideURLSettings
+     */
+    public function testAHttpRequestObjectToWhichAnURLWasSetWillBeReturned($expectUrl, $override)
+    {
+        $httpRequest = $this->builder
+            ->setConfiguration($this->getMockOfConfigurationRetuenedParameters($override))
+            ->build($this->getMockOfRequest());
+        $this->assertContains($expectUrl, $httpRequest->getUrl(), "The URL wasn't set");
+    }
+    public function provideURLSettings()
+    {
+        $provides = array();
+        foreach ($this->endpoints as $endpoint) {
+            foreach (array(true, false) as $isSecure) {
+                $provide = array();
+                $provide['expectURL'] = sprintf('%s://%s/onca/xml', ($isSecure ? 'https' : 'http'), $endpoint);
+                $provide['override'][Configurable::KEY_IS_SECURE] =  $isSecure;
+                $provide['override'][Configurable::KEY_ENDPOINT]  = $endpoint;
+                $provides[] = $provide;
+            }
+        }
+        return $provides;
     }
 
     private function getMockOfConfigurationRetuenedParameters(array $overrides = array(), array $additions = array())
