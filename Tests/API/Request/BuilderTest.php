@@ -173,7 +173,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $configuration = $this->getMockOfConfiguration();
         $configuration
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('toArray')
             ->will($this->returnValue($returned));
 

@@ -68,24 +68,40 @@ class Builder implements Buildable
      */
     public function build(Requestable $request)
     {
-        $configurations = $this->getConfiguration()->toArray();
-
         $httpRequest = new HttpRequest();
-        $httpRequest->setUrl(sprintf(
-        	'%s://%s%s',
-            $configurations[Configurable::KEY_IS_SECURE] ? 'https' : 'http',
-            $configurations[Configurable::KEY_ENDPOINT],
-            $configurations[Configurable::KEY_REQUEST_URI]
-        ));
+        $httpRequest->setUrl($this->buildUrl());
+        $httpRequest->setMethod($this->buildRequestMethod());
+        $httpRequest->addQueryData($this->buildConfigurableQueryParameters());
+        return $httpRequest;
+    }
+
+    private function buildUrl()
+    {
+        $configurations = $this->getConfiguration()->toArray();
+        $protocol = $configurations[Configurable::KEY_IS_SECURE] ? 'https' : 'http';
+        $endpoint = $configurations[Configurable::KEY_ENDPOINT];
+        $uri      = $configurations[Configurable::KEY_REQUEST_URI];
+        return $protocol . '://'  . $endpoint . $uri;
+    }
+
+    private function buildRequestMethod()
+    {
+        $configurations = $this->getConfiguration()->toArray();
         if ($configurations[Configurable::KEY_METHOD] === Configurable::METHOD_POST) {
-            $httpRequest->setMethod(HttpRequest::METH_POST);
+            return HttpRequest::METH_POST;
+        } else {
+            return HttpRequest::METH_GET;
         }
-        $httpRequest->addQueryData(array(
+    }
+
+    private function buildConfigurableQueryParameters()
+    {
+        $configurations = $this->getConfiguration()->toArray();
+        return array(
             Configurable::KEY_SERVICE           => $configurations[Configurable::KEY_SERVICE],
             Configurable::KEY_VERSION           => $configurations[Configurable::KEY_VERSION],
             Configurable::KEY_AWS_ACCESS_KEY_ID => $configurations[Configurable::KEY_AWS_ACCESS_KEY_ID],
             Configurable::KEY_ASSOCIATE_TAG     => $configurations[Configurable::KEY_ASSOCIATE_TAG],
-        ));
-        return $httpRequest;
+        );
     }
 }
