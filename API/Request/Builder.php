@@ -75,6 +75,11 @@ class Builder implements Buildable
         return $httpRequest;
     }
 
+    /**
+     * Build an URL which is used to send a request
+     *
+     * @return string
+     */
     private function buildUrl()
     {
         $configurations = $this->getConfiguration()->toArray();
@@ -84,6 +89,11 @@ class Builder implements Buildable
         return $protocol . '://'  . $endpoint . $uri;
     }
 
+    /**
+     * Build a method type constant
+     *
+     * @return integer
+     */
     private function buildRequestMethod()
     {
         $configurations = $this->getConfiguration()->toArray();
@@ -94,6 +104,11 @@ class Builder implements Buildable
         }
     }
 
+    /**
+     * Build parameters that is configured a request.
+     *
+     * @return array
+     */
     private function buildConfigurableQueryParameters()
     {
         $configurations = $this->getConfiguration()->toArray();
