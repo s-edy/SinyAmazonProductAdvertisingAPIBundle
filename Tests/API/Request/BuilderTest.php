@@ -173,16 +173,6 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * A HTTP request object to which a Signature parameter was set will be returned.
-     *
-     * @depends testContainsAServiceParameterInTheQueryString
-     */
-    public function testContainsASignatureParameterInTheQueryString($httpRequest)
-    {
-        //$this->assertContains('Signature=Signature', $httpRequest->getQueryData(), "The Signature parameter wasn't set");
-    }
-
-    /**
      * A HTTP request object to which An URL was set will be returned.
      *
      * @dataProvider provideURLSettings
