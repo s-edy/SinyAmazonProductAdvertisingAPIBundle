@@ -9,6 +9,7 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable;
 
 /**
  * This is a interface of Buildable object.
@@ -35,11 +36,26 @@ interface Buildable
     public function setConfiguration(Configurable $configuration);
 
     /**
-     * Get configurable object
+    * Set a generatable object
+    *
+    * @param Generatable $generator
+    * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable
+    */
+    public function setGenerator(Generatable $generator);
+
+    /**
+     * Get a configurable object
      *
      * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable
      */
     public function getConfiguration();
+
+    /**
+     * Get a generatable object
+     *
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable
+     */
+    public function getGenerator();
 
     /**
      * build a HttpRequest class instance from Requestable object.

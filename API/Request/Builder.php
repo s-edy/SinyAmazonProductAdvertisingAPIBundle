@@ -9,6 +9,8 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
 use \HttpRequest;
 
@@ -22,12 +24,20 @@ use \HttpRequest;
 class Builder implements Buildable
 {
     /**
-     * Configuration class instance
+     * Configurable class instance
      *
-     * @var Configuration
+     * @var Configurable
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable
      */
     private $configuration;
+
+    /**
+    * Generator class instance
+    *
+    * @var Generatable
+    * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable
+    */
+    private $generator;
 
     /**
      * {@inheritdoc}
@@ -37,6 +47,7 @@ class Builder implements Buildable
     public function __construct(Configurable $configuration)
     {
         $this->setConfiguration($configuration);
+        $this->setGenerator(new Generator());
     }
 
     /**
@@ -54,11 +65,33 @@ class Builder implements Buildable
     /**
      * {@inheritdoc}
      *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Buildable::setGenerator()
+     */
+    public function setGenerator(Generatable $generator)
+    {
+        $this->generator = $generator;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Buildable::getConfiguration()
      */
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Buildable::getGenerator()
+     */
+    public function getGenerator()
+    {
+        return $this->generator;
     }
 
     /**

@@ -65,6 +65,38 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * A generator object will be returned in the case of default
+     */
+    public function testAGeneratorObjectWillBeReturnedInTheCaseOfDefault()
+    {
+        $this->assertInstanceOf(
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator',
+            $this->builder->getGenerator(),
+            "A generator didn't returned.");
+    }
+
+    /**
+     * A self object will be returned when invoking setGenerator()
+     */
+    public function testASelfObjectWillBeReturnedWhenInvokingSetGenerator()
+    {
+        $this->assertSame(
+            $this->builder, $this->builder->setGenerator($this->getMockOfGenerator()),
+            "Self object will be returned when invoking setGenerator().");
+    }
+
+    /**
+    * A generatable object will be returned when invoking getGenerator()
+    */
+    public function testAGeneratableObjectWillBeReturnedWhenInvokingGetGenerator()
+    {
+        $this->assertInstanceOf(
+            "Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable",
+            $this->builder->getGenerator(),
+            "A generatable object will be returned when invoking getGenerator().");
+    }
+
+    /**
      * HttpRequest object will be returned when invoking build
      */
     public function testHttpRequestObjectWillBeRetunedWhenInvokingBuild()
@@ -141,6 +173,16 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * A HTTP request object to which a Signature parameter was set will be returned.
+     *
+     * @depends testContainsAServiceParameterInTheQueryString
+     */
+    public function testContainsASignatureParameterInTheQueryString($httpRequest)
+    {
+        //$this->assertContains('Signature=Signature', $httpRequest->getQueryData(), "The Signature parameter wasn't set");
+    }
+
+    /**
      * A HTTP request object to which An URL was set will be returned.
      *
      * @dataProvider provideURLSettings
@@ -183,6 +225,11 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     private function getMockOfConfiguration()
     {
         return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable');
+    }
+
+    private function getMockOfGenerator()
+    {
+        return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable');
     }
 
     private function getMockOfRequest()
