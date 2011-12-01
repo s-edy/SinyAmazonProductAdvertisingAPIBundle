@@ -55,6 +55,19 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * to required query data.
+     */
+    public function testToRequiredQueryData()
+    {
+        $this->assertSame(array(
+            'Service'        => 'AWSECommerceService',
+            'Version'        => '2010-09-01',
+            'AWSAccessKeyId' => self::AWS_ACCESS_KEY_ID,
+            'AssociateTag'   => self::ASSOCIATE_TAG,
+        ), $this->configuration->toRequiredQueryData(), "The required query data weren't same.");
+    }
+
+    /**
      * Self object will be returned when invoking setOption()
      *
      * @dataProvider provideSetOption

@@ -104,7 +104,7 @@ class Builder implements Buildable
         $httpRequest = new HttpRequest();
         $httpRequest->setUrl($this->buildUrl());
         $httpRequest->setMethod($this->buildRequestMethod());
-        $httpRequest->addQueryData($this->buildConfigurableQueryParameters());
+        $httpRequest->addQueryData($this->getConfiguration()->toRequiredQueryData());
         return $httpRequest;
     }
 
@@ -135,21 +135,5 @@ class Builder implements Buildable
         } else {
             return HttpRequest::METH_GET;
         }
-    }
-
-    /**
-     * Build parameters that is configured a request.
-     *
-     * @return array
-     */
-    private function buildConfigurableQueryParameters()
-    {
-        $configurations = $this->getConfiguration()->toArray();
-        return array(
-            Configurable::KEY_SERVICE           => $configurations[Configurable::KEY_SERVICE],
-            Configurable::KEY_VERSION           => $configurations[Configurable::KEY_VERSION],
-            Configurable::KEY_AWS_ACCESS_KEY_ID => $configurations[Configurable::KEY_AWS_ACCESS_KEY_ID],
-            Configurable::KEY_ASSOCIATE_TAG     => $configurations[Configurable::KEY_ASSOCIATE_TAG],
-        );
     }
 }

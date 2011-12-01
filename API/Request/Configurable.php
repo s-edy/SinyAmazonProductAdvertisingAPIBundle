@@ -76,6 +76,13 @@ interface Configurable extends BasicConfigurable
     public function __construct($awsAccessKeyId, $secretAccessKey, $associateTag, $endPoint);
 
     /**
+     * To required query data
+     *
+     * @return array
+     */
+    public function toRequiredQueryData();
+
+    /**
      * Set an optional parameter
      * @param string $key
      * @param mixed $value

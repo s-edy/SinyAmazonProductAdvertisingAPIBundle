@@ -24,6 +24,12 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         'IsSecure'        => false,
         'Method'          => 'GET',
     );
+    private $requiredQueryData = array(
+        'Service'         => 'AWSECommerceService',
+        'Version'         => '2010-09-01',
+        'AWSAccessKeyId'  => 'DummyAWSAccessKeyID',
+        'AssociateTag'    => 'DummyAssociateTag',
+    );
     private $endpoints = array(
         'ecs.amazonaws.ca',
         'webservices.amazon.cn',
@@ -101,6 +107,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testHttpRequestObjectWillBeRetunedWhenInvokingBuild()
     {
+        $this->builder->setConfiguration($this->getMockOfConfigurationRetuenedParameters());
         $this->assertInstanceOf(
             "HttpRequest",
             $this->builder->build($this->getMockOfRequest()),
@@ -208,6 +215,10 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('toArray')
             ->will($this->returnValue($returned));
+        $configuration
+            ->expects($this->any())
+            ->method('toRequiredQueryData')
+            ->will($this->returnValue($this->requiredQueryData));
 
         return $configuration;
     }

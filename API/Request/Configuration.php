@@ -70,6 +70,21 @@ class Configuration extends BasicConfiguration implements BasicConfigurable
 
     /**
      * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::toRequiredQueryData()
+     */
+    public function toRequiredQueryData()
+    {
+        return array(
+            self::KEY_SERVICE           => self::SERVICE,
+            self::KEY_VERSION           => self::API_VERSION,
+            self::KEY_AWS_ACCESS_KEY_ID => $this->get(self::KEY_AWS_ACCESS_KEY_ID),
+            self::KEY_ASSOCIATE_TAG     => $this->get(self::KEY_ASSOCIATE_TAG),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function setOption($key, $value)
     {
