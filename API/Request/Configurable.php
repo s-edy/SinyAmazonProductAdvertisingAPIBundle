@@ -115,11 +115,15 @@ interface Configurable extends BasicConfigurable
 
     /**
      * Is method GET ?
+     *
+     * @return boolean
      */
     public function isMethodGET();
 
     /**
      * Is method POST ?
+     *
+     * @return boolean
      */
     public function isMethodPOST();
 

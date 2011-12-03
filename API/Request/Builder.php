@@ -106,6 +106,7 @@ class Builder implements Buildable
         $httpRequest->setUrl($this->buildUrl());
         $httpRequest->setMethod($this->buildRequestMethod());
         $httpRequest->addQueryData($this->getConfiguration()->toRequiredQueryData());
+        $httpRequest->addQueryData($request->getParameters());
         return $httpRequest;
     }
 

@@ -41,6 +41,11 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         'ecs.amazonaws.co.uk',
         'webservices.amazon.com',
     );
+    private $operationParameters = array(
+        'Operation' => 'DummyOperation',
+        'Foo'       => 'Bar',
+        'Fizz'      => 'Bazz',
+    );
 
     private $builder;
 
@@ -104,37 +109,59 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * HttpRequest object will be returned when invoking build
+     *
+     * @dataProvider provideForHttpRequestObjectWillBeReturnedWhenInvokingBuild
      */
-    public function testHttpRequestObjectWillBeRetunedWhenInvokingBuild()
+    public function testHttpRequestObjectWillBeRetunedWhenInvokingBuild($configuration, $request)
     {
-        $this->builder->setConfiguration($this->getMockOfConfigurationRetuenedParameters());
+        $this->builder->setConfiguration($configuration);
         $this->assertInstanceOf(
             "HttpRequest",
-            $this->builder->build($this->getMockOfRequest()),
+            $this->builder->build($request),
             "HttpRequest object will be returned when invoking build().");
+    }
+    public function provideForHttpRequestObjectWillBeReturnedWhenInvokingBuild()
+    {
+        $configuration = $this->getMockOfConfiguration();
+        $configuration->expects($this->once())
+            ->method('toRequiredQueryData')
+            ->will($this->returnValue($this->requiredQueryData));
+        $request = $this->getMockOfRequestWhichReturnsEmptyArrayAtGetParameters();
+        return array(
+            array($configuration, $request),
+        );
     }
 
     /**
      * A HTTP request object to which some HTTP methods are set will be returned.
      *
      * @dataProvider provideMethods
-     * @param string $method
-     * @param integer $expects
      */
-    public function testAHttpRequestObjectToWhichSomeMethodsAreSetWillBeReturned($method, $expects)
+    public function testAHttpRequestObjectToWhichSomeMethodsAreSetWillBeReturned($configuration, $expects)
     {
-        $overrides = array(Configurable::KEY_METHOD => $method);
         $httpRequest = $this->builder
-            ->setConfiguration($this->getMockOfConfigurationRetuenedParameters($overrides))
-            ->build($this->getMockOfRequest());
+            ->setConfiguration($configuration)
+            ->build($this->getMockOfRequestWhichReturnsEmptyArrayAtGetParameters());
         $this->assertSame($expects, $httpRequest->getMethod(), "Returned HttpRequest object won't use specified method.");
     }
     public function provideMethods()
     {
-        return array(
-            array(Configurable::METHOD_GET,  HttpRequest::METH_GET),
-            array(Configurable::METHOD_POST, HttpRequest::METH_POST),
+        $methods = array(
+            HttpRequest::METH_GET  => false,
+            HttpRequest::METH_POST => true,
         );
+        $provides = array();
+        foreach ($methods as $methods => $isPost) {
+            $configuration = $this->getMockOfConfiguration();
+            $configuration->expects($this->once())
+                ->method('toRequiredQueryData')
+                ->will($this->returnValue(array()));
+            $configuration->expects($this->once())
+                ->method('isMethodPOST')
+                ->will($this->returnValue($isPost));
+            $provides[] = array($configuration, $methods);
+        }
+        return $provides;
     }
 
     /**
@@ -142,9 +169,13 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testContainsAServiceParameterInTheQueryString()
     {
+        $configuration = $this->getMockOfConfiguration();
+        $configuration->expects($this->once())
+            ->method('toRequiredQueryData')
+            ->will($this->returnValue($this->requiredQueryData));
         $httpRequest = $this->builder
-            ->setConfiguration($this->getMockOfConfigurationRetuenedParameters())
-            ->build($this->getMockOfRequest());
+            ->setConfiguration($configuration)
+            ->build($this->getMockOfRequestWhichReturnsEmptyArrayAtGetParameters());
         $this->assertContains('Service=AWSECommerceService', $httpRequest->getQueryData(), "The service parameter wasn't set");
         return $httpRequest;
     }
@@ -184,11 +215,11 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideURLSettings
      */
-    public function testAHttpRequestObjectToWhichAnURLWasSetWillBeReturned($expectUrl, $override)
+    public function testAHttpRequestObjectToWhichAnURLWasSetWillBeReturned($configuration, $expectUrl)
     {
         $httpRequest = $this->builder
-            ->setConfiguration($this->getMockOfConfigurationRetuenedParameters($override))
-            ->build($this->getMockOfRequest());
+            ->setConfiguration($configuration)
+            ->build($this->getMockOfRequestWhichReturnsEmptyArrayAtGetParameters());
         $this->assertContains($expectUrl, $httpRequest->getUrl(), "The URL wasn't set");
     }
     public function provideURLSettings()
@@ -196,36 +227,61 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $provides = array();
         foreach ($this->endpoints as $endpoint) {
             foreach (array(true, false) as $isSecure) {
-                $provide = array();
-                $provide['expectURL'] = sprintf('%s://%s/onca/xml', ($isSecure ? 'https' : 'http'), $endpoint);
-                $provide['override'][Configurable::KEY_IS_SECURE] =  $isSecure;
-                $provide['override'][Configurable::KEY_ENDPOINT]  = $endpoint;
-                $provides[] = $provide;
+                $configuration = $this->getMockOfConfigurationWhichReturnsEmptyArrayAtToRequiredQueryData();
+                $configuration->expects($this->once())
+                    ->method('isSecure')
+                    ->will($this->returnValue($isSecure));
+                $configuration->expects($this->once())
+                    ->method('getEndPoint')
+                    ->will($this->returnValue($endpoint));
+                $configuration->expects($this->once())
+                    ->method('getRequestURI')
+                    ->will($this->returnValue('/onca/xml'));
+                $provides[] = array($configuration, sprintf('%s://%s/onca/xml', ($isSecure ? 'https' : 'http'), $endpoint));
             }
         }
         return $provides;
     }
 
-    private function getMockOfConfigurationRetuenedParameters(array $overrides = array(), array $additions = array())
+    /**
+     * A HTTP request object to which an Operation parameter array was set will be returned.
+     */
+    public function testContainsAnOperationParameterInTheQueryString()
     {
-        $returned = array_merge($additions, $this->requires, $overrides);
+        $request = $this->getMockOfRequest();
+        $request->expects($this->once())
+            ->method('getParameters')
+            ->will($this->returnValue($this->operationParameters));
+        $httpRequest = $this->builder
+            ->setConfiguration($this->getMockOfConfigurationWhichReturnsEmptyArrayAtToRequiredQueryData())
+            ->build($request);
+        $this->assertContains('Operation=DummyOperation', $httpRequest->getQueryData(), "The operation parameter wasn't set");
 
-        $configuration = $this->getMockOfConfiguration();
-        $configuration
-            ->expects($this->any())
-            ->method('toArray')
-            ->will($this->returnValue($returned));
-        $configuration
-            ->expects($this->any())
-            ->method('toRequiredQueryData')
-            ->will($this->returnValue($this->requiredQueryData));
+        return $httpRequest;
+    }
 
-        return $configuration;
+    /**
+     * Contains an request parameter in the query string
+     *
+     * @depends testContainsAnOperationParameterInTheQueryString
+     */
+    public function testContainsAnRequestParameterInTheQueryString(HttpRequest $httpRequest)
+    {
+        $this->assertContains('Foo=Bar', $httpRequest->getQueryData(), "The request parameter wasn't set");
     }
 
     private function getMockOfConfiguration()
     {
         return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable');
+    }
+
+    private function getMockOfConfigurationWhichReturnsEmptyArrayAtToRequiredQueryData()
+    {
+        $configuration = $this->getMockOfConfiguration();
+        $configuration->expects($this->once())
+            ->method('toRequiredQueryData')
+            ->will($this->returnValue(array()));
+        return $configuration;
     }
 
     private function getMockOfGenerator()
@@ -236,5 +292,14 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     private function getMockOfRequest()
     {
         return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable');
+    }
+
+    private function getMockOfRequestWhichReturnsEmptyArrayAtGetParameters()
+    {
+        $request = $this->getMockOfRequest();
+        $request->expects($this->once())
+            ->method('getParameters')
+            ->will($this->returnValue(array()));
+        return $request;
     }
 }

@@ -53,6 +53,13 @@ interface Requestable
     public function getOperation();
 
     /**
+     * Get a parameter array
+     *
+     * @return array
+     */
+    public function getParameters();
+
+    /**
      * is GET method
      *
      * @return boolean whether using GET method
