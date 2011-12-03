@@ -28,16 +28,6 @@ class Configuration extends BasicConfiguration implements BasicConfigurable
     const REQUEST_URI = '/onca/xml';
 
     /**
-     * The parameters array for configuration.
-     *
-     * @var array
-     */
-    private $parameters = array(
-        self::KEY_IS_SECURE => false,
-        self::KEY_METHOD    => self::METHOD_GET,
-    );
-
-    /**
      * {@inheritdoc} In addition, Override fixed parameters.
      *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API.Configuration::fromArray()
@@ -45,9 +35,9 @@ class Configuration extends BasicConfiguration implements BasicConfigurable
     public function fromArray(array $parameters)
     {
         return parent::fromArray($parameters)
-                     ->set(self::KEY_SERVICE, self::SERVICE)
-                     ->set(self::KEY_VERSION, self::API_VERSION)
-                     ->set(self::KEY_REQUEST_URI, self::REQUEST_URI)
+            ->set(self::KEY_SERVICE, self::SERVICE)
+            ->set(self::KEY_VERSION, self::API_VERSION)
+            ->set(self::KEY_REQUEST_URI, self::REQUEST_URI)
         ;
     }
 
@@ -65,6 +55,8 @@ class Configuration extends BasicConfiguration implements BasicConfigurable
             self::KEY_SECRET_ACCESS_KEY => $secretAccessKey,
             self::KEY_ASSOCIATE_TAG     => $associateTag,
             self::KEY_ENDPOINT          => $endPoint,
+            self::KEY_IS_SECURE         => false,
+            self::KEY_METHOD            => self::METHOD_GET,
         ));
     }
 
@@ -81,6 +73,56 @@ class Configuration extends BasicConfiguration implements BasicConfigurable
             self::KEY_AWS_ACCESS_KEY_ID => $this->get(self::KEY_AWS_ACCESS_KEY_ID),
             self::KEY_ASSOCIATE_TAG     => $this->get(self::KEY_ASSOCIATE_TAG),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::getEndPoint()
+     */
+    public function getEndPoint()
+    {
+        return $this->get(self::KEY_ENDPOINT);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::getRequestURI()
+     */
+    public function getRequestURI()
+    {
+        return self::REQUEST_URI;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::isSecure()
+     */
+    public function isSecure()
+    {
+        return $this->get(self::KEY_IS_SECURE);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::isMethodGET()
+     */
+    public function isMethodGET()
+    {
+        return ($this->get(self::KEY_METHOD) === self::METHOD_GET);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::isMethodPOST()
+     */
+    public function isMethodPOST()
+    {
+        return ($this->get(self::KEY_METHOD) === self::METHOD_POST);
     }
 
     /**

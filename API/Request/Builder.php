@@ -101,6 +101,7 @@ class Builder implements Buildable
      */
     public function build(Requestable $request)
     {
+        $configuration = $this->getConfiguration();
         $httpRequest = new HttpRequest();
         $httpRequest->setUrl($this->buildUrl());
         $httpRequest->setMethod($this->buildRequestMethod());
@@ -115,11 +116,8 @@ class Builder implements Buildable
      */
     private function buildUrl()
     {
-        $configurations = $this->getConfiguration()->toArray();
-        $protocol = $configurations[Configurable::KEY_IS_SECURE] ? 'https' : 'http';
-        $endpoint = $configurations[Configurable::KEY_ENDPOINT];
-        $uri      = $configurations[Configurable::KEY_REQUEST_URI];
-        return $protocol . '://'  . $endpoint . $uri;
+        $c = $this->getConfiguration();
+        return sprintf("http%s://%s%s", $c->isSecure() ? 's' : '', $c->getEndPoint(), $c->getRequestURI());
     }
 
     /**
@@ -129,8 +127,7 @@ class Builder implements Buildable
      */
     private function buildRequestMethod()
     {
-        $configurations = $this->getConfiguration()->toArray();
-        if ($configurations[Configurable::KEY_METHOD] === Configurable::METHOD_POST) {
+        if ($this->getConfiguration()->isMethodPOST()) {
             return HttpRequest::METH_POST;
         } else {
             return HttpRequest::METH_GET;

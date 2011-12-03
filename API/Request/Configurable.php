@@ -83,6 +83,47 @@ interface Configurable extends BasicConfigurable
     public function toRequiredQueryData();
 
     /**
+     * Get an End point
+     *
+     * @see Configurable::ENDPOINT_CA
+     * @see Configurable::ENDPOINT_CN
+     * @see Configurable::ENDPOINT_DE
+     * @see Configurable::ENDPOINT_ES
+     * @see Configurable::ENDPOINT_FR
+     * @see Configurable::ENDPOINT_IT
+     * @see Configurable::ENDPOINT_JP
+     * @see Configurable::ENDPOINT_UK
+     * @see Configurable::ENDPOINT_US
+     *
+     * @return string
+     */
+    public function getEndPoint();
+
+    /**
+     * Get a Request URI
+     *
+     * @return string
+     */
+    public function getRequestURI();
+
+    /**
+     * Whether it is secure
+     *
+     * @return boolean
+     */
+    public function isSecure();
+
+    /**
+     * Is method GET ?
+     */
+    public function isMethodGET();
+
+    /**
+     * Is method POST ?
+     */
+    public function isMethodPOST();
+
+    /**
      * Set an optional parameter
      * @param string $key
      * @param mixed $value

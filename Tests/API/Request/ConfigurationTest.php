@@ -17,6 +17,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     const SECRET_ACCESS_KEY = 'SECRET_ACCESS_KEY';
     const ASSOCIATE_TAG     = 'ASSOCIATE_TAG';
     const END_POINT         = 'ecs.amazonaws.jp';
+    const REQUEST_URI       = '/onca/xml';
 
     private $configuration;
 
@@ -42,13 +43,15 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    Configuration::KEY_SERVICE           => 'AWSECommerceService',
-                    Configuration::KEY_AWS_ACCESS_KEY_ID => self::AWS_ACCESS_KEY_ID,
-                    Configuration::KEY_SECRET_ACCESS_KEY => self::SECRET_ACCESS_KEY,
-                    Configuration::KEY_ASSOCIATE_TAG     => self::ASSOCIATE_TAG,
-                    Configuration::KEY_ENDPOINT          => self::END_POINT,
-                    Configuration::KEY_VERSION           => '2010-09-01',
-                    Configuration::KEY_REQUEST_URI       => '/onca/xml',
+                    'Service'         => 'AWSECommerceService',
+                    'AWSAccessKeyId'  => self::AWS_ACCESS_KEY_ID,
+                    'SecretAccessKey' => self::SECRET_ACCESS_KEY,
+                    'AssociateTag'    => self::ASSOCIATE_TAG,
+                    'EndPoint'        => self::END_POINT,
+                    'Version'         => '2010-09-01',
+                    'RequestURI'      => '/onca/xml',
+                    'IsSecure'        => false,
+                    'Method'          => 'GET',
                 )
             )
         );
@@ -65,6 +68,39 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'AWSAccessKeyId' => self::AWS_ACCESS_KEY_ID,
             'AssociateTag'   => self::ASSOCIATE_TAG,
         ), $this->configuration->toRequiredQueryData(), "The required query data weren't same.");
+    }
+
+    /**
+     * Get an End point
+     */
+    public function testGetEndPoint()
+    {
+        $this->assertSame(self::END_POINT, $this->configuration->getEndPoint(), "The end point wasn't same.");
+    }
+
+    /**
+     * Get a Request URI
+     */
+    public function testGetRequestURI()
+    {
+        $this->assertSame(self::REQUEST_URI, $this->configuration->getRequestURI(), "The request URI wasn't same.");
+    }
+
+    /**
+     * is secure in the case of default
+     */
+    public function testIsSecureInTheCaseOfDefault()
+    {
+        $this->assertFalse($this->configuration->isSecure(), "Secure.");
+    }
+
+    /**
+     * set whether it is secure
+     */
+    public function testIsNotSecure()
+    {
+        $this->configuration->setOption(Configurable::KEY_IS_SECURE, true);
+        $this->assertTrue($this->configuration->isSecure(), "Not Secure.");
     }
 
     /**
