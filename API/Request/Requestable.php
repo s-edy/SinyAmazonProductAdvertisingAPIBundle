@@ -18,6 +18,8 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
  */
 interface Requestable
 {
+    const KEY_OPERATION = 'Operation';
+
     const METHOD_GET  = 'GET';
     const METHOD_POST = 'POST';
 

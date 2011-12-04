@@ -101,11 +101,11 @@ class Builder implements Buildable
      */
     public function build(Requestable $request)
     {
-        $configuration = $this->getConfiguration();
         $httpRequest = new HttpRequest();
         $httpRequest->setUrl($this->buildUrl());
         $httpRequest->setMethod($this->buildRequestMethod());
         $httpRequest->addQueryData($this->getConfiguration()->toRequiredQueryData());
+        $httpRequest->addQueryData($this->getGenerator()->generateSignature());
         $httpRequest->addQueryData($request->getParameters());
         return $httpRequest;
     }

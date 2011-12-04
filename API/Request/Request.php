@@ -77,6 +77,18 @@ class Request implements Requestable
 
     /**
      * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Requestable::getParameters()
+     */
+    public function getParameters()
+    {
+        return array(
+            self::OPERATION => $this->getOperation()->getOperation(),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function isGETMethod()
     {

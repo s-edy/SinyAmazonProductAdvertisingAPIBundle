@@ -52,6 +52,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->builder = new Builder($this->getMockOfConfiguration());
+        $this->builder->setGenerator(
+            $this->getMockOfGeneratorWhichReturnsDummySignatureAtGenerateSignature());
     }
 
     /**
@@ -81,9 +83,9 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testAGeneratorObjectWillBeReturnedInTheCaseOfDefault()
     {
         $this->assertInstanceOf(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator',
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable',
             $this->builder->getGenerator(),
-            "A generator didn't returned.");
+            "A generatable object didn't returned.");
     }
 
     /**
@@ -244,6 +246,18 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Contains an generated parameter in the query string
+     */
+    public function testContainsAnGeneratedParameterInTheQueryString()
+    {
+        $httpRequest = $this->builder
+            ->setConfiguration($this->getMockOfConfigurationWhichReturnsEmptyArrayAtToRequiredQueryData())
+            ->setGenerator($this->getMockOfGeneratorWhichReturnsDummySignatureAtGenerateSignature())
+            ->build($this->getMockOfRequestWhichReturnsEmptyArrayAtGetParameters());
+        $this->assertContains('Signature=DummySignature', $httpRequest->getQueryData(), "The signature parameter wasn't set");
+    }
+
+    /**
      * A HTTP request object to which an Operation parameter array was set will be returned.
      */
     public function testContainsAnOperationParameterInTheQueryString()
@@ -287,6 +301,15 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     private function getMockOfGenerator()
     {
         return $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable');
+    }
+
+    private function getMockOfGeneratorWhichReturnsDummySignatureAtGenerateSignature()
+    {
+        $generator = $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable');
+        $generator->expects($this->any())
+            ->method('generateSignature')
+            ->will($this->returnValue(array('Signature' => 'DummySignature')));
+        return $generator;
     }
 
     private function getMockOfRequest()

@@ -8,6 +8,7 @@
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
 
 /**
  * This is a class that build a HttpRequest by the Request.
