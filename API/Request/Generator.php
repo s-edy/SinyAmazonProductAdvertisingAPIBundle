@@ -22,7 +22,6 @@ use \DateTimeZone;
  */
 class Generator implements Generatable
 {
-
     /**
      * Get a timestamp.
      *
@@ -34,6 +33,29 @@ class Generator implements Generatable
     public function getDateTime()
     {
         return new DateTime();
+    }
+
+    /**
+     * Generate a canonical string
+     *
+     * @param Configurable $configuration
+     * @param Requestable $request
+     * @return string A canonical string
+     */
+    private function generateCanonicalString(Configurable $configuration, Requestable $request)
+    {
+        $parameters = array_merge(
+            $configuration->toRequiredQueryData(),
+            $request->getParameters(),
+            array('Timestamp' => $this->getDateTime()->setTimezone(new DateTimeZone('GMT'))->format(DateTime::ISO8601))
+        );
+        ksort($parameters);
+
+        $query = new HttpQueryString(false);
+        foreach ($parameters as $key => $value) {
+            $query->set(array($key => $value));
+        }
+        return $query->toString();
     }
 
     /**
@@ -51,21 +73,5 @@ class Generator implements Generatable
         );
         $hash = hash_hmac('sha256', implode(chr(10), $seeds), $configuration->getSecretAccessKey(), true);
         return rawurlencode(base64_encode($hash));
-    }
-
-    private function generateCanonicalString(Configurable $configuration, Requestable $request)
-    {
-        $parameters = array_merge(
-            $configuration->toRequiredQueryData(),
-            $request->getParameters(),
-            array('Timestamp' => $this->getDateTime()->setTimezone(new DateTimeZone('GMT'))->format(DateTime::ISO8601))
-        );
-        ksort($parameters);
-
-        $query = new HttpQueryString(false);
-        foreach ($parameters as $key => $value) {
-            $query->set(array($key => $value));
-        }
-        return $query->toString();
     }
 }
