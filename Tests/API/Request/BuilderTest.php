@@ -308,7 +308,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $generator = $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable');
         $generator->expects($this->any())
             ->method('generateSignature')
-            ->will($this->returnValue(array('Signature' => 'DummySignature')));
+            ->will($this->returnValue('DummySignature'));
         return $generator;
     }
 
