@@ -83,6 +83,11 @@ interface Configurable extends BasicConfigurable
     public function toRequiredQueryData();
 
     /**
+     * Get a secret access key
+     */
+    public function getSecretAccessKey();
+
+    /**
      * Get an End point
      *
      * @see Configurable::ENDPOINT_CA

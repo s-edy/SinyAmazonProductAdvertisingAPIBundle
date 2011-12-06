@@ -78,6 +78,16 @@ class Configuration extends BasicConfiguration implements BasicConfigurable
     /**
      * {@inheritdoc}
      *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::getSecretAccessKey()
+     */
+    public function getSecretAccessKey()
+    {
+        return $this->get(self::KEY_SECRET_ACCESS_KEY);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Configurable::getEndPoint()
      */
     public function getEndPoint()

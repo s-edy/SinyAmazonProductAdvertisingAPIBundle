@@ -8,7 +8,6 @@
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API\Request;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
-
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configuration;
 
 class ConfigurationTest extends \PHPUnit_Framework_TestCase
@@ -68,6 +67,14 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'AWSAccessKeyId' => self::AWS_ACCESS_KEY_ID,
             'AssociateTag'   => self::ASSOCIATE_TAG,
         ), $this->configuration->toRequiredQueryData(), "The required query data weren't same.");
+    }
+
+    /**
+     * Get a secret access key
+     */
+    public function testGetSecretAccessKey()
+    {
+        $this->assertSame(self::SECRET_ACCESS_KEY, $this->configuration->getSecretAccessKey(), "The secret access key wasn't same.");
     }
 
     /**
