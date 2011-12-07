@@ -92,7 +92,7 @@ abstract class Operation
      *
      * @return string
      */
-    public function getOperation()
+    public function getOperationName()
     {
         return $this->operation;
     }

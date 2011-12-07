@@ -7,17 +7,10 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Request,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Response,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\BrowseNodeLookupOperation;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Request;
 
 class RequestTest extends \PHPUnit_Framework_TestCase
 {
-    const DUMMY_AWS_ACCESS_KEY_ID = 'dummy_aws_access_key_id';
-    const DUMMY_SECRET_ACCESS_KEY = 'dummy_secret_access_key';
-    const DUMMY_ASSOCIATE_TAG     = 'dummy_associate_tag';
-    const DUMMY_BROWSE_NODE_ID    = 123456789;
-
     private $request;
 
     public function setUp()
@@ -26,83 +19,64 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * get operation in the case of default
+     * Returns a class instance which extended an abstract operation class instance when invoking getOperation()
      */
-    public function testGetOperationInTheCaseOfDefault()
+    public function testReturnsAClassWhichExtendedAnAbstractOperationClassInstanceWhenInvokingGetOperation()
     {
         $this->assertInstanceOf(
-        	'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
-            $this->createNewRequest()->getOperation(),
-        	"Operation was null in the case of default.");
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
+            $this->request->getOperation(),
+            "A returned class wasn't class instance that extend an abstract operation class.");
     }
 
     /**
-     * returns class instance that extend an abstract operation class instance
-     * when get operation
+     * Returns an Operation class instance which was set when invoking getOperation()
      */
-    public function testReturnsClassExtendAnAbstractOperationWhenGetOperation()
+    public function testReturnsAnOperationClassInstanceWhichWasWhenInvokingGetOperation()
     {
-        $this->assertInstanceOf(
-        	'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
-        	$this->request->getOperation(),
-        	"A returned class wasn't class instance that extend an abstract operation class.");
-    }
-
-    /**
-     * returns operation class instance that you set when you get operation
-     */
-    public function testReturnsOperationClassInstanceThatYouSetWhenYouGetOperation()
-    {
-        $request = $this->createNewRequest();
-        $operation = new BrowseNodeLookupOperation(self::DUMMY_BROWSE_NODE_ID);
+        $request   = $this->createNewRequest();
+        $operation = $this->getMockOfOperation();
         $request->setOperation($operation);
+        $this->assertSame($operation, $request->getOperation(), "A returned class wasn't same class instance.");
+    }
+
+    /**
+     * Get parameters
+     *
+     * @dataProvider provideParameters
+     */
+    public function testGetParameters($parameters)
+    {
+        $operation = $this->getMockOfOperation();
+        $operation->setParameters($parameters);
+        $request = $this->createNewRequest($operation);
 
         $this->assertSame(
-            $operation, $request->getOperation(),
-            "A returned class wasn't same class instance.");
+            array_merge(array('Operation' => 'DummyOperation'), $parameters),
+            $request->getParameters(),
+            "Returned parameters waren't same.");
+    }
+    public function provideParameters()
+    {
+        return array(array(array('foo' => 'bar', 'fizz' => 'buzz')));
     }
 
-    /**
-     * is GET method in the case of default
-     */
-    public function testIsGETMethodInTheCaseOfDefault()
+    private function createNewRequest($operation = null)
     {
-        $this->assertTrue($this->request->isGETMethod(), "A request method wasn't GET.");
-        $this->assertFalse($this->request->isPOSTMethod(), "A request method was POST");
+        if (is_null($operation)) {
+            $operation = $this->getMockOfOperation();
+        }
+        return new Request($operation);
     }
 
-    /**
-     * set POST method
-     */
-    public function testSetPOSTMethod()
+    private function getMockOfOperation()
     {
-        $this->request->setPOSTMethod();
-        $this->assertTrue($this->request->isPOSTMethod(), "A request method wasn't POST.");
-        $this->assertFalse($this->request->isGETMethod(), "A request method was GET");
-
-        return $this->request;
-    }
-
-    /**
-     * set GET method
-     *
-     * @depends testSetPOSTMethod
-     */
-    public function testSetGETMethod(Request $request)
-    {
-        $request->setGETMethod();
-        $this->assertTrue($request->isGETMethod(), "A request method wasn't GET.");
-        $this->assertFalse($request->isPOSTMethod(), "A request method was POST");
-    }
-
-    /**
-     * get request class instance
-     *
-     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Request
-     */
-    private function createNewRequest()
-    {
-        return new Request(
-            new BrowseNodeLookupOperation(self::DUMMY_BROWSE_NODE_ID));
+        $operation = $this->getMockForAbstractClass(
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
+            array('DummyOperation'));
+        $operation->expects($this->any())
+            ->method('getOperationName')
+            ->will($this->returnCallback('DummyOperation'));
+        return $operation;
     }
 }

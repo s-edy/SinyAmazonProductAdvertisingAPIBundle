@@ -20,9 +20,6 @@ interface Requestable
 {
     const KEY_OPERATION = 'Operation';
 
-    const METHOD_GET  = 'GET';
-    const METHOD_POST = 'POST';
-
     /**
      * set an Operation class when the instance construct
      *
@@ -38,16 +35,6 @@ interface Requestable
     public function setOperation(Operation $operation);
 
     /**
-     * set using GET method
-     */
-    public function setGETMethod();
-
-    /**
-     * set using POST method
-     */
-    public function setPOSTMethod();
-
-    /**
      * get an Operation class instance which you want to send request
      *
      * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
@@ -60,18 +47,4 @@ interface Requestable
      * @return array
      */
     public function getParameters();
-
-    /**
-     * is GET method
-     *
-     * @return boolean whether using GET method
-     */
-    public function isGETMethod();
-
-    /**
-     * is POST method
-     *
-     * @return boolean whether using POST method
-     */
-    public function isPOSTMethod();
 }

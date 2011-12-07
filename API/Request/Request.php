@@ -7,8 +7,8 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
 
 /**
  * This is a class to send HTTP request to Amazon
@@ -26,14 +26,6 @@ class Request implements Requestable
      * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
      */
     private $operation;
-
-    /**
-     * This is a method which will use when request send.
-     * default value is "GET".
-     *
-     * @var string
-     */
-    private $method = self::METHOD_GET;
 
     /**
      * {@inheritdoc}
@@ -54,22 +46,6 @@ class Request implements Requestable
     /**
      * {@inheritdoc}
      */
-    public function setGETMethod()
-    {
-        $this->method = self::METHOD_GET;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPOSTMethod()
-    {
-        $this->method = self::METHOD_POST;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getOperation()
     {
         return $this->operation;
@@ -82,24 +58,8 @@ class Request implements Requestable
      */
     public function getParameters()
     {
-        return array(
-            self::OPERATION => $this->getOperation()->getOperation(),
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isGETMethod()
-    {
-        return $this->method === self::METHOD_GET;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPOSTMethod()
-    {
-        return $this->method === self::METHOD_POST;
+        return array_merge(
+            array(self::KEY_OPERATION => $this->getOperation()->getOperationName()),
+            $this->getOperation()->getParameters());
     }
 }
