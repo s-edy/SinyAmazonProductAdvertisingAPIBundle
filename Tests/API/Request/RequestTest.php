@@ -24,7 +24,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     public function testReturnsAClassWhichExtendedAnAbstractOperationClassInstanceWhenInvokingGetOperation()
     {
         $this->assertInstanceOf(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
+            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\Operation',
             $this->request->getOperation(),
             "A returned class wasn't class instance that extend an abstract operation class.");
     }
@@ -47,14 +47,9 @@ class RequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParameters($parameters)
     {
-        $operation = $this->getMockOfOperation();
-        $operation->setParameters($parameters);
+        $operation = $this->getMockOfOperation($parameters);
         $request = $this->createNewRequest($operation);
-
-        $this->assertSame(
-            array_merge(array('Operation' => 'DummyOperation'), $parameters),
-            $request->getParameters(),
-            "Returned parameters waren't same.");
+        $this->assertSame($parameters, $request->getParameters(), "Returned parameters waren't same.");
     }
     public function provideParameters()
     {
@@ -69,14 +64,10 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         return new Request($operation);
     }
 
-    private function getMockOfOperation()
+    private function getMockOfOperation(array $parameters = array())
     {
-        $operation = $this->getMockForAbstractClass(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation',
-            array('DummyOperation'));
-        $operation->expects($this->any())
-            ->method('getOperationName')
-            ->will($this->returnCallback('DummyOperation'));
+        $operation = $this->getMockForAbstractClass('Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\Operation');
+        $operation->fromArray($parameters);
         return $operation;
     }
 }

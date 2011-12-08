@@ -7,7 +7,7 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\Operation;
 
 /**
  * This is a class to send BrowseNodeLookup operation
@@ -23,37 +23,27 @@ class BrowseNodeLookupOperation extends Operation
     const OPERATION = 'BrowseNodeLookup';
 
     // Browse node ID (required parameter)
-    const BROWSE_NODE_ID = 'BrowseNodeId';
+    const KEY_BROWSE_NODE_ID = 'BrowseNodeId';
 
     /**
-     * set the browse node ID that you want to get.
-     * this parameter is required for "BrowseNodeLookup" operation.
+     * Set the BrowseNodeID which is wanted to retrieve from Amazon.
+     * This is a required parameter for "BrowseNodeLookup" operation.
      *
      * @param integer $browseNodeId
      */
     public function __construct($browseNodeId)
     {
-        parent::__construct(self::OPERATION);
+        $this->set(self::KEY_OPERATION, self::OPERATION);
         $this->setBrowseNodeId($browseNodeId);
     }
 
     /**
-     * set browse node ID that you want to get.
+     * Set BrowseNodeID which is wanted to retrieve from Amazon.
      *
      * @param integer $browseNodeId
      */
     public function setBrowseNodeId($browseNodeId)
     {
-        $this->setParameter(self::BROWSE_NODE_ID, $browseNodeId);
-    }
-
-    /**
-     * get browse node ID that you want to get.
-     *
-     * @return integer a browse node ID
-     */
-    public function getBrowseNodeId()
-    {
-        return $this->getParameter(self::BROWSE_NODE_ID);
+        $this->set(self::KEY_BROWSE_NODE_ID, $browseNodeId);
     }
 }

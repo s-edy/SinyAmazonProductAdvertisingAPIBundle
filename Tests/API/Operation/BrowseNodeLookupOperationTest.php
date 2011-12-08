@@ -21,37 +21,35 @@ class BrowseNodeLookupOperationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * get operation in the case of default
+     * toArray in the case of default
+     *
+     * @dataProvider provideToArrayInTheCaseOfDefault
      */
-    public function testGetOperationInTheCaseOfDefault()
+    public function testToArrayInTheCaseOfDefault($expects)
     {
-        $this->assertSame(
-            BrowseNodeLookupOperation::OPERATION,
-            $this->operation->getOperationName(),
-            "Operation wasn't same.");
+        $this->assertSame($expects, $this->operation->toArray(), "The array waren't same.");
+    }
+    public function provideToArrayInTheCaseOfDefault()
+    {
+        return array(
+            array(array('Operation' => 'BrowseNodeLookup', 'BrowseNodeId' => self::DUMMY_BROWSE_NODE_ID))
+        );
     }
 
     /**
-     * get Browse node ID in the case of default
+     * Set BrowseNodeID
+     *
+     * @dataProvider provideSetBrowseNodeId
      */
-    public function testGetBrowseNodeIdInTheCaseOfDefault()
+    public function testSetBrowseNodeId($newBrowseNodeId, $expects)
     {
-        $this->assertSame(
-            self::DUMMY_BROWSE_NODE_ID,
-            $this->operation->getBrowseNodeId(),
-            "Browse node ID wasn't saem.");
-    }
-
-    /**
-     * set Browse node ID
-     */
-    public function testSetBrowseNodeId()
-    {
-        $newBrowseNodeId = 987654321;
         $this->operation->setBrowseNodeId($newBrowseNodeId);
-
-        $this->assertSame(
-            $newBrowseNodeId, $this->operation->getBrowseNodeId(),
-            "The browse node ID that is set newly wasn't same");
+        $this->assertSame($expects, $this->operation->toArray(), "The BrowseNodeID which is set newly wasn't same");
+    }
+    public function provideSetBrowseNodeId()
+    {
+        return array(
+            array(987654321, array('Operation' => 'BrowseNodeLookup', 'BrowseNodeId' => 987654321)),
+        );
     }
 }

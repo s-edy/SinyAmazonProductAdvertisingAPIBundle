@@ -35,7 +35,7 @@ abstract class Operation implements OperationInterface
      */
     public function __construct(array $parameters = array())
     {
-        $this->addParameters($parameters);
+        $this->fromArray($parameters);
     }
 
     /**
@@ -43,13 +43,13 @@ abstract class Operation implements OperationInterface
      *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface::addParameters()
      */
-    public function addParameters(array $parameters)
+    public function fromArray(array $parameters)
     {
         foreach ($parameters as $key => $value) {
             if ($key === self::KEY_OPERATION) {
                 continue;
             }
-            $this->setParameter($key, $value);
+            $this->set($key, $value);
         }
     }
 
@@ -58,7 +58,7 @@ abstract class Operation implements OperationInterface
      *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface::setParameter()
      */
-    protected function setParameter($key, $value)
+    protected function set($key, $value)
     {
         $this->parameters[$key] = $value;
     }
@@ -68,9 +68,9 @@ abstract class Operation implements OperationInterface
      *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface::getParameter()
      */
-    protected function getParameter($key)
+    protected function get($key)
     {
-        if ($this->hasParameter($key) === false) {
+        if ($this->has($key) === false) {
             throw new OperationException(sprintf("The parameter of specified key was not found. key=[%s]", $key));
         }
         return $this->parameters[$key];
@@ -81,7 +81,7 @@ abstract class Operation implements OperationInterface
      *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface::hasParameter()
      */
-    protected function hasParameter($key)
+    protected function has($key)
     {
         return (isset($this->parameters[$key]));
     }
@@ -91,7 +91,7 @@ abstract class Operation implements OperationInterface
      *
      * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface::getParameters()
      */
-    protected function getParameters()
+    public function toArray()
     {
         return $this->parameters;
     }

@@ -58,8 +58,6 @@ class Request implements Requestable
      */
     public function getParameters()
     {
-        return array_merge(
-            array(OperationInterface::KEY_OPERATION => $this->getOperation()->getOperationName()),
-            $this->getOperation()->getParameters());
+        return $this->getOperation()->toArray();
     }
 }

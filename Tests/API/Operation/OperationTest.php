@@ -31,22 +31,22 @@ class OperationTest extends \PHPUnit_Framework_TestCase
     /**
      * Get parameters in the case of default
      */
-    public function testGetParametersInTheCaseOfDefault()
+    public function testToArrayInTheCaseOfDefault()
     {
-        $this->assertSame($this->dummyParameters, $this->invokeGetParameters($this->operation), "The parameters waren't same.");
+        $this->assertSame($this->dummyParameters, $this->operation->toArray(), "The parameters waren't same.");
     }
 
     /**
      * Add parameters
      *
-     * @dataProvider providerAddParameters
+     * @dataProvider provideFromArray
      */
-    public function testAddParameters($parameters, $expects)
+    public function testFromArray($parameters, $expects)
     {
-        $this->operation->addParameters($parameters);
-        $this->assertSame($expects, $this->invokeGetParameters($this->operation), "Parameters waren't add dummy parameters");
+        $this->operation->fromArray($parameters);
+        $this->assertSame($expects, $this->operation->toArray(), "Parameters waren't add dummy parameters");
     }
-    public function providerAddParameters()
+    public function provideFromArray()
     {
         $addParameters = array('foo' => 'bar');
         return array(
@@ -57,25 +57,25 @@ class OperationTest extends \PHPUnit_Framework_TestCase
     /**
      * Ignoring at addParameters() in the case of the key is "Operation".
      */
-    public function testIgnoringOperationAtAddParameters()
+    public function testIgnoringOperationAtFromArray()
     {
-        $this->operation->addParameters(array(OperationInterface::KEY_OPERATION => 'DummyOperation'));
-        $this->assertSame($this->dummyParameters, $this->invokeGetParameters($this->operation), "The 'Operation' parameters wasn't ignored.");
+        $this->operation->fromArray(array(OperationInterface::KEY_OPERATION => 'DummyOperation'));
+        $this->assertSame($this->dummyParameters, $this->operation->toArray(), "The 'Operation' parameters wasn't ignored.");
     }
 
     /**
      * Set a parameters
      *
-     * @dataProvider providerSetParameter
+     * @dataProvider provideSet
      */
-    public function testSetParameter($replaced, $expects)
+    public function testSet($replaced, $expects)
     {
-        $method = new ReflectionMethod(self::OPERATION_CLASS, 'setParameter');
+        $method = new ReflectionMethod(self::OPERATION_CLASS, 'set');
         $method->setAccessible(true);
         $method->invoke($this->operation, self::DUMMY_PARAMETER_KEY, $replaced);
-        $this->assertSame($expects, $this->invokeGetParameters($this->operation), "The parameters waren't set dummy parameters");
+        $this->assertSame($expects, $this->operation->toArray(), "The parameters waren't set dummy parameters");
     }
-    public function providerSetParameter()
+    public function provideSet()
     {
         $replaced = 'replaced';
         $expects = $this->dummyParameters;
@@ -88,9 +88,9 @@ class OperationTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a parameter of specified key
      */
-    public function testGetParameter()
+    public function testGet()
     {
-        $method = new ReflectionMethod(self::OPERATION_CLASS, 'getParameter');
+        $method = new ReflectionMethod(self::OPERATION_CLASS, 'get');
         $method->setAccessible(true);
         $this->assertSame(self::DUMMY_PARAMETER_VALUE, $method->invoke($this->operation, self::DUMMY_PARAMETER_KEY), "The parameters wasn't same");
     }
@@ -98,9 +98,9 @@ class OperationTest extends \PHPUnit_Framework_TestCase
     /**
      * Has the parameter of specified key
      */
-    public function testHasParameter()
+    public function testHas()
     {
-        $method = new ReflectionMethod(self::OPERATION_CLASS, 'hasParameter');
+        $method = new ReflectionMethod(self::OPERATION_CLASS, 'has');
         $method->setAccessible(true);
         $this->assertTrue($method->invoke($this->operation, self::DUMMY_PARAMETER_KEY), "Had not a parameter of specified key.");
         $this->assertFalse($method->invoke($this->operation, 'haveNotKey'), "Had the a parameter of specified key.");
@@ -114,15 +114,8 @@ class OperationTest extends \PHPUnit_Framework_TestCase
      */
     public function testAnExceptionWillOccurIfTheParameterWhichITriedToGetDoesNotExist()
     {
-        $method = new ReflectionMethod(self::OPERATION_CLASS, 'getParameter');
+        $method = new ReflectionMethod(self::OPERATION_CLASS, 'get');
         $method->setAccessible(true);
         $method->invoke($this->operation, 'FailedKey');
-    }
-
-    private function invokeGetParameters(Operation $operation)
-    {
-        $method = new ReflectionMethod(self::OPERATION_CLASS, 'getParameters');
-        $method->setAccessible(true);
-        return $method->invoke($operation);
     }
 }
