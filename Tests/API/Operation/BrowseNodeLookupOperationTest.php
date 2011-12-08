@@ -27,7 +27,7 @@ class BrowseNodeLookupOperationTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertSame(
             BrowseNodeLookupOperation::OPERATION,
-            $this->operation->getOperation(),
+            $this->operation->getOperationName(),
             "Operation wasn't same.");
     }
 

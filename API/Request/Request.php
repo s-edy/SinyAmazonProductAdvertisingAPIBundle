@@ -8,7 +8,7 @@
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface;
 
 /**
  * This is a class to send HTTP request to Amazon
@@ -23,14 +23,14 @@ class Request implements Requestable
     /**
      * An Operation class instance which you want to send request
      *
-     * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
+     * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface
      */
     private $operation;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(Operation $operation)
+    public function __construct(OperationInterface $operation)
     {
         $this->setOperation($operation);
     }
@@ -38,7 +38,7 @@ class Request implements Requestable
     /**
      * {@inheritdoc}
      */
-    public function setOperation(Operation $operation)
+    public function setOperation(OperationInterface $operation)
     {
         $this->operation = $operation;
     }
@@ -59,7 +59,7 @@ class Request implements Requestable
     public function getParameters()
     {
         return array_merge(
-            array(self::KEY_OPERATION => $this->getOperation()->getOperationName()),
+            array(OperationInterface::KEY_OPERATION => $this->getOperation()->getOperationName()),
             $this->getOperation()->getParameters());
     }
 }

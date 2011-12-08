@@ -7,7 +7,7 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface;
 
 /**
  * This is a interface of requestable object.
@@ -18,26 +18,24 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
  */
 interface Requestable
 {
-    const KEY_OPERATION = 'Operation';
-
     /**
      * set an Operation class when the instance construct
      *
-     * @param Operation $operation
+     * @param OperationInterface $operation
      */
-    public function __construct(Operation $operation);
+    public function __construct(OperationInterface $operation);
 
     /**
      * set an Operation class instance which you want to send request
      *
-	 * @param Operation $operation An operation class instance
+	 * @param OperationInterface $operation An operation class instance
      */
-    public function setOperation(Operation $operation);
+    public function setOperation(OperationInterface $operation);
 
     /**
      * get an Operation class instance which you want to send request
      *
-     * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation
+     * @return A class instance which implemented \Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface
      */
     public function getOperation();
 
