@@ -305,10 +305,13 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     private function getMockOfGeneratorWhichReturnsDummySignatureAtGenerateSignature()
     {
-        $generator = $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable');
+        $generator = $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator');
         $generator->expects($this->any())
-            ->method('generateSignature')
-            ->will($this->returnValue('DummySignature'));
+            ->method('generateParameters')
+            ->will($this->returnValue(array(
+                'Signature' => 'DummySignature',
+                'Timestamp' => 'DummyTimestamp',
+            )));
         return $generator;
     }
 

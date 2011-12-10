@@ -20,11 +20,11 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
 interface Generatable
 {
     /**
-     * Generate signature
+     * Generates parameters
      *
      * @param Configurable $configuration
      * @param Requestable $request
-     * @return string
+     * @return array
      */
-    public function generateSignature(Configurable $configuration, Requestable $request);
+    public function generateParameters(Configurable $configuration, Requestable $request);
 }

@@ -10,43 +10,50 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API\Request;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator;
 use \DateTime;
 use \DateTimeZone;
+use \ReflectionMethod;
 
 class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
-    private $dateTime;
+    const GENERATOR_CLASS = 'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator';
     private $generator;
 
     public function setUp()
     {
-        $this->dateTime = new DateTime();
-        $this->dateTime->setTimestamp(1323187197);
+        $dateTime = new DateTime();
+        $timestamp = $dateTime->setTimestamp(1323187197)
+            ->setTimezone(new DateTimeZone('GMT'))
+            ->format(DateTime::ISO8601);
 
-        $this->generator = $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator', array('getDateTime'));
+        $this->generator = $this->getMock(self::GENERATOR_CLASS, array('getTimestamp'));
         $this->generator
             ->expects($this->any())
-            ->method('getDateTime')
-            ->will($this->returnValue($this->dateTime));
+            ->method('getTimestamp')
+            ->will($this->returnValue('2011-12-06T15:59:57+0000'));
     }
 
     /**
-     * GetDateTime
+     * Generate parameters
+     *
+     * @dataProvider provideGenerateSignature
      */
-    public function testGetDateTime()
+    public function testGenerateParameters($configuration, $requst)
+    {
+        $this->assertSame(array(
+            'Timestamp' => '2011-12-06T15:59:57+0000',
+            'Signature' => 'lEBP1qx/GTxHJ1PIJFjeVxoVN7uafgmQplD0txwppPI=',
+        ), $this->generator->generateParameters($configuration, $requst), "The generated parameters waren't same.");
+    }
+
+    /**
+     * GetTimestamp is now time in the case of time
+     */
+    public function testGetTimestampIsNowTimeInTheCaseOfDefault()
     {
         $generator = new Generator();
-        $dateTime = $generator->getDateTime();
-        $this->assertInstanceOf('DateTime', $dateTime, "The DateTime object wasn't same");
-        return $dateTime;
-    }
-
-    /**
-     * GetDateTime is now time in the case of time
-     *
-     * @depends testGetDateTime
-     */
-    public function testGetDateTimeIsNowTimeInTheCaseOfDefault(DateTime $dateTime)
-    {
-        $this->assertLessThanOrEqual(1, abs(time() - $dateTime->getTimestamp()), "The unix timestamp wasn't same.");
+        $actual = strToTime($generator->getTimestamp());
+        $datetime = new DateTime();
+        $expected = $datetime->setTimezone(new DateTimeZone('GMT'))->getTimestamp();
+        $this->assertLessThanOrEqual(2, abs($actual - $expected), "The unix timestamp wasn't same.");
     }
 
     /**
@@ -56,25 +63,13 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateCanonicalString($configuration, $request)
     {
-        $method = new \ReflectionMethod(
-            'Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generator', 'generateCanonicalString');
+        $method = new ReflectionMethod(self::GENERATOR_CLASS, 'generateCanonicalString');
         $method->setAccessible(true);
-        $canonicalString = $method->invoke($this->generator, $configuration, $request);
+        $canonicalString = $method->invoke($this->generator, $configuration, $request, $this->generator->getTimestamp());
         $this->assertSame(
             'Timestamp=2011-12-06T15%3A59%3A57%2B0000&configuration=foo&request=bar',
             $canonicalString,
             "The canonical string wasn't same.");
-    }
-
-    /**
-     * GenerateSignature returns string
-     *
-     * @dataProvider provideGenerateSignature
-     */
-    public function testGenerateSignatureReturnsString($configuration, $request)
-    {
-        $signature = $this->generator->generateSignature($configuration, $request);
-        $this->assertInternalType('string', $signature, "Self object will be returned when invoking setConfiguration().");
     }
 
     /**
@@ -84,10 +79,12 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateSignature($configuration, $request)
     {
+        $method = new ReflectionMethod(self::GENERATOR_CLASS, 'generateSignature');
+        $method->setAccessible(true);
+        $signature = $method->invoke($this->generator, $configuration, $request, $this->generator->getTimestamp());
         $this->assertSame(
-            'lEBP1qx%2FGTxHJ1PIJFjeVxoVN7uafgmQplD0txwppPI%3D',
-            $this->generator->generateSignature($configuration, $request),
-            "Returned signature is incorrect.");
+            'lEBP1qx/GTxHJ1PIJFjeVxoVN7uafgmQplD0txwppPI=',
+            $signature, "Returned signature is incorrect.");
     }
 
     public function provideGenerateSignature()
@@ -96,6 +93,7 @@ class GeneratorTest extends \PHPUnit_Framework_TestCase
         $configuration->expects($this->any())
             ->method('toRequiredQueryData')
             ->will($this->returnValue(array('configuration' => 'foo')));
+
         $request = $this->getMock('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable');
         $request->expects($this->any())
             ->method('getParameters')

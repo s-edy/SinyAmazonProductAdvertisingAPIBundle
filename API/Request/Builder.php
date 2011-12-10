@@ -105,8 +105,8 @@ class Builder implements Buildable
         $httpRequest->setUrl($this->buildUrl());
         $httpRequest->setMethod($this->buildRequestMethod());
         $httpRequest->addQueryData($this->getConfiguration()->toRequiredQueryData());
-        $httpRequest->addQueryData(array('Signature' => $this->getGenerator()->generateSignature($this->getConfiguration(), $request)));
         $httpRequest->addQueryData($request->getParameters());
+        $httpRequest->addQueryData($this->getGenerator()->generateParameters($this->getConfiguration(), $request));
         return $httpRequest;
     }
 

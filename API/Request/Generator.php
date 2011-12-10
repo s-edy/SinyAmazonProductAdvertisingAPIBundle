@@ -23,16 +23,30 @@ use \DateTimeZone;
 class Generator implements Generatable
 {
     /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::generateParameters()
+     */
+    public function generateParameters(Configurable $configuration, Requestable $request)
+    {
+        $timestamp = $this->getTimestamp();
+        return array(
+            'Timestamp' => $timestamp,
+            'Signature' => $this->generateSignature($configuration, $request, $timestamp),
+        );
+    }
+
+    /**
      * Get a timestamp.
      *
-     * and Represented in Universal Time (GMT).
+     * Represented in Universal Time (GMT).
      *
-     * @return DateTime  - A DateTime object
-     * @throws Exception - If an invalid date/time was given
+     * @return string - A timestamp string
      */
-    public function getDateTime()
+    public function getTimestamp()
     {
-        return new DateTime();
+        $dateTime = new DateTime();
+        return $dateTime->setTimezone(new DateTimeZone('GMT'))->format(DateTime::ISO8601);
     }
 
     /**
@@ -40,14 +54,15 @@ class Generator implements Generatable
      *
      * @param Configurable $configuration
      * @param Requestable $request
+     * @param string $timestamp
      * @return string A canonical string
      */
-    private function generateCanonicalString(Configurable $configuration, Requestable $request)
+    public function generateCanonicalString(Configurable $configuration, Requestable $request, $timestamp)
     {
         $parameters = array_merge(
             $configuration->toRequiredQueryData(),
             $request->getParameters(),
-            array('Timestamp' => $this->getDateTime()->setTimezone(new DateTimeZone('GMT'))->format(DateTime::ISO8601))
+            array('Timestamp' => $timestamp)
         );
         ksort($parameters);
 
@@ -59,19 +74,22 @@ class Generator implements Generatable
     }
 
     /**
-     * {@inheritdoc}
+     * Generate signature
      *
-     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Request.Generatable::generateSignature()
+     * @param Configurable $configuration
+     * @param Requestable $request
+     * @param string $timestamp
+     * @return string
      */
-    public function generateSignature(Configurable $configuration, Requestable $request)
+    public function generateSignature(Configurable $configuration, Requestable $request, $timestamp)
     {
         $seeds = array(
             $configuration->isMethodPOST() ? 'POST' : 'GET',
             $configuration->getEndPoint(),
             $configuration->getRequestURI(),
-            $this->generateCanonicalString($configuration, $request, $this->getDateTime()),
+            $this->generateCanonicalString($configuration, $request, $timestamp),
         );
         $hash = hash_hmac('sha256', implode(chr(10), $seeds), $configuration->getSecretAccessKey(), true);
-        return rawurlencode(base64_encode($hash));
+        return base64_encode($hash);
     }
 }
