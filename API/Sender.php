@@ -11,6 +11,7 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Response;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\SenderException;
+use \HttpException;
 
 /**
  * This is a class to send HTTP request for the Amazon.
@@ -72,7 +73,7 @@ class Sender
         try {
             $httpMessage = $this->getBuilder()->build($request)->send();
             return new Response($httpMessage);
-        } catch (\Exception $e) {
+        } catch (HttpException $e) {
             throw new SenderException("Sending exception occurred.", 0, $e);
         }
     }

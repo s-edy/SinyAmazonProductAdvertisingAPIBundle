@@ -68,10 +68,14 @@ class SenderTest extends \PHPUnit_Framework_TestCase
 
     public function provideSend()
     {
+        $httpMessage = new HttpMessage();
+        $httpMessage->setType(HTTP_MSG_RESPONSE);
+        $httpMessage->setResponseCode(200);
+
         $httpRequest = $this->getMock('HttpRequest');
         $httpRequest->expects($this->any())
             ->method('send')
-            ->will($this->returnValue(new HttpMessage()));
+            ->will($this->returnValue($httpMessage));
 
         $builder = $this->createMockOfBuilder();
         $builder->expects($this->any())
@@ -101,7 +105,7 @@ class SenderTest extends \PHPUnit_Framework_TestCase
         $builder = $this->createMockOfBuilder();
         $builder->expects($this->any())
             ->method('build')
-            ->will($this->throwException(new \Exception('dummy')));
+            ->will($this->throwException(new \HttpException('dummy')));
 
         return array(
             array($builder),

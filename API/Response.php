@@ -8,6 +8,7 @@
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\ResponseInterface;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\ResponseException;
 use \HttpMessage;
 
 /**
@@ -23,9 +24,8 @@ class Response implements ResponseInterface
 
     public function __construct(HttpMessage $httpMessage)
     {
-        if ($this->httpMessage->getType() !== HTTP_MSG_RESPONSE) {
-            throw new Exception("Accept the object only which type is response.");
-            //throw new ResponseException();
+        if ($httpMessage->getType() !== HTTP_MSG_RESPONSE) {
+            throw new ResponseException("Accept the object only which type is response.");
         }
         $this->httpMessage = $httpMessage;
     }
