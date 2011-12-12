@@ -25,4 +25,11 @@ interface OperationInterface
      * @return array
      */
     public function toArray();
+
+    /**
+     * Get operation name
+     *
+     * @return string
+     */
+    public function getOperationName();
 }

@@ -95,4 +95,14 @@ abstract class Operation implements OperationInterface
     {
         return $this->parameters;
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation.OperationInterface::getOperationName()
+     */
+    public function getOperationName()
+    {
+        return $this->get(self::KEY_OPERATION);
+    }
 }

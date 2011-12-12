@@ -118,4 +118,16 @@ class OperationTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $method->invoke($this->operation, 'FailedKey');
     }
+
+    /**
+     * Get operation name
+     */
+    public function testGetOperationName()
+    {
+        $operationName = 'DummyOperation';
+        $method = new ReflectionMethod(self::OPERATION_CLASS, 'set');
+        $method->setAccessible(true);
+        $method->invoke($this->operation, OperationInterface::KEY_OPERATION, $operationName);
+        $this->assertSame($operationName, $this->operation->getOperationName(), "The retuend an operation name wasn't same.");
+    }
 }
