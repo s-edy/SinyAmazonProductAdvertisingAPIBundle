@@ -7,8 +7,9 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\Tests\API;
 
-use Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender,
-    Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender;
+use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable;
+use \HttpMessage;
 
 class SenderTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,7 +53,7 @@ class SenderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Did not return a response class instance when sending a request.
+     * Returns a response class instance when sending a request.
      *
      * @dataProvider provideSend
      */
@@ -67,12 +68,10 @@ class SenderTest extends \PHPUnit_Framework_TestCase
 
     public function provideSend()
     {
-        $response = $this->createMockOfResponse();
-
         $httpRequest = $this->getMock('HttpRequest');
         $httpRequest->expects($this->any())
             ->method('send')
-            ->will($this->returnValue($response));
+            ->will($this->returnValue(new HttpMessage()));
 
         $builder = $this->createMockOfBuilder();
         $builder->expects($this->any())

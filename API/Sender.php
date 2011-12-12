@@ -70,7 +70,8 @@ class Sender
     public function send(Requestable $request)
     {
         try {
-            return $this->getBuilder()->build($request)->send();
+            $httpMessage = $this->getBuilder()->build($request)->send();
+            return new Response($httpMessage);
         } catch (\Exception $e) {
             throw new SenderException("Sending exception occurred.", 0, $e);
         }
