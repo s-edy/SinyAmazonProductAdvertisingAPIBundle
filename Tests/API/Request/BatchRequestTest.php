@@ -89,6 +89,7 @@ class BatchRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testReturnsConvertedParameters($expects)
     {
+        unset($expects['Operation']);
         $method = new ReflectionMethod('Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\BatchRequest', 'convertParameter');
         $method->setAccessible(true);
         $parameters = $method->invoke($this->request, self::DUMMY_OPERATION, array('commonKey' => 'commonValue'));

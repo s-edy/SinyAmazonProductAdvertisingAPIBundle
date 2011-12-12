@@ -49,9 +49,10 @@ class BatchRequest implements Requestable
      */
     public function getParameters()
     {
-        $operation = $this->extractOperationName();
-        $shared    = $this->extractSharedParameters();
-        return $this->convertParameter($operation, $shared);
+        $operation  = $this->extractOperationName();
+        return array_merge(
+            array('Operation' => $operation),
+            $this->convertParameter($operation, $this->extractSharedParameters()));
     }
 
     /**
@@ -61,8 +62,7 @@ class BatchRequest implements Requestable
      */
     private function extractOperationName()
     {
-        $parameters = $this->operations[0]->toArray();
-        return $parameters[OperationInterface::KEY_OPERATION];
+        return $this->operations[0]->getOperationName();
     }
 
     /**
@@ -74,14 +74,7 @@ class BatchRequest implements Requestable
     {
         $parameters = array();
         foreach ($this->operations as $operation) {
-            $operationParameters = array();
-            foreach ($operation->toArray() as $key => $value) {
-                if (strcasecmp($key, OperationInterface::KEY_OPERATION) === 0) {
-                    continue;
-                }
-                $operationParameters[$key] = $value;
-            }
-            $parameters[] =$operationParameters;
+            $parameters[] = $operation->getParameters();
         }
         return call_user_func_array("array_intersect_assoc", $parameters);
     }
@@ -97,21 +90,15 @@ class BatchRequest implements Requestable
     {
         $parameters = array();
         foreach ($this->operations as $index => $operation) {
-            foreach ($operation->toArray() as $key => $value) {
-                if (strcasecmp($key, OperationInterface::KEY_OPERATION) === 0) {
-                    continue;
+            foreach ($operation->getParameters() as $key => $value) {
+                if (isset($shared[$key]) === false) {
+                    $parameters[$operationName . '.' . ($index + 1) . '.' . $key] = $value;
                 }
-                if (isset($shared[$key])) {
-                    continue;
-                }
-                $parameters[$operationName . '.' . ($index + 1) . '.' . $key] = $value;
             }
         }
         foreach ($shared as $key => $value) {
             $parameters[$operationName . '.Shared.' . $key] = $value;
         }
-        $parameters[OperationInterface::KEY_OPERATION] = $operationName;
-
         return $parameters;
     }
 }

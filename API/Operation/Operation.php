@@ -46,10 +46,9 @@ abstract class Operation implements OperationInterface
     public function fromArray(array $parameters)
     {
         foreach ($parameters as $key => $value) {
-            if ($key === self::KEY_OPERATION) {
-                continue;
+            if (strcasecmp($key, self::KEY_OPERATION) !== 0) {
+                $this->set($key, $value);
             }
-            $this->set($key, $value);
         }
     }
 
@@ -115,7 +114,7 @@ abstract class Operation implements OperationInterface
     {
         $parameters = array();
         foreach ($this->toArray() as $key => $value) {
-            if ($key !== self::KEY_OPERATION) {
+            if (strcasecmp($key, self::KEY_OPERATION) !== 0) {
                 $parameters[$key] = $value;
             }
         }
