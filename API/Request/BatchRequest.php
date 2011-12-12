@@ -34,13 +34,11 @@ class BatchRequest implements Requestable
             throw new RequestException("There are no Operation class instances");
         }
         foreach ($operations as $operation) {
-            if ($operation instanceof OperationInterface === false) {
+            if ($operation instanceof OperationInterface) {
+                $this->operations[] = $operation;
+            } else {
                 throw new RequestException("Allow a class instance only which implemented 'OperationInterface'");
             }
-            if (is_null($operation)) {
-                continue;
-            }
-            $this->operations[] = $operation;
         }
     }
 
@@ -56,35 +54,45 @@ class BatchRequest implements Requestable
         return $this->convertParameter($operation, $shared);
     }
 
+    /**
+     * Extract an operation name from operations
+     *
+     * @return string
+     */
     private function extractOperationName()
     {
         $parameters = $this->operations[0]->toArray();
         return $parameters[OperationInterface::KEY_OPERATION];
     }
 
+    /**
+     * Extract some shared parameters from operations
+     *
+     * @return array
+     */
     private function extractSharedParameters()
     {
         $parameters = array();
-        $shared     = array();
-        foreach ($this->operations as $index => $operation) {
+        foreach ($this->operations as $operation) {
+            $operationParameters = array();
             foreach ($operation->toArray() as $key => $value) {
                 if (strcasecmp($key, OperationInterface::KEY_OPERATION) === 0) {
                     continue;
                 }
-                if (isset($parameters[$key]) && $parameters[$key] === $value) {
-                    $shared[$key] = $value;
-                    unset($parameters[$key]);
-                    continue;
-                }
-                if (isset($shared[$key])) {
-                    continue;
-                }
-                $parameters[$key] = $value;
+                $operationParameters[$key] = $value;
             }
+            $parameters[] =$operationParameters;
         }
-        return $shared;
+        return call_user_func_array("array_intersect_assoc", $parameters);
     }
 
+    /**
+     * Convert operation parameters with the Operation name
+     * and shared parameters.
+     *
+     * @param string $operationName - Operation name
+     * @param array $shared - Shared parameters array
+     */
     private function convertParameter($operationName, $shared)
     {
         $parameters = array();
