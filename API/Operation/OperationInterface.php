@@ -32,4 +32,11 @@ interface OperationInterface
      * @return string
      */
     public function getOperationName();
+
+    /**
+     * Get parameters
+     *
+     * @return array
+     */
+    public function getParameters();
 }

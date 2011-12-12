@@ -105,4 +105,20 @@ abstract class Operation implements OperationInterface
     {
         return $this->get(self::KEY_OPERATION);
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation.OperationInterface::getParameters()
+     */
+    public function getParameters()
+    {
+        $parameters = array();
+        foreach ($this->toArray() as $key => $value) {
+            if ($key !== self::KEY_OPERATION) {
+                $parameters[$key] = $value;
+            }
+        }
+        return $parameters;
+    }
 }

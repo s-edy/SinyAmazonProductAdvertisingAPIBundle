@@ -129,5 +129,16 @@ class OperationTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         $method->invoke($this->operation, OperationInterface::KEY_OPERATION, $operationName);
         $this->assertSame($operationName, $this->operation->getOperationName(), "The retuend an operation name wasn't same.");
+        return $this->operation;
+    }
+
+    /**
+     * Get Parameters
+     *
+     * @depends testGetOperationName
+     */
+    public function testGetParameters(Operation $operation)
+    {
+        $this->assertSame($this->dummyParameters, $operation->getParameters(), "The returned parameters waren't same.");
     }
 }
