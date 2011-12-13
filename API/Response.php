@@ -39,4 +39,14 @@ class Response implements ResponseInterface
     {
         return ($this->httpMessage->getResponseCode() === 200);
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API.ResponseInterface::getRawBody()
+     */
+    public function getRawBody()
+    {
+        return $this->httpMessage->getBody();
+    }
 }

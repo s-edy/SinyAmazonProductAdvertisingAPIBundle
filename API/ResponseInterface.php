@@ -18,6 +18,15 @@ interface ResponseInterface
 {
     /**
      * Is this a response success ?
+     *
+     * @return boolean - Whether the response is successful
      */
     public function isSuccess();
+
+    /**
+     * Get raw body message
+     *
+     * @return string - A raw response body
+     */
+    public function getRawBody();
 }
