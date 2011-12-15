@@ -24,6 +24,13 @@ interface ResponseInterface
     public function isSuccess();
 
     /**
+     * To a SimpleXmlElement class instance created from the returned XML
+     *
+     * @return SimpleXmlElement
+     */
+    public function toSimpleXmlElement();
+
+    /**
      * Get raw body message
      *
      * @return string - A raw response body

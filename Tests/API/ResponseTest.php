@@ -53,6 +53,16 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * To SimpleXmlElement
+     */
+    public function testToSimpleXmlElement()
+    {
+        $xml = $this->response->toSimpleXmlElement();
+        $this->assertInstanceOf("SimpleXmlElement", $this->response->toSimpleXmlElement(), "The returned object wasn't SimpleXmlElement class instance.");
+        $this->assertSame("BrowseNodeLookupResponse", $xml->getName());
+    }
+
+    /**
      * Get Raw body
      */
     public function testGetRawBody()

@@ -10,6 +10,7 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\ResponseInterface;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception\ResponseException;
 use \HttpMessage;
+use \SimpleXMLElement;
 
 /**
  * This is a response class of a request to the Amazon Product Advertising API
@@ -38,6 +39,16 @@ class Response implements ResponseInterface
     public function isSuccess()
     {
         return ($this->httpMessage->getResponseCode() === 200);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API.ResponseInterface::toSimpleXmlElement()
+     */
+    public function toSimpleXmlElement()
+    {
+        return new SimpleXMLElement($this->getRawBody(), LIBXML_COMPACT);
     }
 
     /**
