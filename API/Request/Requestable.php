@@ -13,7 +13,7 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface;
 
 /**
- * This is a interface of requestable object.
+ * This is an interface of Requestable object.
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API

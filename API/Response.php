@@ -16,7 +16,7 @@ use \HttpMessage;
 use \SimpleXMLElement;
 
 /**
- * This is a response class of a request to the Amazon Product Advertising API
+ * This is a Response class of a request to the Amazon Product Advertising API
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API

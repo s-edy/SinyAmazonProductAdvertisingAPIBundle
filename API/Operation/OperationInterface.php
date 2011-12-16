@@ -11,7 +11,7 @@
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
 
 /**
- * This is a interface of Operatable object.
+ * This is an interface of Operation
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API

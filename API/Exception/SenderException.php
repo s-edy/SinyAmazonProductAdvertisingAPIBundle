@@ -10,6 +10,15 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception;
 
-class SenderException extends \Exception
+use \Exception;
+
+/**
+ * This is an Exception class for the sending
+ *
+ * @package SinyAmazonProductAdvertisingAPI
+ * @subpackage API
+ * @author Shinichiro Yuki <edy@siny.jp>
+ */
+class SenderException extends Exception
 {
 }

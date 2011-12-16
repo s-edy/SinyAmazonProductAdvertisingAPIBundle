@@ -24,16 +24,16 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface;
 class Request implements Requestable
 {
     /**
-     * An Operation class instance which you want to send request
+     * An Operation class instance which sending a request
      *
      * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface
      */
     private $operation;
 
     /**
-     * Set an Operation class when the instance construct
+     * Set an Operation class when constructing
      *
-     * @param OperationInterface $operation
+     * @param OperationInterface $operation - An Operation interface
      */
     public function __construct(OperationInterface $operation)
     {
@@ -41,9 +41,9 @@ class Request implements Requestable
     }
 
     /**
-     * Set an Operation class instance which you want to send request
+     * Set an Operation class instance which sending a request
      *
-     * @param OperationInterface $operation An operation class instance
+     * @param OperationInterface $operation - An Operation class instance
      */
     public function setOperation(OperationInterface $operation)
     {
@@ -51,9 +51,9 @@ class Request implements Requestable
     }
 
     /**
-     * Get an Operation class instance which you want to send request
+     * Get an Operation class instance which sending a request
      *
-     * @return A class instance which implemented \Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface
      */
     public function getOperation()
     {

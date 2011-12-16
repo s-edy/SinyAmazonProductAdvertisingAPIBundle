@@ -13,7 +13,7 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Configurable;
 
 /**
- * This is a abstract class that configure the Amazon API
+ * This is an abstract class which configure the Amazon API
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
@@ -29,6 +29,8 @@ abstract class Configuration implements Configurable
 
     /**
      * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API.Configurable::fromArray()
      */
     public function fromArray(array $parameters)
     {
@@ -40,6 +42,8 @@ abstract class Configuration implements Configurable
 
     /**
      * {@inheritdoc}
+     *
+     * @see Siny\Amazon\ProductAdvertisingAPIBundle\API.Configurable::toArray()
      */
     public function toArray()
     {

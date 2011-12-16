@@ -12,6 +12,13 @@ namespace Siny\Amazon\ProductAdvertisingAPIBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * This is a Bundle class for Siny\Amazon\ProductAdvertisingAPIBundle
+ *
+ * @package SinyAmazonProductAdvertisingAPI
+ * @subpackage API
+ * @author Shinichiro Yuki <edy@siny.jp>
+ */
 class SinyAmazonProductAdvertisingAPIBundle extends Bundle
 {
 }

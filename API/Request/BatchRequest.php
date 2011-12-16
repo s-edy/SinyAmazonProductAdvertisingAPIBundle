@@ -15,7 +15,7 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Exception\RequestExcepti
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface;
 
 /**
- * This is a class to send batch request to Amazon
+ * This is a class to send BatchRequest to Amazon
  * through the Amazon Product Advertising API.
  *
  * @package SinyAmazonProductAdvertisingAPI

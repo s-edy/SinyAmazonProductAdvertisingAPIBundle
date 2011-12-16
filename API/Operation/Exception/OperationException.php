@@ -10,6 +10,15 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\Exception;
 
-class OperationException extends \Exception
+use \Exception;
+
+/**
+ * This is an Exception class for the operation
+ *
+ * @package SinyAmazonProductAdvertisingAPI
+ * @subpackage API
+ * @author Shinichiro Yuki <edy@siny.jp>
+ */
+class OperationException extends Exception
 {
 }

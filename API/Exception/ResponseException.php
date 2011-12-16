@@ -10,6 +10,15 @@
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Exception;
 
-class ResponseException extends \Exception
+use \Exception;
+
+/**
+ * This is an Exception class for the response
+ *
+ * @package SinyAmazonProductAdvertisingAPI
+ * @subpackage API
+ * @author Shinichiro Yuki <edy@siny.jp>
+ */
+class ResponseException extends Exception
 {
 }

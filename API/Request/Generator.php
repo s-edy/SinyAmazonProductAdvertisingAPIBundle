@@ -17,7 +17,7 @@ use \DateTime;
 use \DateTimeZone;
 
 /**
- * This is a class that build a HttpRequest by the Request.
+ * This is a class that generate some parameters for sending to request
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API

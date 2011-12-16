@@ -137,6 +137,7 @@ interface Configurable extends BasicConfigurable
 
     /**
      * Set an optional parameter
+     *
      * @param string $key
      * @param mixed $value
      */

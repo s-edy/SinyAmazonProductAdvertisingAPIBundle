@@ -26,16 +26,16 @@ use \HttpException;
 class Sender
 {
     /**
-     * a building request class instance
+     * A building request class instance
      *
      * @var Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable
      */
     private $builder;
 
     /**
-     * set a Buildable class instance when this is constructed.
+     * Set a Buildable class instance when constructing
      *
-     * @param Buildable $buildable
+     * @param Buildable $buildable - A Buildable class instance
      */
     public function __construct(Buildable $builder)
     {
@@ -43,10 +43,10 @@ class Sender
     }
 
     /**
-     * set a class instance which implement a Buildable insterface.
+     * Set a Buildable class instance
      *
-     * @param Buildable $buildable
-     * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender
+     * @param Buildable $buildable - A Buildable class instance
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender
      */
     public function setBuilder(Buildable $builder)
     {
@@ -56,7 +56,7 @@ class Sender
     }
 
     /**
-     * get a class instance which implement a Buildable interface.
+     * Get a Buildable class instance
      *
      * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Buildable
      */
@@ -66,16 +66,15 @@ class Sender
     }
 
     /**
-     * send a HTTP request
+     * Send a HTTP request
      *
-     * @param \Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable
-     * @return \Siny\Amazon\ProductAdvertisingAPIBundle\API\Response
+     * @param Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable
+     * @return Siny\Amazon\ProductAdvertisingAPIBundle\API\Response
      */
     public function send(Requestable $request)
     {
         try {
-            $httpMessage = $this->getBuilder()->build($request)->send();
-            return new Response($httpMessage);
+            return new Response($this->getBuilder()->build($request)->send());
         } catch (HttpException $e) {
             throw new SenderException("Sending exception occurred.", 0, $e);
         }

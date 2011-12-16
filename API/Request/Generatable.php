@@ -14,7 +14,7 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
 
 /**
- * This is a interface of Generatable object.
+ * This is an interface of Generatable object.
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
@@ -23,11 +23,11 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Requestable;
 interface Generatable
 {
     /**
-     * Generates parameters
+     * Generates parameters from configuration, and request.
      *
-     * @param Configurable $configuration
-     * @param Requestable $request
-     * @return array
+     * @param Configurable $configuration - A configuration class instance
+     * @param Requestable $request        - A requestable class instance
+     * @return array - Configuration parameters
      */
     public function generateParameters(Configurable $configuration, Requestable $request);
 }

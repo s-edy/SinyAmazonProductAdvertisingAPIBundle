@@ -11,7 +11,7 @@
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
 /**
- * This is a interface of Configurable object.
+ * This is an interface of Configurable object.
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
@@ -22,14 +22,14 @@ interface Configurable
     /**
      * Set parameters from array
      *
-     * @param array $parameters
+     * @param array $parameters - a Parameters array
      */
     public function fromArray(array $parameters);
 
     /**
      * Get all parameters
      *
-     * @return array
+     * @return array - Configuration parameters
      */
     public function toArray();
 }
