@@ -1,8 +1,11 @@
 <?php
 /**
- * This file is a part of SinyAmazonProductAdvertisingAPIBundle package.
+ * This file is a part of Siny\Amazon\ProductAdvertisingAPIBundle package.
  *
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * (c) Shinichiro Yuki <edy@siny.jp>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
@@ -14,11 +17,11 @@ use \DateTime;
 use \DateTimeZone;
 
 /**
- * This is a class that build a HttpRequest by the Request.
+ * This is a class that generate some parameters for sending to request
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * @author Shinichiro Yuki <edy@siny.jp>
  */
 class Generator implements Generatable
 {

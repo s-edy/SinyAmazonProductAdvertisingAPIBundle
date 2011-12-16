@@ -1,8 +1,11 @@
 <?php
 /**
- * This file is a part of SinyAmazonProductAdvertisingAPIBundle package.
+ * This file is a part of Siny\Amazon\ProductAdvertisingAPIBundle package.
  *
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * (c) Shinichiro Yuki <edy@siny.jp>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
@@ -13,11 +16,11 @@ use \HttpMessage;
 use \SimpleXMLElement;
 
 /**
- * This is a response class of a request to the Amazon Product Advertising API
+ * This is a Response class of a request to the Amazon Product Advertising API
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * @author Shinichiro Yuki <edy@siny.jp>
  */
 class Response implements ResponseInterface
 {

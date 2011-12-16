@@ -1,23 +1,26 @@
 <?php
 /**
- * This file is a part of SinyAmazonProductAdvertisingAPIBundle package.
+ * This file is a part of Siny\Amazon\ProductAdvertisingAPIBundle package.
  *
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * (c) Shinichiro Yuki <edy@siny.jp>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API;
 
 /**
- * This is a interface of Response object.
+ * This is an interface of Response object.
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * @author Shinichiro Yuki <edy@siny.jp>
  */
 interface ResponseInterface
 {
     /**
-     * Is this a response success ?
+     * Is this response success ?
      *
      * @return boolean - Whether the response is successful
      */
@@ -26,12 +29,12 @@ interface ResponseInterface
     /**
      * To a SimpleXmlElement class instance created from the returned XML
      *
-     * @return SimpleXmlElement
+     * @return SimpleXmlElement class instance
      */
     public function toSimpleXmlElement();
 
     /**
-     * Get raw body message
+     * Get a raw body message
      *
      * @return string - A raw response body
      */

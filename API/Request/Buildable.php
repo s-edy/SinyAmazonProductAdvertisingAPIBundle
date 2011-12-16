@@ -1,8 +1,11 @@
 <?php
 /**
- * This file is a part of SinyAmazonProductAdvertisingAPIBundle package.
+ * This file is a part of Siny\Amazon\ProductAdvertisingAPIBundle package.
  *
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * (c) Shinichiro Yuki <edy@siny.jp>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Request;
@@ -12,11 +15,11 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configurable;
 use Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Generatable;
 
 /**
- * This is a interface of Buildable object.
+ * This is an interface of Buildable object.
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage API
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * @author Shinichiro Yuki <edy@siny.jp>
  */
 interface Buildable
 {
@@ -58,7 +61,7 @@ interface Buildable
     public function getGenerator();
 
     /**
-     * build a HttpRequest class instance from Requestable object.
+     * Build a HttpRequest class instance from Requestable object.
      *
      * @param Requestable $request
      * @return HttpRequest

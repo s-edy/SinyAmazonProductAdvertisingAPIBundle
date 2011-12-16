@@ -1,8 +1,11 @@
 <?php
 /**
- * This file is a part of SinyAmazonProductAdvertisingAPIBundle package.
+ * This file is a part of Siny\Amazon\ProductAdvertisingAPIBundle package.
  *
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * (c) Shinichiro Yuki <edy@siny.jp>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation;
@@ -15,7 +18,7 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\Operation;
  *
  * @package SinyAmazonProductAdvertisingAPI
  * @subpackage Operation
- * @author Shinichiro Yuki <sinycourage@gmail.com>
+ * @author Shinichiro Yuki <edy@siny.jp>
  */
 class BrowseNodeLookupOperation extends Operation
 {
