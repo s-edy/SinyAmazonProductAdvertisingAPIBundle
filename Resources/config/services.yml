@@ -1,0 +1,15 @@
+parameters:
+  siny_amazon_product_advertising_api.api.aws_access_key_id: your_aws_access_key_id
+  siny_amazon_product_advertising_api.api.secret_access_key: your_secret_access_key
+  siny_amazon_product_advertising_api.api.associate_tag:     your_associate_tag
+  siny_amazon_product_advertising_api.api.locale:	         JP
+
+services:
+  siny_amazon_product_advertising_api.api:
+    class:     Siny\Amazon\ProductAdvertisingAPIBundle\API\Request
+    arguments:
+      - %siny_amazon_product_advertising_api.api.aws_access_key_id%
+      - %siny_amazon_product_advertising_api.api.secret_access_key%
+      - %siny_amazon_product_advertising_api.api.associate_tag%
+      - %siny_amazon_product_advertising_api.api.locale%
+      
