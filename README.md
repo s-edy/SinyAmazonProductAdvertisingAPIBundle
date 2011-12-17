@@ -1,10 +1,10 @@
 Amazon Product Advertising API Bundle
-==========================
+=====================================
 
 This is a client of the Amazon Product Advertising API to use in Symfony2 as a Bundle.
 
 Installation
---------------------------
+-------------
 
 ### 1) Add the following lines in your deps file
 
@@ -48,3 +48,7 @@ class AppKernel extends Kernel
         );
 ```
 
+How to use
+----------
+
+Please see `Test/ExampleTest.php`.
