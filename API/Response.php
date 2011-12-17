@@ -26,6 +26,12 @@ class Response implements ResponseInterface
 {
     private $httpMessage;
 
+    /**
+     * constructing from HttpMessage class instance.
+     *
+     * @param HttpMessage $httpMessage - A HttpMessage class instance which type is response.
+     * @throws ResponseException - If type is not response.
+     */
     public function __construct(HttpMessage $httpMessage)
     {
         if ($httpMessage->getType() !== HTTP_MSG_RESPONSE) {

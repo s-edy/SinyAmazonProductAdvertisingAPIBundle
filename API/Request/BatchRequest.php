@@ -24,6 +24,11 @@ use Siny\Amazon\ProductAdvertisingAPIBundle\API\Operation\OperationInterface;
  */
 class BatchRequest implements Requestable
 {
+    /**
+     * The operations to send request
+     *
+     * @var array
+     */
     private $operations = array();
 
     /**
