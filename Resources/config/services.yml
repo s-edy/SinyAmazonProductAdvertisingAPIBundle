@@ -1,15 +1,22 @@
 parameters:
-  siny_amazon_product_advertising_api.api.aws_access_key_id: your_aws_access_key_id
-  siny_amazon_product_advertising_api.api.secret_access_key: your_secret_access_key
-  siny_amazon_product_advertising_api.api.associate_tag:     your_associate_tag
-  siny_amazon_product_advertising_api.api.locale:	         JP
+  siny_amazon_product_advertising_api.api.configuration.aws_access_key_id: your_aws_access_key_id
+  siny_amazon_product_advertising_api.api.configuration.secret_access_key: your_secret_access_key
+  siny_amazon_product_advertising_api.api.configuration.associate_tag:     your_associate_tag
+  siny_amazon_product_advertising_api.api.configuration.endpoint:          your_endpoint
 
 services:
-  siny_amazon_product_advertising_api.api:
-    class:     Siny\Amazon\ProductAdvertisingAPIBundle\API\Request
+  siny_amazon_product_advertising_api.api.request.configuration:
+    class:  Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Configuration
     arguments:
-      - %siny_amazon_product_advertising_api.api.aws_access_key_id%
-      - %siny_amazon_product_advertising_api.api.secret_access_key%
-      - %siny_amazon_product_advertising_api.api.associate_tag%
-      - %siny_amazon_product_advertising_api.api.locale%
-      
+      - %siny_amazon_product_advertising_api.api.configuration.aws_access_key_id%
+      - %siny_amazon_product_advertising_api.api.configuration.secret_access_key%
+      - %siny_amazon_product_advertising_api.api.configuration.associate_tag%
+      - %siny_amazon_product_advertising_api.api.configuration.endpoint%
+  siny_amazon_product_advertising_api.api.request.builder:
+    class:  Siny\Amazon\ProductAdvertisingAPIBundle\API\Request\Builder
+    arguments:
+      - @siny_amazon_product_advertising_api.api.request.configuration
+  siny_amazon_product_advertising_api.api.sender:
+    class:  Siny\Amazon\ProductAdvertisingAPIBundle\API\Sender
+    arguments:
+      - @siny_amazon_product_advertising_api.api.request.builder
