@@ -1,0 +1,16 @@
+branches:
+  only:
+    - master
+    - develop
+
+language: php
+
+phps:
+  - 5.3
+  - 5.4
+
+env:
+  - SYMFONY_VERSION=v2.0.10
+  - SYMFONY_VERSION=origin/master
+
+script: phpunit --coverage-text
