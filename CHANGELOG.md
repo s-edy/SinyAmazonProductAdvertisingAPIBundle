@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+Release 0.1.2 (Feb 7, 2012)
+---------------------------
+* Added setting for travis CI
+
 Release 0.1.1 (Jan 4, 2012)
 ---------------------------
 * Fixed service resource
