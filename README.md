@@ -1,6 +1,8 @@
 Amazon Product Advertising API Bundle
 =====================================
 
+[![Build Status](https://secure.travis-ci.org/s-edy/SinyAmazonProductAdvertisingAPIBundle.png)](http://travis-ci.org/s-edy/SinyAmazonProductAdvertisingAPIBundle)
+
 This is a client of the Amazon Product Advertising API to use in Symfony2 as a Bundle.
 
 Installation
