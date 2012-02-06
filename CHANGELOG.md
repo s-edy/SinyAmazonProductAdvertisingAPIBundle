@@ -1,6 +1,10 @@
 CHANGELOG
 =========
 
+Release 0.1.3 (Feb 7, 2012)
+---------------------------
+* Added before install script for Travis CI
+
 Release 0.1.2 (Feb 7, 2012)
 ---------------------------
 * Added setting for travis CI
