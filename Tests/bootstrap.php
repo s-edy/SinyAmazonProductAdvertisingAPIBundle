@@ -8,15 +8,14 @@
 * file that was distributed with this source code.
 */
 
-$vendorDirectory = realpath(__DIR__ . '/../../../../../../vendor');
-$bundleDirectory = $vendorDirectory . '/bundles/Siny/Amazon/ProductAdvertisingAPIBundle';
+$vendorDirectory = realpath(__DIR__ . '/../vendor');
 
 require_once $vendorDirectory . '/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 
 use Symfony\Component\ClassLoader\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
-$loader->registerNamespace('Siny', $bundleDirectory);
+$loader->registerNamespace('Symfony', array($vendorDirectory.'/symfony/src', $vendorDirectory.'/bundles'));
 $loader->register();
 
 spl_autoload_register(function($class)
